@@ -24,15 +24,18 @@ from swagger_ui import falcon_api_doc
 
 import argparse
 import falcon
+import git
 import hashlib
 import json
 import time
 import waitress
 
 
+repo = git.Repo(search_parent_directories=True)
+
 title = config_parser.get('info', 'title')
 description = config_parser.get('info', 'description')
-version = config_parser.get('info', 'version')
+version = f'{repo.head.object.hexsha}@{repo.active_branch}'
 
 cb_host = config_parser.get('context-broker', 'host')
 cb_port = config_parser.get('context-broker', 'port')
@@ -50,7 +53,7 @@ dev_password = config_parser.get('dev', 'password')
 log_level = config_parser.get('log', 'level')
 
 
-print(f'{title} v{version}')
+print(f'{title} version:{version}')
 
 
 parser = argparse.ArgumentParser(

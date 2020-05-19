@@ -490,7 +490,7 @@ definitions:
     type: object
 info:
   title: Context Broker Manager
-  version: 0.0.2
+  version: 0291ea275fba5671216d38f7b24ec7d22e755d63@master
 paths:
   /catalog/:
     delete:

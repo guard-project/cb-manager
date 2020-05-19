@@ -9,6 +9,7 @@
         "Polycube",
         "RBAC",
         "chdir",
+        "hexsha",
         "datetime",
         "execenv",
         "filebeat",

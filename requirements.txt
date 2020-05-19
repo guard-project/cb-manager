@@ -6,6 +6,7 @@ falcon
 falcon-apispec
 falcon-auth
 falcon-marshmallow
+gitpython
 pint
 requests
 swagger-ui-py
