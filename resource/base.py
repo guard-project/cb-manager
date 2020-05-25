@@ -1,14 +1,13 @@
-from args import Args
-from elasticsearch_dsl import Document
+from document.nested import edit as nested_edit, rm as nested_rm
+from elasticsearch import NotFoundError, RequestError
 from elasticsearch_dsl.utils import AttrList
+from falcon import HTTPBadRequest
 from http import HTTPStatus
 from log import Log
-from query_parser import QueryParser
-
-import elasticsearch
-import falcon
-import time
-import utils
+from reader.arg import ArgReader
+from reader.query import QueryReader
+from time import sleep
+from utils import subset, wrap
 
 
 class BaseResource(object):
@@ -22,8 +21,8 @@ class BaseResource(object):
             except Exception as e:
                 self.log.debug(e)
                 self.log.error(f'initialization index {self.doc_cls.Index.name} not possible')
-                self.log.info(f'waiting for {Args.db.es_retry_period} seconds and try again')
-                time.sleep(Args.db.es_retry_period)
+                self.log.info(f'waiting for {ArgReader.db.es_retry_period} seconds and try again')
+                sleep(ArgReader.db.es_retry_period)
                 self.__init__()
             else:
                 self.log.success(f'index {self.doc_cls.Index.name} initialized')
@@ -31,13 +30,12 @@ class BaseResource(object):
 
     def on_base_get(self, req, resp, id=None):
         try:
-            response = QueryParser(index=self.doc_cls.Index.name).parse(
+            response = QueryReader(index=self.doc_cls.Index.name).parse(
                 query=req.context.get('json', {}), id=id
             ).execute()
-            resp.media = [dict(hit.to_dict(), id=hit.meta.id)
-                          for hit in response]
-        except elasticsearch.RequestError as req_error:
-            raise falcon.HTTPBadRequest(
+            resp.media = [dict(hit.to_dict(), id=hit.meta.id) for hit in response]
+        except RequestError as req_error:
+            raise HTTPBadRequest(
                 title=req_error.error,
                 description=req_error.info
             )
@@ -47,14 +45,14 @@ class BaseResource(object):
         query = req.context.get('json', [])
         if id is not None:
             if type(query) is list:
-                raise falcon.HTTPBadRequest(
+                raise HTTPBadRequest(
                     title='id provided',
                     description=f'Request can create only 1 new {self.doc_name}'
                 )
             single = True
         else:
             single = False
-        for data in utils.wrap(query):
+        for data in wrap(query):
             data_id = data.pop('id', None)
             if data_id is not None and single:
                 res.append({
@@ -99,7 +97,7 @@ class BaseResource(object):
     def on_base_delete(self, req, resp, id=None):
         try:
             res = []
-            response = QueryParser(index=self.doc_cls.Index.name).parse(
+            response = QueryReader(index=self.doc_cls.Index.name).parse(
                 query=req.context.get('json', {}), id=id
             ).execute()
             for hit in response:
@@ -122,27 +120,25 @@ class BaseResource(object):
                     })
             resp.media = res
         except elasticsearch.RequestError as req_error:
-            raise falcon.HTTPBadRequest(
+            raise HTTPBadRequest(
                 title=req_error.error,
                 description=req_error.info
             )
 
-    def on_base_put(self, req, resp, id=None):
+    def on_base_put(self, req, resp, id=None, nested_fields=[]):
         res = []
         query = req.context.get('json', [])
         if id is not None:
             if type(query) is list:
-                raise falcon.HTTPBadRequest(
+                raise HTTPBadRequest(
                     title='id provided',
                     description=f'Request can create only 1 new {self.doc_name}'
                 )
             single = True
         else:
             single = False
-        for data in utils.wrap(query):
+        for data in wrap(query):
             data_id = data.pop('id', None)
-            data_add = {k: v for k, v in data.items() if k.startswith('+')}
-            data = {k: v for k, v in data.items() if not k.startswith('+')}
             if data_id is None and not single:
                 res.append({
                     'status': 'error',
@@ -159,23 +155,29 @@ class BaseResource(object):
             else:
                 try:
                     obj = self.doc_cls.get(id=data_id)
-                    for name, values in  data_add.items():
-                        for item in utils.wrap(values):
-                            field = name.replace('+', '')
-                            o = getattr(obj, field)
-                            if not type(o) == AttrList:
-                                setattr(obj, field, utils.wrap(o))
-                            getattr(obj, field).append(item)
-                    if len(data) > 0:
-                        status = obj.update(**data)
+                    if len(data) == 0:
+                        status = 'noop'
                     else:
-                        status = obj.save()
-                    res.append({
-                        'status': status,
-                        'data': { **obj.to_dict(), 'id': data_id },
-                        'http_status_code': HTTPStatus.OK
-                    })
-                except elasticsearch.NotFoundError as not_found_error:
+                        status = 'noop'
+                        for nested_field in nested_fields:
+                            nested_data = wrap(data.get(nested_field, []))
+
+                            status_rm = nested_rm(obj, data=nested_data, field=nested_field)
+                            status_edit = nested_edit(obj, data=nested_data, field=nested_field)
+
+                            if 'updated' in [status_rm, status_edit]:
+                                status = 'updated'
+                        subset_data = subset(data, *nested_fields, negation=True)
+                        if len(subset_data) > 0:
+                            status_data = obj.update(**subset_data)
+                            if status_data == 'updated':
+                                status = status_data
+                        res.append({
+                            'status': status,
+                            'data': { **obj.to_dict(), 'id': data_id },
+                            'http_status_code': HTTPStatus.OK
+                        })
+                except NotFoundError as not_found_error:
                     self.log.debug(not_found_error)
                     res.append({
                         'status': 'error',

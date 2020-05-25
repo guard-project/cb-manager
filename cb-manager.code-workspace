@@ -7,6 +7,11 @@
 	"settings": {
 		"workbench.colorTheme": "Abyss",
 		"files.insertFinalNewline": true,
-		"editor.wordWrap": "on"
+		"editor.wordWrap": "on",
+		"cSpell.words": [
+			"cubebeat",
+			"metricbeat",
+			"synflood"
+		]
 	}
 }

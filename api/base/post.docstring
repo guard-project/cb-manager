@@ -1,7 +1,7 @@
-{post_description}
+{desc}
 ---
-summary: {post_summary}
-description: {post_description}
+summary: {sum}
+description: {desc}
 parameters:
     - name: payload
       required: true
@@ -12,7 +12,7 @@ parameters:
 tags: [{tag}]
 responses:
     200:
-        description: {post_responses_200_description}
+        description: {resp}
         schema:
             type: array
             items:

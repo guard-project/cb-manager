@@ -1,7 +1,7 @@
-{put_description}
+{desc}
 ---
-summary: {put_summary}
-description: {put_description}
+summary: {sum}
+description: {desc}
 parameters:
     - name: id
       required: true
@@ -16,7 +16,7 @@ parameters:
 tags: [{tag}]
 responses:
     200:
-        description: {put_responses_200_description}
+        description: {resp}
         schema:
             type: array
             items:

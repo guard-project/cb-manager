@@ -1,0 +1,15 @@
+{
+    "agent_catalog_id": "filebeat",
+    "exec_env_id": "apache",
+    "status": "start",
+    "parameters": [{
+            "id": "log-enabled",
+            "value": true
+        },
+        {
+            "id": "log-period",
+            "value": "10s"
+        }
+    ],
+    "id": "apache-filebeat"
+}

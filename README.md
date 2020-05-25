@@ -180,7 +180,7 @@ POST            | /data/sql      | Returns the collected data filtered by 
 
 ## Guide
 
-See the [Swagger Schema](swagger.yml) and the relative [documentation](<!-- TODO -->) for more details about the REST endpoints and relative formats and requirements of request and response.
+See the [Swagger Schema](api/swagger.yaml, api/swagger.json) and the relative [documentation](REST endpoint: /api/doc) more details about the REST endpoints and relative formats and requirements of request and response.
 
 ## Installation
 
@@ -191,10 +191,10 @@ See the [Swagger Schema](swagger.yml) and the relative [documentation](<!-- TODO
 
 2. Clone the repository.
 
-  ```bash
-  git clone https://gitlab.com/guard-repositories/cb-manager.git
-  cd cb-manager
-  ```
+```bash
+git clone https://gitlab.com/guard-repositories/cb-manager.git
+cd cb-manager
+```
 
 3. Install the dependencies.
 

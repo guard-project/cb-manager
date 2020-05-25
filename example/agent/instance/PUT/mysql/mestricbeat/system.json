@@ -1,0 +1,12 @@
+[{
+    "id": "mysql-metricbeat",
+    "parameters": [{
+            "id": "system-enabled",
+            "value": true
+        },
+        {
+            "id": "system-period",
+            "value": "10s"
+        }
+    ]
+}]

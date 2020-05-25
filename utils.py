@@ -10,6 +10,15 @@ import types
 import uuid
 
 
+def subset(elements, *keys, negation=False):
+    def match(element):
+        if negation:
+            return element[0] not in keys
+        else:
+            return element[0] in keys
+    return dict(filter(match, elements.items()))
+
+
 def copy_func(func, name=None):
     """
     Copy function with a new name.
@@ -21,24 +30,31 @@ def copy_func(func, name=None):
     return types.FunctionType(func.__code__, func.__globals__, name or func.__name__, func.__defaults__, func.__closure__)
 
 
-def docstring_parameter(**kwrd_params):
+def swagger(**kwrd_params):
     """
     Generate automatic docstring for the class with a decorator.
 
     :returns: decorator
     """
+
     def decorator(self):
-        for method in 'get', 'post', 'delete', 'put':
-            base_mth = getattr(self, f'on_base_{method}')
+        kwrd_params['tag'] = self.doc_cls.Index.name
+        if self.__name__.endswith('SelectedResource'):
+            kwrd_params['docstring'] = 'selected'
+        else:
+            kwrd_params['docstring'] = 'base'
+        kwrd_params['schema'] = self.schema_cls.__name__
+        method = kwrd_params['method']
+        base_mth = getattr(self, f'on_base_{method}')
+        mth = getattr(self, f'on_{method}', None)
+        if not callable(mth):
+            setattr(self, f'on_{method}', copy_func(
+                base_mth, f'on_{method}'))
             mth = getattr(self, f'on_{method}', None)
-            if not callable(mth):
-                setattr(self, f'on_{method}', copy_func(base_mth, f'on_{method}'))
-                mth = getattr(self, f'on_{method}', None)
-            with open(f'./api/{kwrd_params.get("docstring", "base")}/{method}.docstring', 'r') as file:
-                mth.__doc__ = file.read().format(**kwrd_params)
-            module = importlib.import_module('schema')
-            schema = getattr(module, kwrd_params.get('schema', ''))
-            setattr(self, 'tag', { 'name': kwrd_params.get('tag', ''), 'description': schema.__doc__.strip(' \n') })
+        with open(f'./api/{kwrd_params.get("docstring")}/{method}.docstring', 'r') as file:
+            mth.__doc__ = file.read().format(**kwrd_params)
+        setattr(self, 'tag', {'name': kwrd_params.get('tag'),
+                              'description': self.schema_cls.__doc__.strip(' \n')})
         return self
     return decorator
 
@@ -65,6 +81,7 @@ def generate_password():
 ureg = UnitRegistry()
 Q_ = ureg.Quantity
 
+
 def get_seconds(text, to_int=False):
     """
     Parse the text to get the equivalent number of seconds (e.g., 1min => 60).
@@ -88,7 +105,7 @@ def str_to_datetime(date_time_str, format='%Y/%m/%d %H:%M:%S'):
     return datetime.strptime(date_time_str, format)
 
 
-def datetime_to_str(date_time = None, format='%Y/%m/%d %H:%M:%S'):
+def datetime_to_str(date_time=None, format='%Y/%m/%d %H:%M:%S'):
     """
     Convert the datetime to string in the given format.
 

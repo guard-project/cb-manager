@@ -1,0 +1,8 @@
+{
+    "type_id": "vm",
+    "hostname": "127.0.0.1",
+    "lcp": {
+        "port": 4002
+    },
+    "id": "mysql"
+}

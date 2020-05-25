@@ -10,10 +10,6 @@ definitions:
         type: array
       id:
         description: ID of the agent in the catalog.
-        example: uyPMaXABjPI5oepgjezR
-        type: string
-      name:
-        description: Agent name.
         example: filebeat
         type: string
       parameters:
@@ -24,44 +20,50 @@ definitions:
     required:
     - actions
     - id
-    - name
     - parameters
     type: object
   AgentCatalogAction:
     properties:
-      name:
+      config:
+        description: Action config
+        items:
+          $ref: '#/definitions/AgentCatalogActionConfig'
+        type: array
+      id:
         description: Action name
         enum:
         - start
         - stop
-        - install
-        - uninstall
         example: start
         type: string
-      recipe:
-        description: Action recipe
-        items:
-          $ref: '#/definitions/Recipe'
-        type: array
     required:
-    - name
-    - recipe
+    - config
+    - id
+    type: object
+  AgentCatalogActionConfig:
+    properties:
+      cmd:
+        description: Action command
+        example: sudo service filebeat
+        type: string
+    required:
+    - cmd
     type: object
   AgentCatalogParameter:
     properties:
+      config:
+        description: Parameter recipe
+        items:
+          $ref: '#/definitions/AgentCatalogParameterConfig'
+        type: array
+      id:
+        description: Parameter id
+        example: log-period
+        type: string
       list:
         description: Indicate if the parameter can have multiple values.
         example: true
         type: boolean
-      name:
-        description: Parameter name
-        example: period
-        type: string
-      recipe:
-        description: Parameter recipe
-        items:
-          $ref: '#/definitions/Recipe'
-        type: array
       type:
         description: Parameter type.
         enum:
@@ -83,23 +85,37 @@ definitions:
           type: string
         type: array
     required:
-    - name
-    - recipe
+    - config
+    - id
     - type
+    type: object
+  AgentCatalogParameterConfig:
+    properties:
+      path:
+        items:
+          type: string
+        type: array
+      schema:
+        type: string
+      source:
+        type: string
+    required:
+    - schema
+    - source
     type: object
   AgentInstance:
     properties:
       agent_catalog_id:
         description: ID of the agent in the catalog
-        example: 23jqlaJVPCGa4C0o6ljn
+        example: filebeat
         type: string
       exec_env_id:
         description: ID of the execution environment where the agent instance is installed
-        example: 0xUosnMTCgO5FgVZLbQs
+        example: apache
         type: string
       id:
         description: ID of the agent instance installed in an execution environment.
-        example: uyPMaXABjPI5oepgjezR
+        example: apache-filebeat
         type: string
       parameters:
         description: List of agent instance parameters
@@ -137,15 +153,15 @@ definitions:
     properties:
       exec_env_id:
         description: ID of the connected execution environment
-        example: 1V4nbnfz981Mn95RPtTr
+        example: apache
         type: string
       id:
         description: ID of connection.
-        example: aZ0aLlJ5Cq84Hsy3SyTW
+        example: conn-1
         type: string
       network_link_id:
         description: ID of the connected network link
-        example: JAwfDEY7f2AtiEldMjPW
+        example: net-link-1
         type: string
     required:
     - exec_env_id
@@ -155,13 +171,13 @@ definitions:
   Data:
     properties:
       agent_instance_id:
-        description: ID of the agent instance in the execution environment that collected
-          the data
-        example: EHiirlGzEiU29VTdovTo
+        description: "ID of the agent instance in the execution environment\n    \
+          \                                        that collected the data"
+        example: apache
         type: string
       exec_env_id:
         description: ID of the execution environment where the data was collected
-        example: MUgzilTNtWbQEaPjBZyv
+        example: apache
         type: string
       id:
         description: ID of the data.
@@ -188,7 +204,7 @@ definitions:
         type: string
       id:
         description: ID of the execution environment.
-        example: PiOIb3ABjPI5oepgse1C
+        example: apache
         type: string
       lcp:
         allOf:
@@ -222,8 +238,9 @@ definitions:
     properties:
       description:
         description: Human readable message that describes the error.
-        example: Could not decode the request body, either because it was not valid
-          JSON or because it was not encoded as UTF-8.
+        example: "Could not decode the request body, either because it was not\n \
+          \                                   valid JSON or because it was not encoded\
+          \ as UTF-8."
         type: string
       title:
         description: Title error
@@ -269,7 +286,7 @@ definitions:
     properties:
       id:
         description: ID of the network link.
-        example: x4fgctkm4MXQOUHYjIag
+        example: net-link-1
         type: string
       type_id:
         description: ID of the network link type.
@@ -319,15 +336,6 @@ definitions:
     properties:
       and:
         description: All the clause has to be satisfied.
-        example: "\n                            [\n                              \
-          \  {\n                                    \"equal\": {\n               \
-          \                         \"target\": \"name\",\n                      \
-          \                  \"expr:\": \"apache\"\n                             \
-          \           }\n                                    },\n                \
-          \                    {\n                                    \"lte\": {\n\
-          \                                        \"target\": \"timeout\",\n    \
-          \                                    \"expr\": 5\n                     \
-          \               }\n                            ]"
         items:
           $ref: '#/definitions/QueryRequestClause'
         type: array
@@ -357,15 +365,6 @@ definitions:
         description: The clause has to be not satisfied.
       or:
         description: At least the clause has to be satisfied.
-        example: "\n                            [\n                              \
-          \  {\n                                    \"equal\": {\n               \
-          \                         \"target\": \"name\",\n                      \
-          \                  \"expr:\": \"apache\"\n                             \
-          \           }\n                                    },\n                \
-          \                    {\n                                    \"lte\": {\n\
-          \                                        \"target\": \"timeout\",\n    \
-          \                                    \"expr\": 5\n                     \
-          \               }\n                            ]"
         items:
           $ref: '#/definitions/QueryRequestClause'
         type: array
@@ -418,79 +417,9 @@ definitions:
     - mode
     - target
     type: object
-  Recipe:
-    properties:
-      actions:
-        description: Actions.
-        items:
-          $ref: '#/definitions/RecipeAction'
-        type: array
-      parameters:
-        description: Parameters.
-        items:
-          $ref: '#/definitions/RecipeParameter'
-        type: array
-      resources:
-        description: Resources.
-        items:
-          $ref: '#/definitions/RecipeResource'
-        type: array
-    type: object
-  RecipeAction:
-    properties:
-      args:
-        description: Command arguments.
-        items:
-          description: Single command argument.
-          example: -al
-          type: string
-        type: array
-      cmd:
-        description: Command.
-        type: string
-    required:
-    - cmd
-    type: object
-  RecipeParameter:
-    properties:
-      destination:
-        description: Destination filename.
-        example: filebeat.yml
-        type: string
-      name:
-        description: Parameter name.
-        example: period
-        type: string
-      sep:
-        description: Separator between name and value.
-        example: '='
-        type: string
-      value:
-        description: Parameter new value.
-        example: 10s
-        type: string
-    required:
-    - destination
-    - name
-    - sep
-    - value
-    type: object
-  RecipeResource:
-    properties:
-      content:
-        description: Resource content.
-        type: string
-      destination:
-        description: Destination filename
-        example: filebeat.yml
-        type: string
-    required:
-    - content
-    - destination
-    type: object
 info:
   title: Context Broker Manager
-  version: 0291ea275fba5671216d38f7b24ec7d22e755d63@master
+  version: 44c4042ba770fd7fb680c1e1755461ef0e164f31@master
 paths:
   /catalog/:
     delete:
@@ -805,7 +734,7 @@ paths:
           type: array
       responses:
         '200':
-          description: Agent with the given `id` inserted in the catalog.
+          description: Add a new agent in the catalog with the given `id`.
           schema:
             items:
               oneOf:
@@ -936,7 +865,7 @@ paths:
           type: array
       responses:
         '200':
-          description: Agent with the given `id` inserted in the catalog.
+          description: Add a new agent in the catalog with the given `id`.
           schema:
             items:
               oneOf:
@@ -1115,7 +1044,7 @@ paths:
       responses:
         '200':
           description: Agent instance with the given `id` and filtered by the query
-            in the request body uninstalled.
+            in the request body deleted.
           schema:
             items:
               oneOf:
@@ -1130,7 +1059,7 @@ paths:
           description: Unauthorized.
           schema:
             $ref: '#/definitions/HTTPError'
-      summary: Agent Instance Uninstall (Single)
+      summary: Agent Instance Deletion (Single)
       tags:
       - agent-instance
     get:
@@ -1182,8 +1111,8 @@ paths:
           type: array
       responses:
         '200':
-          description: Agent instance with the given `id`  installed in the execution
-            environments.
+          description: Install a new agent instance in the execution-environments
+            with the given `id` .
           schema:
             items:
               oneOf:
@@ -1198,7 +1127,7 @@ paths:
           description: Unauthorized.
           schema:
             $ref: '#/definitions/HTTPError'
-      summary: Agent Instance Install (Single)
+      summary: Agent Instance Creation (Single)
       tags:
       - agent-instance
     put:
@@ -1291,7 +1220,7 @@ paths:
       summary: Connection Read (Multiple)
       tags:
       - connection
-    post:
+    put:
       description: Install new connections between execution environments and network
         links.
       parameters:
@@ -1312,43 +1241,11 @@ paths:
               - ResponseSchema
               - ErrorSchema
             type: array
-        '400':
-          description: Bad request.
-          schema:
-            $ref: '#/definitions/HTTPError'
-        '401':
-          description: Unauthorized.
-          schema:
-            $ref: '#/definitions/HTTPError'
-      summary: Connection Creation (Multiple)
-      tags:
-      - connection
-    put:
-      description: Update the connections between execution environments and network
-        links.
-      parameters:
-      - in: body
-        name: payload
-        required: true
-        schema:
-          items:
-            $ref: '#/definitions/Connection'
-          type: array
-      responses:
-        '200':
-          description: Connections updated between execution environments and network
-            links.
-          schema:
-            items:
-              oneOf:
-              - ResponseSchema
-              - ErrorSchema
-            type: array
         '401':
           description: Unauthorized
           schema:
             $ref: '#/definitions/HTTPError'
-      summary: Connection Update (Multiple)
+      summary: Connection Creation (Multiple)
       tags:
       - connection
   /config/connection/{id}:
@@ -1356,6 +1253,10 @@ paths:
       description: Delete the connection between execution environments and network
         links with the given `id` and filtered by the query in the request body.
       parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
       - in: body
         name: payload
         required: true
@@ -1386,6 +1287,10 @@ paths:
       description: Get the connection between execution environments with the given
         `id` and network links filtered by the query in the request body.
       parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
       - in: body
         name: payload
         required: true
@@ -1414,6 +1319,10 @@ paths:
       description: Install a new connection between execution environments and network
         links with the given `id`.
       parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
       - in: body
         name: payload
         required: true
@@ -1423,8 +1332,8 @@ paths:
           type: array
       responses:
         '200':
-          description: Connections created between execution environments and network
-            links.
+          description: Install a new connection between execution environments and
+            network links with the given `id`.
           schema:
             items:
               oneOf:
@@ -1446,6 +1355,10 @@ paths:
       description: Update the connection between execution environments and network
         links with the given `id`.
       parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
       - in: body
         name: payload
         required: true
@@ -1664,7 +1577,7 @@ paths:
           type: array
       responses:
         '200':
-          description: Data with the given `id` inserted.
+          description: Insert new data with the given `id`.
           schema:
             items:
               oneOf:
@@ -1910,7 +1823,7 @@ paths:
           type: array
       responses:
         '200':
-          description: Execution environment with the given `id` created.
+          description: Create a new execution environment with the given `id`.
           schema:
             items:
               oneOf:
@@ -2156,7 +2069,7 @@ paths:
           type: array
       responses:
         '200':
-          description: Execution environment type with the given `id` created.
+          description: Create new execution environment type with the given `id`.
           schema:
             items:
               oneOf:
@@ -2400,7 +2313,7 @@ paths:
           type: array
       responses:
         '200':
-          description: Network link with the given `id` created.
+          description: Create a new network link with the given `id` .
           schema:
             items:
               oneOf:
@@ -2646,7 +2559,7 @@ paths:
           type: array
       responses:
         '200':
-          description: Network link type with the given `id` created.
+          description: Create a new network link type with the given `id` .
           schema:
             items:
               oneOf:
@@ -2694,29 +2607,6 @@ paths:
       summary: Network Link Type Update (Single)
       tags:
       - network-link-type
-  /pkg/{name}:
-    get:
-      description: Download the package
-      responses:
-        '200':
-          description: Download of the file completed.
-          schema:
-            format: byte
-            type: string
-        '400':
-          description: Bad request.
-          schema:
-            $ref: '#/definitions/HTTPError'
-        '401':
-          description: Unauthorized.
-          schema:
-            $ref: '#/definitions/HTTPError'
-        '404':
-          description: Not found.
-          schema:
-            $ref: '#/definitions/HTTPError'
-      summary: Download the package
-      tags: package
 produces:
 - application/json
 swagger: '2.0'
@@ -2755,4 +2645,3 @@ tags:
   name: network-link-type
 - description: Represents a network link type.
   name: network-link-type
-- package

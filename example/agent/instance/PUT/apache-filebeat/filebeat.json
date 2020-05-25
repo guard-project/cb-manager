@@ -1,0 +1,12 @@
+[{
+    "id": "apache-filebeat",
+    "parameters": [{
+            "id": "log-enabled",
+            "value": true
+        },
+        {
+            "id": "log-period",
+            "value": "10s"
+        }
+    ]
+}]
