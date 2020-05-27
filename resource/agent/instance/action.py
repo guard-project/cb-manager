@@ -23,5 +23,5 @@ def execute(catalog, id, exec_env, result):
         if action:
             resp = post(f'http://{exec_env.hostname}:{exec_env.lcp.port}/config',
                         auth=HTTPBasicAuth(exec_env.lcp.username, exec_env.lcp.password),
-                        json={ 'actions': { "cmd": "ls" } })
+                        json={ 'actions': action.config.to_dict() })
             result.append(resp.json())

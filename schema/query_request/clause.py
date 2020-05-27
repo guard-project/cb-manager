@@ -25,7 +25,7 @@ class QueryRequestClauseSchema(Schema):
                 description='The target field must be lower than the expr value.')
     gt = Nested(QueryRequestFilterSchema,
                 description='The target field must be greater to the expr value.')
-    equal = Nested(QueryRequestFilterSchema,
+    equals = Nested(QueryRequestFilterSchema,
                    description='The target field must be equal to the expr value.')
     reg_exp = Nested(QueryRequestFilterSchema,
                      description='The target field must be satisfy the regular expression in expr.')

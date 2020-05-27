@@ -339,7 +339,7 @@ definitions:
         items:
           $ref: '#/definitions/QueryRequestClause'
         type: array
-      equal:
+      equals:
         allOf:
         - $ref: '#/definitions/QueryRequestFilter'
         description: The target field must be equal to the expr value.
@@ -419,7 +419,7 @@ definitions:
     type: object
 info:
   title: Context Broker Manager
-  version: 44c4042ba770fd7fb680c1e1755461ef0e164f31@master
+  version: caf59627321dc509391f1c007867c8af87c70fb3@master
 paths:
   /catalog/:
     delete:

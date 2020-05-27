@@ -12,3 +12,4 @@ requests
 swagger-ui-py
 verboselogs
 waitress
+werkzeug

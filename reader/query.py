@@ -21,8 +21,9 @@ class QueryReader:
                 title=req_error.error,
                 description=req_error.info
             )
+        except falcon.HTTPBadRequest as http_bad_req:
+            raise http_bad_req
         except Exception as e:
-            Log.get('query-parser').debug(e)
             raise falcon.HTTPBadRequest(
                 title='Not valid JSON',
                 description='The request has a not valid JSON body.'
@@ -47,7 +48,7 @@ class QueryReader:
                 prop = utils.fix_target(clause.get('target', None))
                 expr = clause.get('expr', None)
                 if prop is not None and expr is not None:
-                    if op == 'equal':
+                    if op == 'equals':
                         q = Q('term', **{prop: expr})
                     elif op == 'reg-exp':
                         q = Q('regexp', **{prop: dict(value=expr)})
@@ -55,6 +56,11 @@ class QueryReader:
                         q = Q('wildcard', **{prop: dict(value=expr)})
                     elif op in ['lt', 'lte', 'gt', 'gte']:
                         q = Q('range', **{prop: {op: expr}})
+                    else:
+                        raise falcon.HTTPBadRequest(
+                            title = 'Operation unknown',
+                            description=f'{op} unknown'
+                        )
                 else:
                     raise falcon.HTTPBadRequest(
                         title='Request not valid',

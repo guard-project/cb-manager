@@ -1,6 +1,14 @@
 [{
     "id": "mysql-metricbeat",
     "parameters": [{
+            "id": "mysql-enabled",
+            "value": true
+        },
+        {
+            "id": "mysql-period",
+            "value": "10s"
+        },
+        {
             "id": "system-enabled",
             "value": true
         },
@@ -8,5 +16,6 @@
             "id": "system-period",
             "value": "10s"
         }
+
     ]
 }]

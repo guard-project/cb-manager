@@ -45,7 +45,8 @@ class ArgReader:
 
         cls.db = ap.parse_args()
         cls.db.config = cr
-        for field in ('hb_timeout', 'hb_period', 'hb_auth_expiration', 'es_timeout', 'es_retry_period'):
+        for field in ('hb_timeout', 'hb_period', 'hb_auth_expiration',
+                      'es_timeout', 'es_retry_period'):
             setattr(cls.db, field, get_seconds(getattr(cls.db, field)))
 
         if cls.db.write_config:

@@ -12,6 +12,18 @@
                 "-i"
             ]
         }
+    }, {
+        "id": "capture-direction",
+        "type": "integer",
+        "example": 1,
+        "description": "Specify packet capture direction: 0=RX+TX (default), 1=RX only, 2=TX only",
+        "config": {
+            "schema": "properties",
+            "source": "/etc/nprobe/nprobe.conf ",
+            "path": [
+                "-capture-direction"
+            ]
+        }
     }],
     "actions": [{
             "id": "start",
