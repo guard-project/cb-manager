@@ -10,6 +10,6 @@ gitpython==3.1.7
 pint==0.14
 requests==2.24.0
 swagger-ui-py==0.3.0
-verboselogs
+verboselogs==1.7
 waitress
 werkzeug
