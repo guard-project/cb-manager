@@ -4,7 +4,7 @@ coloredlogs==14.0
 elasticsearch-dsl>=7.0.0
 falcon==2.0.0
 falcon-apispec==0.4.0
-falcon-auth
+falcon-auth==1.1.0
 falcon-marshmallow
 gitpython
 pint
