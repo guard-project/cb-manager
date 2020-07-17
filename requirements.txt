@@ -11,5 +11,5 @@ pint==0.14
 requests==2.24.0
 swagger-ui-py==0.3.0
 verboselogs==1.7
-waitress
+waitress==1.4.4
 werkzeug
