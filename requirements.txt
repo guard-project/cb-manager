@@ -7,7 +7,7 @@ falcon-apispec==0.4.0
 falcon-auth==1.1.0
 falcon-marshmallow==0.3.0
 gitpython==3.1.7
-pint
+pint==0.14
 requests
 swagger-ui-py
 verboselogs
