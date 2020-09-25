@@ -1,0 +1,56 @@
+Run started:2020-06-06 16:15:44.789821
+
+Test results:
+>> Issue: [B605:start_process_with_a_shell] Starting a process with a shell: Seems safe, but may be changed in the future, consider rewriting without shell
+   Severity: Low   Confidence: High
+   Location: .\main.py:10
+   More Info: https://bandit.readthedocs.io/en/latest/plugins/b605_start_process_with_a_shell.html
+9	except ImportError:
+10	    os.system('pip3 install -r requirements.txt')
+11	
+
+--------------------------------------------------
+>> Issue: [B607:start_process_with_partial_path] Starting a process with a partial executable path
+   Severity: Low   Confidence: High
+   Location: .\main.py:10
+   More Info: https://bandit.readthedocs.io/en/latest/plugins/b607_start_process_with_partial_path.html
+9	except ImportError:
+10	    os.system('pip3 install -r requirements.txt')
+11	
+
+--------------------------------------------------
+>> Issue: [B110:try_except_pass] Try, Except, Pass detected.
+   Severity: Low   Confidence: High
+   Location: .\resource\base\post.py:38
+   More Info: https://bandit.readthedocs.io/en/latest/plugins/b110_try_except_pass.html
+37	                                f'field {ignore_field} in the request ignored when update {self.doc_name}')
+38	                        except:
+39	                            pass
+
+--------------------------------------------------
+>> Issue: [B110:try_except_pass] Try, Except, Pass detected.
+   Severity: Low   Confidence: High
+   Location: .\resource\base\put.py:41
+   More Info: https://bandit.readthedocs.io/en/latest/plugins/b110_try_except_pass.html
+40	                            self.log.info(f'field {ignore_field} in the request ignored when update {self.doc_name}')
+41	                        except: pass
+42	                    for readonly_field in self.readonly_fields:
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 1927
+	Total lines skipped (#nosec): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0.0
+		Low: 4.0
+		Medium: 0.0
+		High: 0.0
+	Total issues (by confidence):
+		Undefined: 0.0
+		Low: 0.0
+		Medium: 0.0
+		High: 4.0
+Files skipped (0):

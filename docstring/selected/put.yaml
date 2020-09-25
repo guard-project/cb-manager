@@ -1,0 +1,52 @@
+Update the {self.name} with the given `id`.
+---
+summary: <
+  {self.name!c} Update (Single).
+description: Update the {self.name} with the given `id`.
+parameters:
+  - name: id
+    required: true
+    in: path
+    type: String
+  - name: payload
+    required: true
+    in: body
+    schema:
+      type: array
+      items: {self.schema.__name__}
+tags: [{self.doc.Index.name}]
+responses:
+  200:
+    description: <
+      {self.name!c} with the given `id` correctly updated.
+    schema:
+      type: array
+      items: Ok_Response_Schema
+  204:
+    description: No content to update {self.names} with the given `id` and based on the request.
+    schema: No_Content_Response_Schema
+  304:
+    description: Update of the {self.name} with the given `id` not necessary.
+    schema:
+      type: array
+      items: Not_Modified_Response_Schema
+  400:
+    description: Request not valid.
+    schema: Bad_Request_Response_Schema
+  401:
+    description: Authentication failed.
+    schema: Unauthorized_Response_Schema
+  406:
+    description: Request validation failed.
+    schema: Not_Acceptable_Response_Schema
+  415:
+    description: Media type not supported.
+    schema: Unsupported_Media_Type_Response_Schema
+  422:
+    description: Not possible to update the {self.name} with the given `id` and based on the request.
+    schema:
+        type: array
+        items: Unprocessable_Entity_Response_Schema
+  500:
+    description: Server not available to satisfy the request.
+    schema: Internal_Server_Error_Response_Schema

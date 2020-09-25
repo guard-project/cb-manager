@@ -1,9 +1,0 @@
-{
-	Data(exec_env_id: “exec-env-apache”) {
-		exec_env_id
-		agent_catalog_id
-		agent_instance_id
-		timestamp_event
-		timestamp_agent
-	}
-}

@@ -1,0 +1,46 @@
+Create new {self.names}.
+---
+summary: <
+  {self.name!c} Creation (Multiple)
+description: Create new {self.names}.
+parameters:
+  - name: payload
+    required: true
+    in: body
+    schema:
+      type: array
+      items: {self.schema.__name__}
+tags: [{self.doc.Index.name}]
+responses:
+  201:
+    description: <
+      {self.name!c} correctly created.
+    schema:
+      type: array
+      items: Created_Response_Schema
+  204:
+    description: No content to create {self.names} based on the request.
+    schema: No_Content_Response_Schema
+  400:
+    description: Request not valid.
+    schema: Bad_Request_Response_Schema
+  401:
+    description: Authentication failed.
+    schema: Unauthorized_Response_Schema
+  406:
+    description: Request validation failed.
+    schema: Not_Acceptable_Response_Schema
+  415:
+    description: Media type not supported.
+    schema: Unsupported_Media_Type_Response_Schema
+  422:
+    description: Not possible to create ore or more {self.names} based on the request.
+    schema:
+      type: array
+      items :
+        oneOf:
+          - Created_Response_Schema
+          - Unprocessable_Entity_Response_Schema
+  500:
+    description: Server not available to satisfy the request.
+    schema: Internal_Server_Error_Response_Schema

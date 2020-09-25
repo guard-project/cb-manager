@@ -1,0 +1,39 @@
+Get the list of {self.names} filtered by the query in the request body.
+---
+summary: <
+  {self.name} Read (Multiple).
+description: Get the list of {self.names} filtered by the query in the request body.
+parameters:
+  - name: payload
+    required: true
+    in: body
+    schema: Query_Request_Schema
+tags: [{self.doc.Index.name}]
+responses:
+  200:
+    description: List of {self.names} filtered by the query in the request body.
+    schema:
+      type: array
+      items: {self.schema.__name__}
+  400:
+    description: Request not valid.
+    schema: Bad_Request_Response_Schema
+  401:
+    description: Authentication failed.
+    schema: Unauthorized_Response_Schema
+  404:
+    description: <
+      {self.name!c} based on the request _query_ not found.
+    schema: Not_Found_Response_Schema
+  406:
+    description: Request validation failed.
+    schema: Not_Acceptable_Response_Schema
+  415:
+    description: Media type not supported.
+    schema: Unsupported_Media_Type_Response_Schema
+  422:
+    description: Not possible to get {self.names} with the request _query_.
+    schema: Unprocessable_Entity_Response_Schema
+  500:
+    description: Server not available to satisfy the request.
+    schema: Internal_Server_Error_Response_Schema

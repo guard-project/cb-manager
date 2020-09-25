@@ -1,0 +1,2063 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Context Broker Manager</title>
+    <style type="text/css">
+        code {
+            white-space: pre-wrap;
+        }
+        
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+        
+        span.underline {
+            text-decoration: underline;
+        }
+        
+        div.column {
+            display: inline-block;
+            vertical-align: top;
+            width: 50%;
+        }
+    </style>
+    <link rel="stylesheet" href="pandoc.css" />
+</head>
+
+<body>
+    <header id="title-block-header">
+        <h1 class="title">Context Broker Manager</h1>
+    </header>
+    <nav id="TOC">
+        <ul>
+            <li><a href="#data-model">Data Model</a></li>
+            <li><a href="#methods">Methods</a>
+                <ul>
+                    <li><a href="#exec_env">Exec_Env</a>
+                        <ul>
+                            <li><a href="#exec_env-type">Exec_Env Type</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#network-link">Network link</a>
+                        <ul>
+                            <li><a href="#network-link-type">Network link Type</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#connection">Connection</a></li>
+                    <li><a href="#agent">Agent</a>
+                        <ul>
+                            <li><a href="#catalog">Catalog</a></li>
+                            <li><a href="#instance">Instance</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#ebpf-program">eBPF Program</a>
+                        <ul>
+                            <li><a href="#catalog-1">Catalog</a></li>
+                            <li><a href="#instance-1">Instance</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#data">Data</a></li>
+                </ul>
+            </li>
+            <li><a href="#guide">Guide</a></li>
+            <li><a href="#installation">Installation</a></li>
+            <li><a href="#configuration">Configuration</a></li>
+            <li><a href="#usage">Usage</a>
+                <ul>
+                    <li><a href="#display-help">Display help</a></li>
+                </ul>
+            </li>
+            <li><a href="#glossary">Glossary</a></li>
+            <li><a href="#references">References</a></li>
+        </ul>
+    </nav>
+    <p>
+        <a href="https://github.com/guard-project/cb-manager/-/blob/master/LICENSE"><img src="https://img.shields.io/github/license/guard-project/cb-manager" alt="MIT License" /></a>
+    </p>
+    <p>
+        <a href="https://github.com/guard-project/cb-manager"><img src="https://img.shields.io/github/languages/code-size/guard-project/cb-manager?color=red&amp;logo=github" alt="GitHub Code Size" /></a>
+    </p>
+    <p>
+        <a href="https://github.com/guard-project/cb-manager"><img src="https://img.shields.io/github/repo-size/guard-project/cb-manager?color=red&amp;logo=github" alt="GitHub Repository Size" /></a>
+    </p>
+    <p>
+        <a href="https://github.com/guard-project/cb-manager/releases"><img src="https://img.shields.io/github/v/tag/guard-project/cb-manager?label=release&amp;logo=github" alt="GitJHub Release" /></a>
+    </p>
+    <p>
+        <a href="https://bestpractices.coreinfrastructure.org/en/projects/3991"><img src="https://img.shields.io/cii/summary/3991" alt="CII Progress" /></a>
+    </p>
+    <p>
+        <a href="https://cb-manager.readthedocs.io"><img src="https://readthedocs.org/projects/cb-manager/badge/?version=latest" alt="Readthedocs" /></a>
+    </p>
+    <p>
+        <a href="https://pyup.io/repos/github/guard-project/cb-manager/"><img src="https://pyup.io/repos/github/guard-project/cb-manager/shield.svg" alt="PyUP" /></a>
+    </p>
+    <p>
+        <a href="https://pyup.io/repos/github/guard-project/cb-manager/"><img src="https://pyup.io/repos/github/guard-project/cb-manager/python-3-shield.svg" alt="Python 3991" /></a>
+    </p>
+    <p>
+        <a href="https://travis-ci.org/guard-project/cb-manager"><img src="https://travis-ci.org/guard-project/cp-manager.svg?branch=master" alt="Travis CI" /></a>
+    </p>
+    <p>APIs to interact with the <code>Context Broker</code>'s database. Through a <code class="interpreted-text" data-role="abbr">REST (Representational State Transfer)</code> Interface, it exposes data and events stored in the internal storage system in
+        a structured way. It provides uniform access to the capabilities of monitoring agents.</p>
+    <div class="toctree" data-maxdepth="2" data-numbered="">
+
+    </div>
+    <h1 id="data-model">Data Model</h1>
+    <p><img src="data_model.png" alt="image" /></p>
+    <p>Each table in the figure represents an <strong>index</strong> in the Elastic nomenclature. Considering the <strong>NoSQL</strong> nature of the Elasticsearch engine for each document of any indices it is possible to add additional properties. The
+        schema is not static and defined at priori, but it is dynamic allowing the possibility to add custom properties for a specific document. Elastic requires the name of the index in a lower-case format. For this reason, all the index names follow
+        the <em>dash-case</em><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> format. Instead, each property<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> follows the <em>snake-case</em><a href="#fn3" class="footnote-ref"
+            id="fnref3"><sup>3</sup></a> format. All the properties marked with an asterisk (*) are required by the <code class="interpreted-text" data-role="abbr">APIs (Application Program Interfaces)</code> in order to make the POST request (i.e. to create
+        a new resource, for example an Exec_Env). Instead the ones underlined are identifies the specific resource (aka document in Elastic nomenclature or record in traditional <code class="interpreted-text" data-role="abbr">DB (DataBase)</code> one)
+        and must be unique. The <code>data</code> index contains the all the data collected from the Exec_Envs by means of the agent<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.</p>
+    <p>The common attributes are:</p>
+    <ol type="1">
+        <li><code>id</code> (unique identifier)<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>;</li>
+        <li><code>id</code> of the source Exec_Env (<code>exec_env_id</code>); and</li>
+        <li><code>id</code> of the agent instance that collect the data (<code>agent_instance_id</code>).</li>
+    </ol>
+    <p>The <code>id</code> property type accepts only lower-case values without space that start with an alphabetic character, e.g: apache is valid but not Apache. Then, the other two properties are related to the time-stamp:</p>
+    <ol type="1">
+        <li><code>timestamp_event</code> when event is occurred; and</li>
+        <li><code>timestamp_agent</code> when the agent instance collect the data.</li>
+    </ol>
+    <p>With the term agent instance, we refer to a specific agent installed in the Exec_Env.</p>
+    <p>The <code>exec-env</code> index contains the <code>hostname</code> of the remote host where is it allocated and the <code>type_id</code> field that correspond a specified type of Exec_Env. The different type of Exec_Env are defined with the index
+        <code>exec-env-type</code>. Currently, the available ones are: <em>i</em>) <em>Virtual Machine</em> and <em>ii</em>) <em>Container</em>. Obviously, it is possible to add other types depending on the specific requirements.</p>
+    <p>The <code>agent-catalog</code> index contains specific information related to the agents, and in particular the Beats of the Elastic stack and eBPF-based services deployed with the <strong>Polycube</strong> framework. For a detailed description of
+        these properties see<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a> and<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>.</p>
+    <p>Each agent in the catalog is characterized by one or more options. The options are defined with the <span class="title-ref">agent-option</span> <em>nested-index</em><a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a>. This index described
+        the option in terms of name and relative type. At this moment, the supported types are:</p>
+    <ul>
+        <li><em>integer</em> (e.g. 1, 2, etc.);</li>
+        <li><em>number</em> (e..g 1, 2.3, etc.);</li>
+        <li><em>time-duration</em> (e.g. 1s, 2m, 3h, etc.);</li>
+        <li><em>string</em>; <em>choice</em>, <em>obj</em>, and <em>boolean</em> (i.e. true or false).</li>
+    </ul>
+    <p>There two additional (and optional) properties: <em>list</em> and <em>values</em>. The first one indicate if the option is a list or not (default value: false); while the latter one described the data in the case the type is choice or obj. To accept
+        different types, the values property can be of any type.</p>
+    <p>All the data of the installed agent is stored in the <code>agent-instance</code> index. This index contains the options got from the catalog with the actual values. In addition, it includes the <code>id</code> of the Exec_Env where the agent is installed
+        (
+        <code>exec_env_id</code>) and the current <em>status</em> in terms of <em>started</em> or <em>stopped</em>.</p>
+    <p>The network links are defined with the relative index where it is indicate the type. All the possible network link types are defined in the <code>network-link-type</code> index. At the moment, the possible types are: <em>Point to Point</em> (Point
+        2 Point), <em>Multi-point</em>, and <em>Slice</em>. Similar to the Exec_Env case, also for the network link, it is possible to add additional types depending on specific needs.</p>
+    <p>In addition, the data model allow to see the status of the connections between the Exec_Envs. The <code>connection</code> index couples the Exec_Env and the network link to which it belongs. This index should contains all the information regarding
+        the network link and the Exec_Env as, for example, the <code class="interpreted-text" data-role="abbr">IP (Internet Protocol)</code> address (version 4 and/or 6) or if the link is encrypted and how (which method, etc.).</p>
+    <p>The <code>software</code> index contains the installed software with relative properties. Each software record is referred to a specific Exec_Env that indicate where the software is installed. This part is out of scope of the <code class="interpreted-text"
+            data-role="abbr">GUARD (GUArantee Reliability and trust for Digital service chains)</code> project context and, for this reason, it is this highlighted with a dashed box. The <code class="interpreted-text" data-role="abbr">APIs (Application Program Interface)</code>        implementation does not consider this index. Nervelessness, it represents a typical solution for various common cases. The proposed data model allows the customization with the integration of additional entities in very simple way.</p>
+    <h1 id="methods">Methods</h1>
+    <h2 id="exec_env">Exec_Env</h2>
+    <table>
+        <colgroup>
+            <col style="width: 15%" />
+            <col style="width: 22%" />
+            <col style="width: 62%" />
+        </colgroup>
+        <thead>
+            <tr class="header">
+                <th><code class="interpreted-text" data-role="abbr">HTTP (HyperText Transfer Protocol)</code> Method</th>
+                <th>Path</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="odd">
+                <td>
+                    <p>GET</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/exec-env</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------------+</dt>
+                        <dd>
+                            <p>/exec-env/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Returns the Exec_Envs selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Returns the Exec_Env selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <dl>
+                        <dt>POST</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/exec-env</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------------+</dt>
+                        <dd>
+                            <p>/exec-env/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Create one or more new Exec_Envs.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Create a new Exec_Env with the given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="odd">
+                <td>
+                    <dl>
+                        <dt>PUT</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/exec-env</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------------+</dt>
+                        <dd>
+                            <p>/exec-env/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Update one or more existing Exec_Envs.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Update the Exec_Env with given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <p>DELETE</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/exec-env</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------------+</dt>
+                        <dd>
+                            <p>/exec-env/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Delete the Exec_Envs selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Delete the Exec_Env selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h3 id="exec_env-type">Exec_Env Type</h3>
+    <table>
+        <colgroup>
+            <col style="width: 13%" />
+            <col style="width: 25%" />
+            <col style="width: 61%" />
+        </colgroup>
+        <thead>
+            <tr class="header">
+                <th><code class="interpreted-text" data-role="abbr">HTTP (HyperText Transfer Protocol)</code> Method</th>
+                <th>Path</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="odd">
+                <td>
+                    <p>GET</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/type/exec-env</p>
+                    </blockquote>
+                    <dl>
+                        <dt>----------------------------+</dt>
+                        <dd>
+                            <p>/type/exec-env/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Returns the Exec_Env types selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>----------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Returns the Exec_Env type selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <dl>
+                        <dt>POST</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/type/exec-env</p>
+                    </blockquote>
+                    -----------------------+----- /type/exec-env/(string:id)</td>
+                <td>
+                    <blockquote>
+                        <p>Create one or more new Exec_Env types.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>----------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Create a new Exec_Env with the given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="odd">
+                <td>
+                    <dl>
+                        <dt>PUT</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/type/exec-env</p>
+                    </blockquote>
+                    -----------------------+----- /type/exec-env/(string:id)</td>
+                <td>
+                    <blockquote>
+                        <p>Update one or more existing Exec_Env types.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>----------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Update the Exec_Env type with given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <p>DELETE</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/type/exec-env</p>
+                    </blockquote>
+                    -----------------------+----- /type/exec-env/(string:id)</td>
+                <td>
+                    <blockquote>
+                        <p>Delete the Exec_Env types selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>----------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Delete the Exec_Env type selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2 id="network-link">Network link</h2>
+    <table>
+        <colgroup>
+            <col style="width: 14%" />
+            <col style="width: 24%" />
+            <col style="width: 61%" />
+        </colgroup>
+        <thead>
+            <tr class="header">
+                <th><code class="interpreted-text" data-role="abbr">HTTP (HyperText Transfer Protocol)</code> Method</th>
+                <th>Path</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="odd">
+                <td>
+                    <p>GET</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/network-link</p>
+                    </blockquote>
+                    <dl>
+                        <dt>---------------------------+</dt>
+                        <dd>
+                            <p>/network-link/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Returns the network links selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>---------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Returns the network link selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <dl>
+                        <dt>POST</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/network-link</p>
+                    </blockquote>
+                    <dl>
+                        <dt>---------------------------+</dt>
+                        <dd>
+                            <p>/network-link/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Create one or more new network links.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>---------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Create a new network link with the given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="odd">
+                <td>
+                    <dl>
+                        <dt>PUT</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/network-link</p>
+                    </blockquote>
+                    <dl>
+                        <dt>---------------------------+</dt>
+                        <dd>
+                            <p>/network-link/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Update one or more existing network links.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>---------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Update the network link with given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <p>DELETE</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/network-link</p>
+                    </blockquote>
+                    <dl>
+                        <dt>---------------------------+</dt>
+                        <dd>
+                            <p>/network-link/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Delete the network links selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>---------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Delete the network link selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h3 id="network-link-type">Network link Type</h3>
+    <table>
+        <colgroup>
+            <col style="width: 12%" />
+            <col style="width: 26%" />
+            <col style="width: 60%" />
+        </colgroup>
+        <thead>
+            <tr class="header">
+                <th><code class="interpreted-text" data-role="abbr">HTTP (HyperText Transfer Protocol)</code> Method</th>
+                <th>Path</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="odd">
+                <td>
+                    <p>GET</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/type/network-link</p>
+                    </blockquote>
+                    <dl>
+                        <dt>--------------------------------+</dt>
+                        <dd>
+                            <p>/type/network-link/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Returns the network link types selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>--------------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Returns the network link type selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <dl>
+                        <dt>POST</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/type/network-link</p>
+                    </blockquote>
+                    <dl>
+                        <dt>--------------------------------+</dt>
+                        <dd>
+                            <p>/type/network-link/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Create one or more new network link types.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>--------------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Create a new network link type with the given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="odd">
+                <td>
+                    <dl>
+                        <dt>PUT</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/type/network-link</p>
+                    </blockquote>
+                    <dl>
+                        <dt>--------------------------------+</dt>
+                        <dd>
+                            <p>/type/network-link/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Update one or more existing network link types.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>--------------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Update the network link type with given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <p>DELETE</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/type/network-link</p>
+                    </blockquote>
+                    <dl>
+                        <dt>--------------------------------+</dt>
+                        <dd>
+                            <p>/type/network-link/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Delete the network link types selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>--------------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Delete the network link type selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2 id="connection">Connection</h2>
+    <table>
+        <colgroup>
+            <col style="width: 14%" />
+            <col style="width: 23%" />
+            <col style="width: 61%" />
+        </colgroup>
+        <thead>
+            <tr class="header">
+                <th><code class="interpreted-text" data-role="abbr">HTTP (HyperText Transfer Protocol)</code> Method</th>
+                <th>Path</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="odd">
+                <td>
+                    <p>GET</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/connection</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------------+</dt>
+                        <dd>
+                            <p>/connection/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Returns the connections selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Returns the connection selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <dl>
+                        <dt>POST</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/connection</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------------+</dt>
+                        <dd>
+                            <p>/connection/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Create one or more new connections.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Create a new connection with the given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="odd">
+                <td>
+                    <dl>
+                        <dt>PUT</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/connection</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------------+</dt>
+                        <dd>
+                            <p>/connection/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Update one or more existing connections.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Update the connection with given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <p>DELETE</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/connection</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------------+</dt>
+                        <dd>
+                            <p>/connection/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Delete the connections selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Delete the connection selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2 id="agent">Agent</h2>
+    <h3 id="catalog">Catalog</h3>
+    <table>
+        <colgroup>
+            <col style="width: 14%" />
+            <col style="width: 25%" />
+            <col style="width: 59%" />
+        </colgroup>
+        <thead>
+            <tr class="header">
+                <th><code class="interpreted-text" data-role="abbr">HTTP (HyperText Transfer Protocol)</code> Method</th>
+                <th>Path</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="odd">
+                <td>
+                    <p>GET</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/catalog/agent</p>
+                    </blockquote>
+                    <dl>
+                        <dt>----------------------------+</dt>
+                        <dd>
+                            <p>/catalog/agent/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Returns the agents from the catalog selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Returns the agent from the catalog selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <dl>
+                        <dt>POST</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/catalog/agent</p>
+                    </blockquote>
+                    <dl>
+                        <dt>----------------------------+</dt>
+                        <dd>
+                            <p>/catalog/agent/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Insert one or more new agents in the catalog.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Insert a new agents in the catalog with the given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="odd">
+                <td>
+                    <dl>
+                        <dt>PUT</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/catalog/agent</p>
+                    </blockquote>
+                    -------------------------+--- /catalog/agent/(string:id)</td>
+                <td>
+                    <blockquote>
+                        <p>Update one or more existing agents in the catalog.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Update the agent in the catalog with given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <p>DELETE</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/catalog/agent</p>
+                    </blockquote>
+                    <dl>
+                        <dt>----------------------------+</dt>
+                        <dd>
+                            <p>/catalog/agent/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Delete the agents from the catalog selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Delete the agent from the catalog selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h3 id="instance">Instance</h3>
+    <table>
+        <colgroup>
+            <col style="width: 15%" />
+            <col style="width: 28%" />
+            <col style="width: 56%" />
+        </colgroup>
+        <thead>
+            <tr class="header">
+                <th><code class="interpreted-text" data-role="abbr">HTTP (HyperText Transfer Protocol)</code> Method</th>
+                <th>Path</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="odd">
+                <td>
+                    <p>GET</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/instance/agent</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------------------+</dt>
+                        <dd>
+                            <p>/instance/agent/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Returns the agent instances selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>----------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Returns the agent instances selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <dl>
+                        <dt>POST</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/instance/agent</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------------------+</dt>
+                        <dd>
+                            <p>/instance/agent/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Create one or more new agent instances.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>----------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Create a new agent instances with the given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="odd">
+                <td>
+                    <dl>
+                        <dt>PUT</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/instance/agent</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------------------+</dt>
+                        <dd>
+                            <p>/instance/agent/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Update one or more existing agent instances.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>----------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Update the agent instance with given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <p>DELETE</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/instance/agent</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------------------+</dt>
+                        <dd>
+                            <p>/instance/agent/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Delete the agent instances selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>----------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Delete the agent instance selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2 id="ebpf-program">eBPF Program</h2>
+    <h3 id="catalog-1">Catalog</h3>
+    <table>
+        <colgroup>
+            <col style="width: 12%" />
+            <col style="width: 28%" />
+            <col style="width: 59%" />
+        </colgroup>
+        <thead>
+            <tr class="header">
+                <th><code class="interpreted-text" data-role="abbr">HTTP (HyperText Transfer Protocol)</code> Method</th>
+                <th>Path</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="odd">
+                <td>
+                    <p>GET</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/catalog/ebpf-program</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------------------------+</dt>
+                        <dd>
+                            <p>/catalog/ebpf-program/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Returns the <code class="interpreted-text" data-role="abbr">eBPF (extended Berkeley Packet Filter)</code> programs from the catalog selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>---------------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Returns the <code class="interpreted-text" data-role="abbr">eBPF (extended Berkeley Packet Filter)</code> program from the catalog selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <dl>
+                        <dt>POST</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/catalog/ebpf-program</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------------------------+</dt>
+                        <dd>
+                            <p>/catalog/ebpf-program/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Insert one or more new <code class="interpreted-text" data-role="abbr">eBPF (extended Berkeley Packet Filter)</code> programs in the catalog.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------------------------------------------------------------- +</dt>
+                        <dd>
+                            <p>Insert a new <code class="interpreted-text" data-role="abbr">eBPF (extended Berkeley Packet Filter)</code> programs in the catalog with the given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="odd">
+                <td>
+                    <dl>
+                        <dt>PUT</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/catalog/ebpf-program</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------------------------+</dt>
+                        <dd>
+                            <p>/catalog/ebpf-program/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Update one or more existing <code class="interpreted-text" data-role="abbr">eBPF (extended Berkeley Packet Filter)</code> programs in the catalog.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>---------------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Update the <code class="interpreted-text" data-role="abbr">eBPF (extended Berkeley Packet Filter)</code> program in the catalog with given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <p>DELETE</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/catalog/ebpf-program</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------------------------+</dt>
+                        <dd>
+                            <p>/catalog/ebpf-program/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Delete the <code class="interpreted-text" data-role="abbr">eBPF (extended Berkeley Packet Filter)</code> programs from the catalog selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>---------------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Delete the <code class="interpreted-text" data-role="abbr">eBPF (extended Berkeley Packet Filter)</code> program from the catalog selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h3 id="instance-1">Instance</h3>
+    <table>
+        <colgroup>
+            <col style="width: 13%" />
+            <col style="width: 30%" />
+            <col style="width: 56%" />
+        </colgroup>
+        <thead>
+            <tr class="header">
+                <th><code class="interpreted-text" data-role="abbr">HTTP (HyperText Transfer Protocol)</code> Method</th>
+                <th>Path</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="odd">
+                <td>
+                    <p>GET</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/instance/ebpf-program</p>
+                    </blockquote>
+                    <dl>
+                        <dt>------------------------------------+</dt>
+                        <dd>
+                            <p>/instance/ebpf-program/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Returns the <code class="interpreted-text" data-role="abbr">eBPF (extended Berkeley Packet Filter)</code> program instances selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Returns the <code class="interpreted-text" data-role="abbr">eBPF (extended Berkeley Packet Filter)</code> program instances selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <dl>
+                        <dt>POST</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/instance/ebpf-program</p>
+                    </blockquote>
+                    <dl>
+                        <dt>------------------------------------+</dt>
+                        <dd>
+                            <p>/instance/ebpf-program/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Create one or more new <code class="interpreted-text" data-role="abbr">eBPF (extended Berkeley Packet Filter)</code> program instances.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Create a new <code class="interpreted-text" data-role="abbr">eBPF (extended Berkeley Packet Filter)</code> program instances with the given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="odd">
+                <td>
+                    <dl>
+                        <dt>PUT</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/instance/ebpf-program</p>
+                    </blockquote>
+                    <dl>
+                        <dt>------------------------------------+</dt>
+                        <dd>
+                            <p>/instance/ebpf-program/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Update one or more existing <code class="interpreted-text" data-role="abbr">eBPF (extended Berkeley Packet Filter)</code> program instances.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Update the <code class="interpreted-text" data-role="abbr">eBPF (extended Berkeley Packet Filter)</code> program instance with given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <p>DELETE</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/instance/ebpf-program</p>
+                    </blockquote>
+                    <dl>
+                        <dt>------------------------------------+</dt>
+                        <dd>
+                            <p>/instance/ebpf-program/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Delete the <code class="interpreted-text" data-role="abbr">eBPF (extended Berkeley Packet Filter)</code> program instances selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Delete the <code class="interpreted-text" data-role="abbr">eBPF (extended Berkeley Packet Filter)</code> program instance selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2 id="data">Data</h2>
+    <table>
+        <colgroup>
+            <col style="width: 14%" />
+            <col style="width: 18%" />
+            <col style="width: 66%" />
+        </colgroup>
+        <thead>
+            <tr class="header">
+                <th><code class="interpreted-text" data-role="abbr">HTTP (HyperText Transfer Protocol)</code> Method</th>
+                <th>Path</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="odd">
+                <td>
+                    <p>GET</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/data</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------+</dt>
+                        <dd>
+                            <p>/data/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Returns the collected data selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>----------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Returns the collected data selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <dl>
+                        <dt>POST</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/data</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------+</dt>
+                        <dd>
+                            <p>/data/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Create one or more new collected data.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>----------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Create a new collected data with the given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="odd">
+                <td>
+                    <dl>
+                        <dt>PUT</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/data</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------+</dt>
+                        <dd>
+                            <p>/data/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Update one or more existing collected data.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>----------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Update the collected data with given <code>id</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <p>DELETE</p>
+                    <blockquote>
+                        <ul>
+                            <li></li>
+                        </ul>
+                    </blockquote>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>/data</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-------------------+</dt>
+                        <dd>
+                            <p>/data/(string:id)</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Delete the collected data selected by the query in the request body (or all it the request body is empty).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>----------------------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Delete the collected data selected by the given <code>id</code> and the query in the request body.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h1 id="guide">Guide</h1>
+    <p>See the Swagger Schema (<a href="api/swagger.yaml">|YAML|</a>, <a href="api/swagger.json">|JSON|</a>) and the relative <strong>documentation</strong> (<code class="interpreted-text" data-role="abbr">REST (Representational State Transfer)</code> endpoint
+        <code>/api/doc &lt;/api/doc&gt;</code>) more details about the <code class="interpreted-text" data-role="abbr">REST (Representational State Transfer)</code> endpoints and relative formats and requirements of request and response.</p>
+    <h1 id="installation">Installation</h1>
+    <ol type="1">
+        <li>Prerequisite
+            <ul>
+                <li>python (version &gt;= 3.5)</li>
+                <li>pip (for python 3)</li>
+            </ul>
+        </li>
+        <li>Clone the repository.</li>
+    </ol>
+    <pre class="sourceCode console"><code>git clone https://gitlab.com/guard-repositories/cb-manager.git
+cd cb-manager</code></pre>
+    <ol start="3" type="1">
+        <li>Install the dependencies.</li>
+    </ol>
+    <pre class="sourceCode console"><code>pip3 install -r requirements.txt</code></pre>
+    <h1 id="configuration">Configuration</h1>
+    <p>The configurations are stored in the <a href="config.ini">config.ini</a> file.</p>
+    <table>
+        <colgroup>
+            <col style="width: 14%" />
+            <col style="width: 15%" />
+            <col style="width: 18%" />
+            <col style="width: 50%" />
+        </colgroup>
+        <thead>
+            <tr class="header">
+                <th>Section</th>
+                <th>Setting</th>
+                <th>Default value</th>
+                <th>Note</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="odd">
+                <td>
+                    <dl>
+                        <dt>context=broker</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>host</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------+</dt>
+                        <dd>
+                            <p>port</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>0.0.0.0</p>
+                    </blockquote>
+                    <dl>
+                        <dt>--------------------+</dt>
+                        <dd>
+                            <p>5000</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p><code class="interpreted-text" data-role="abbr">IP (Internet Protocol)</code> address to accept requests.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>---------------------------------------------------------+</dt>
+                        <dd>
+                            <p><code class="interpreted-text" data-role="abbr">TCP (Transmission Control Protocol)</code> Port of the <code class="interpreted-text" data-role="abbr">REST (Representational State Transfer)</code> Server.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <dl>
+                        <dt>heartbeat</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>timeout</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------+</dt>
+                        <dd>
+                            <p>period</p>
+                        </dd>
+                        <dt>-----------------+</dt>
+                        <dd>
+                            <p>auth-expiration</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>5s</p>
+                    </blockquote>
+                    <dl>
+                        <dt>--------------------+</dt>
+                        <dd>
+                            <p>10s</p>
+                        </dd>
+                        <dt>--------------------+</dt>
+                        <dd>
+                            <p>5min</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Timeout for heartbeat with <code class="interpreted-text" data-role="abbr">LCP (Local Control Plane)</code>.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>---------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Period for the heartbeat with the <code class="interpreted-text" data-role="abbr">LCP (Local Control Plane)</code>.</p>
+                        </dd>
+                        <dt>---------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Period for auth expiration used in the heartbeat with the <code class="interpreted-text" data-role="abbr">LCP (Local Control Plane)</code>.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="odd">
+                <td>
+                    <dl>
+                        <dt>elasticsearch</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>endpoint</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------+</dt>
+                        <dd>
+                            <p>timeout</p>
+                        </dd>
+                        <dt>-----------------+</dt>
+                        <dd>
+                            <p>retry-period</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>elasticsearch:9200</p>
+                    </blockquote>
+                    <dl>
+                        <dt>--------------------+</dt>
+                        <dd>
+                            <p>20s</p>
+                        </dd>
+                        <dt>--------------------+</dt>
+                        <dd>
+                            <p>1min</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Elasticsearch server hostname/<code class="interpreted-text" data-role="abbr">IP (Internet Protocol)</code>:port.</p>
+                    </blockquote>
+                    <dl>
+                        <dt>---------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Timeout for the connection to Elasticsearch.</p>
+                        </dd>
+                        <dt>---------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Period to retry the connection to Elasticsearch.</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+            <tr class="even">
+                <td>
+                    <dl>
+                        <dt>dev</dt>
+                        <dd>
+                            <ul>
+                                <li></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>username</p>
+                    </blockquote>
+                    <dl>
+                        <dt>-----------------+</dt>
+                        <dd>
+                            <p>password</p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>cb-manager</p>
+                    </blockquote>
+                    <dl>
+                        <dt>--------------------+</dt>
+                        <dd>
+                            <p>guard<a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a></p>
+                        </dd>
+                    </dl>
+                </td>
+                <td>
+                    <blockquote>
+                        <p>Username for <code class="interpreted-text" data-role="abbr">HTTP (HyperText Transfer Protocol)</code> authentication (for developer use).</p>
+                    </blockquote>
+                    <dl>
+                        <dt>---------------------------------------------------------+</dt>
+                        <dd>
+                            <p>Password for <code class="interpreted-text" data-role="abbr">HTTP (HyperText Transfer Protocol)</code> authentication (for developer use).</p>
+                        </dd>
+                    </dl>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h1 id="usage">Usage</h1>
+    <h2 id="display-help">Display help</h2>
+    <p><code>`bash python3 main.py -h</code>`</p>
+    <div class="glossary">
+
+    </div>
+    <h1 id="glossary">Glossary</h1>
+    <blockquote>
+        <dl>
+            <dt>ACL</dt>
+            <dd>
+                <p>Access Control Lis</p>
+            </dd>
+            <dt>API</dt>
+            <dd>
+                <p>Application Program Interface</p>
+            </dd>
+            <dt>BA</dt>
+            <dd>
+                <p>Basic Authentication</p>
+            </dd>
+            <dt>BPF</dt>
+            <dd>
+                <p>Berkeley Packet Filter</p>
+            </dd>
+            <dt>CB</dt>
+            <dd>
+                <p>Context Broker</p>
+            </dd>
+            <dt>CII</dt>
+            <dd>
+                <p>Core Infrastructure Initiative</p>
+            </dd>
+            <dt>CRUD</dt>
+            <dd>
+                <p>Create - Read - Update - Delete</p>
+            </dd>
+            <dt>DB</dt>
+            <dd>
+                <p>Database</p>
+            </dd>
+            <dt>eBPF</dt>
+            <dd>
+                <p>extended BPF</p>
+            </dd>
+            <dt>ELK</dt>
+            <dd>
+                <p>Elastic - LogStash - Kibana</p>
+            </dd>
+            <dt>Exec_Env</dt>
+            <dd>
+                <p>Execution Environment</p>
+            </dd>
+            <dt>gRPC</dt>
+            <dd>
+                <p>Google RPC</p>
+            </dd>
+            <dt>HOBA</dt>
+            <dd>
+                <p>HTTP Origin-Bound Authentication</p>
+            </dd>
+            <dt>HTTP</dt>
+            <dd>
+                <p>Hyper Text Transfer Protocol</p>
+            </dd>
+            <dt>ID</dt>
+            <dd>
+                <p>Identification</p>
+            </dd>
+            <dt>IP</dt>
+            <dd>
+                <p>Internet Protocol</p>
+            </dd>
+            <dt>JSON</dt>
+            <dd>
+                <p>Java Object Notation</p>
+            </dd>
+            <dt>LCP</dt>
+            <dd>
+                <p>Local Control Plane</p>
+            </dd>
+            <dt>LDAP</dt>
+            <dd>
+                <p>Lightweight Directory Access Protocol</p>
+            </dd>
+            <dt>MIT</dt>
+            <dd>
+                <p>Massachusetts Institute of Technology</p>
+            </dd>
+            <dt>RBAC</dt>
+            <dd>
+                <p>Role-Based Access Control</p>
+            </dd>
+            <dt>regex</dt>
+            <dd>
+                <p>regular expression</p>
+            </dd>
+            <dt>REST</dt>
+            <dd>
+                <p>Representational State Transfer</p>
+            </dd>
+            <dt>RFC</dt>
+            <dd>
+                <p>Request For Comments</p>
+            </dd>
+            <dt>RPC</dt>
+            <dd>
+                <p>Remote Procedure Call</p>
+            </dd>
+            <dt>SCM</dt>
+            <dd>
+                <p>Security Context Model</p>
+            </dd>
+            <dt>SLA</dt>
+            <dd>
+                <p>Service Level Agreements</p>
+            </dd>
+            <dt>SQL</dt>
+            <dd>
+                <p>Structured Query Language</p>
+            </dd>
+            <dt>TCP</dt>
+            <dd>
+                <p>Transmission Control Protocol</p>
+            </dd>
+            <dt>TTL</dt>
+            <dd>
+                <p>Time To Live</p>
+            </dd>
+            <dt>VNF</dt>
+            <dd>
+                <p>Virtual Network Function</p>
+            </dd>
+            <dt>YANG</dt>
+            <dd>
+                <p>Yet Another Next Generation</p>
+            </dd>
+            <dt>YAML</dt>
+            <dd>
+                <p>YAML Ain't Markup languages</p>
+            </dd>
+        </dl>
+    </blockquote>
+    <h1 id="references">References</h1>
+    <section class="footnotes">
+        <hr />
+        <ol>
+            <li id="fn1">
+                <p>In the dash-case (also referred as <strong>hyphen-case</strong> or <strong>kebab-case</strong>) format all the letters are lower-case, the punctuation is not allowed and the words are separated by single dash (or hyphen: -). Example: <code>exec-env</code>.
+                    <a href="#fnref1" class="footnote-back">↩</a>
+                </p>
+            </li>
+            <li id="fn2">
+                <p>We use the terms properties, fields and attributes interchangeably.<a href="#fnref2" class="footnote-back">↩</a></p>
+            </li>
+            <li id="fn3">
+                <p>In the snake-case format all the letters are lower-case, the punctuation is not allowed and the words are separated by single underscore (_). Example: <code>exec_env_id</code>.<a href="#fnref3" class="footnote-back">↩</a></p>
+            </li>
+            <li id="fn4">
+                <p>In our architecture the agents are Beats from Elastic Stack. Notwithstanding, the data model refers to a generic agent allowing to possibility to use different types.<a href="#fnref4" class="footnote-back">↩</a></p>
+            </li>
+            <li id="fn5">
+                <p>In Elasticsearch, each document is identified by a unique id. For obvious reasons, in the description of the following indices, we omit the description of all the id fields.<a href="#fnref5" class="footnote-back">↩</a></p>
+            </li>
+            <li id="fn6">
+                <p>"Getting started with Beats," [Online]. Available: <a href="https://www.elastic.co/guide/en/beats/libbeat/current/getting-started.html">libbeat</a>.<a href="#fnref6" class="footnote-back">↩</a></p>
+            </li>
+            <li id="fn7">
+                <p>"Polycube. eBPF/XDP-based software framework for fast network services running in the Linux kernel," [Online]. Available: <a href="https://github.com/polycube-network/polycube">Polycube in GitHub</a>.<a href="#fnref7" class="footnote-back">↩</a></p>
+            </li>
+            <li id="fn8">
+                <p>With nested index, we refer to index that are embedded inside your parent one, <a href="https://www.elastic.co/blog/managing-relations-inside-elasticsearch">managing relations inside elasticsearch</a><a href="#fnref8" class="footnote-back">↩</a></p>
+            </li>
+            <li id="fn9">
+                <p>Stored in hashed sha256 version.<a href="#fnref9" class="footnote-back">↩</a></p>
+            </li>
+        </ol>
+    </section>
+
+    <!-- saved from url=(0035)https://pandoc.org/demo/footer.html -->
+    <html>
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+
+    <body>
+        <div id="footer">
+            © 2006-2007 <a href="http://johnmacfarlane.net/">John MacFarlane</a>
+        </div>
+
+    </body>
+
+    </html>
+</body>
+
+</html>

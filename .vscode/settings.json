@@ -1,22 +1,6 @@
 {
-    "cSpell.words": [
-        "Envs",
-        "HOBA",
-        "Kibana",
-        "LCP",
-        "LCPs",
-        "LDAP",
-        "Polycube",
-        "RBAC",
-        "chdir",
-        "hexsha",
-        "datetime",
-        "execenv",
-        "filebeat",
-        "kwrd",
-        "quantulum",
-        "strftime",
-        "strptime",
-        "ureg"
-    ]
+    "restructuredtext.confPath": "",
+    "python.linting.pylintEnabled": true,
+    "python.linting.flake8Enabled": false,
+    "python.linting.enabled": true
 }
