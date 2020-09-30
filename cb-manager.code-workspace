@@ -100,7 +100,7 @@
 		"restructuredtext.builtDocumentationPath": "docs/.build/html",
 		"restructuredtext.confPath": "docs/conf.py",
 		"restructuredtext.experimental": true,
-		"workbench.colorTheme": "Electron",
+		"workbench.colorTheme": "Kimbie Dark",
 		"editor.fontFamily": "Fira Code Retina"
 	}
 }
