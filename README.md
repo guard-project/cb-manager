@@ -117,8 +117,7 @@ GET             | /type/exec-env        | Returns the ExecEnv types selected b
 POST            | /type/exec-env        | Create one or more new ExecEnv types
 PUT             | /type/exec-env        | Update one or more existing ExecEnv types.
 PUT             | /type/exec-env/{*id*} | Update the ExecEnv type with id = {*id*}.
-DELETE          | /type/exec-env        | Delete the ExecEnv types selected by the query in the request body
-                                          (or nothing it the request body is empty).
+DELETE          | /type/exec-env        | Delete the ExecEnv types selected by the query in the request body (or nothing it the request body is empty).
 
 #### Network link
 
@@ -136,7 +135,7 @@ DELETE          | /network-link        | Delete the network links selected by 
 :-------------: | ------------------------- | ----------
 GET             | /type/network-link        | Returns the network link types selected by the query in the request body (or all it the request body is empty).
 POST            | /type/network-link        | Create one or more new network link types.
-PUT            | /type/network-link         | Update one or more existing network link types.
+PUT             | /type/network-link         | Update one or more existing network link types.
 PUT             | /type/network-link/{*id*} | Update the network link type with id = {*id*}.
 DELETE          | /type/network-link        | Delete the network link types selected by the query in the request body (or nothing it the request body is empty).
 
