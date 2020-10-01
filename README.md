@@ -153,7 +153,7 @@ DELETE          | /connection        | Delete the connections selected by the
 
 #### Catalog
 
-**HTTP Method** | **Path*              | **Action**
+**HTTP Method** | **Path**             | **Action**
 :-------------: | -------------------- | ----------
 GET             | /catalog/agent       | Returns the agents in catalog selected by the query in the request body (or all it the request body is empty).
 POST            | /catalog             | Create one or more new agent in catalog.
@@ -162,7 +162,7 @@ DELETE          | /catalog             | Delete the agents in catalog selected b
 
 #### Instance
 
-**HTTP Method** | **Path*                | **Action**
+**HTTP Method** | **Path**               | **Action**
 :-------------: | ---------------------- | ----------
 GET             | /instance/agent        | Returns the agent instances selected by the query in the request body (or all it the request body is empty).
 POST            | /instance/agent        | Create one or more new instances in the ExecEnv with the specified initial configurations.
@@ -174,7 +174,7 @@ DELETE          | /instance/agent        | Delete the agent instances selected b
 
 #### Catalog
 
-**HTTP Method** | **Path*                      | **Action**
+**HTTP Method** | **Path**                     | **Action**
 :-------------: | ---------------------------- | ----------
 GET             | /catalog/ebpf-program        | Returns the eBPF programs in catalog selected by the query in the request body (or all it the request body is empty).
 POST            | /catalog/ebpf-program        | Create one or more new eBPF programs in catalog.
@@ -184,7 +184,7 @@ DELETE          | /catalog/ebpf-program        | Delete the eBPF program in cata
 
 #### Instance
 
-**HTTP Method** | **Path*                       | **Action**
+**HTTP Method** | **Path**                      | **Action**
 :-------------: | ----------------------        | ----------
 GET             | /instance/ebpf-program        | Returns the agent instances selected by the query in the request body (or all it the request body is empty).
 POST            | /instance/ebpf-program        | Create one or more new instances in the ExecEnv with the specified initial configurations.
