@@ -1,4 +1,4 @@
 # Authors
 
 - Alex Carrega
-- Guerino Lammanna
+- Guerino Lamanna
