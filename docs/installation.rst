@@ -3,14 +3,7 @@
 Installation
 ============
 
-Install |CB|-Manager with ``pip``:
-
-.. code-block:: console
-
-    pip install cb-manager
-
-
-The development version can be downloaded from `GitHub <https://github.com/guard-project/cb-manager>`_.
+Download from `GitHub <https://github.com/guard-project/cb-manager>`_.
 
 .. code-block:: console
 
