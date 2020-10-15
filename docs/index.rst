@@ -13,23 +13,6 @@ Compatibility
 |CB|-Manager requires Python 3.5+.
 
 
-Installation
-============
-
-
-You can install |CB|-Manager with pip:
-
-.. code-block:: console
-
-    $ pip install cb-manager
-
-or with easy_install:
-
-.. code-block:: console
-
-    $ easy_install cb-manager
-
-
 Documentation
 =============
 
