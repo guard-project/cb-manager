@@ -7,4 +7,6 @@
 - Added XML and YAML content type support.
 - Added XML and YAML parameter schema.
 
-## 1.1.0
+## 1.0.1
+
+- Fix error in selecting fields.

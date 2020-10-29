@@ -68,9 +68,9 @@ class Query_Request_Schema(Base_Schema):
     """Query request to filter the items."""
 
     select = List(Str(example='id',
-                      description='Fields to return.',
+                      description='Fields to return.'),
                       validate=Unique_List.apply(),
-                      error_messages=Unique_List.error_messages))
+                      error_messages=Unique_List.error_messages)
     where = Nested(Query_Request_Clause_Schema,
                    description='Filter the items based on different conditions.')
     order = Nested(Query_Request_Order_Schema, many=True,
