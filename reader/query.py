@@ -34,7 +34,7 @@ class Query_Reader:
         self.s = self.s.source(query.get('select', None))
 
     def __where(self, query, id=None):
-        q = None 
+        q = None
         for op, clause in query.get('where', {}).items():
             if op == 'and':
                 if is_dict(clause):
@@ -69,7 +69,7 @@ class Query_Reader:
                 expr = clause.get('expr', None)
                 if prop is not None and expr is not None:
                     if op == 'equals':
-                        q = Q('match', **{prop: expr})
+                        q = Q('match_phrase', **{prop: expr})
                     elif op == 'reg_exp':
                         q = Q('regexp', **{prop: dict(value=expr)})
                     elif op == 'wildcard':

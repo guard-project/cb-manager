@@ -10,3 +10,7 @@
 ## 1.0.1
 
 - Fix error in selecting fields.
+
+## 1.0.2
+
+- Fix error to get exact match in query.
