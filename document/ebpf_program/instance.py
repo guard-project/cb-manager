@@ -8,7 +8,7 @@ __all__ = [
 class eBPF_Program_Instance_Parameter_Inner_Doc(Inner_Doc):
     """Parameter of the eBPF Program instance installed in an execution environment."""
     id = Text(required=True)
-    #cvalue = Raw(required=True) # FIXME Raw?
+    # value = Raw() # FIXME Raw?
     timestamp = Date(required=True)
 
 

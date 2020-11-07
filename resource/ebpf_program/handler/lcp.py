@@ -70,7 +70,7 @@ class LCP(Base_LCP):
                 self.log.exception(e)
                 msg = f'Response from LCP({exec_env.meta.id}@{exec_env.hostname}:{exec_env.lcp.port}) not valid'
                 uer = Unprocessable_Entity_Response(msg, exception=e)
-                self.resp.append(uer)
+                uer.add(self.resp)
         else:
             msg = f'Request to LCP({exec_env.meta.id}@{exec_env.hostname}:{exec_env.lcp.port}) not executed'
-            self.resp.append(Unprocessable_Entity_Response(msg))
+            Unprocessable_Entity_Response(msg).add(self.resp)

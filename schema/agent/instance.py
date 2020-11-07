@@ -19,9 +19,9 @@ class Agent_Instance_Action_Schema(Schema):
 
     id = Str(required=True, example='list',
              description='Action id.')
-    data = Raw(required=True, example='drop: all',
+    data = Raw(example='drop: all',
                description='Action data.')
-    timestamp = Date_Time(format=FORMAT, required=True, readonly=True,
+    timestamp = Date_Time(format=FORMAT, readonly=True,
                           description="Timestamp of the last time the action was executed correctly.")
 
 
@@ -32,7 +32,7 @@ class Agent_Instance_Parameter_Schema(Schema):
              description='Parameter id.')
     value = Raw(required=True, example='10s',
                 description='Paremeter value.'),
-    timestamp = Date_Time(format=FORMAT, required=True, readonly=True,
+    timestamp = Date_Time(format=FORMAT, readonly=True,
                           description="Timestamp of the last time the parameter was set correctly.")
 
 
@@ -43,7 +43,7 @@ class Agent_Instance_Resource_Schema(Schema):
              description='Resource path.')
     content = Str(required=True,
                   description='Resource content.')
-    timestamp = Date_Time(format=FORMAT, required=True, readonly=True,
+    timestamp = Date_Time(format=FORMAT, readonly=True,
                           description="Timestamp of the last time the resource data was updated or created correctly.")
 
 

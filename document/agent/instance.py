@@ -9,13 +9,13 @@ __all__ = [
 class Agent_Instance_Action_Inner_Doc(Inner_Doc):
     """Action of the agent instance installed in an execution environment."""
     id = Text(required=True)
-    # data = Raw(required=True) # FIXME Raw?
+    # data = Raw() # FIXME Raw?
     timestamp = Date(required=True)
 
 class Agent_Instance_Parameter_Inner_Doc(Inner_Doc):
     """Parameter of the agent instance installed in an execution environment."""
     id = Text(required=True)
-    # cvalue = Raw(required=True) # FIXME Raw?
+    # cvalue = Raw() # FIXME Raw?
     timestamp = Date(required=True)
 
 
@@ -44,16 +44,6 @@ class Agent_Instance_Document(Base_Document):
 
     def edit_action(self, action):
         so = self.Status_Operation
-        id = action.get('id', None)
-        for a in self.actions:
-            dt = action.get('data', None)
-            ts = action.get('timestamp', None)
-            if a.id == id:
-                if a.data != dt or a.timestamp != ts:
-                    a.data = dt
-                    a.timestamp = ts
-                    return so.UPDATED
-                return so.NOT_MODIFIED
         self.actions.append(Agent_Instance_Action_Inner_Doc(**action))
         return so.UPDATED
 

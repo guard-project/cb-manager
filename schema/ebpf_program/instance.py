@@ -20,7 +20,7 @@ class eBPF_Program_Instance_Parameter_Schema(Schema):
              description='Parameter id.')
     value = Raw(required=True, example='en0',
                 description='Paremeter value.'),
-    timestamp = Date_Time(format=FORMAT, required=True, readonly=True,
+    timestamp = Date_Time(format=FORMAT, readonly=True,
                           description="Timestamp of the last time the parameter was set.")
 
 

@@ -1,5 +1,5 @@
 from document.base import Base_Document
-from elasticsearch_dsl import Date, InnerDoc as Inner_Doc, Integer, Nested, Text
+from elasticsearch_dsl import Date, InnerDoc as Inner_Doc, Integer, Nested, Text, Boolean
 
 __all__ = [
     'Exec_Env_Document',
@@ -23,6 +23,7 @@ class Exec_Env_Document(Base_Document):
     type_id = Text(required=True)
     lcp = Nested(LCP_Document_Inner_Doc, required=True)
     description = Text()
+    enabled = Boolean(required=True)
 
     class Index:
         """Elasticsearch configuration."""

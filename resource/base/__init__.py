@@ -94,7 +94,7 @@ class Base_Resource(Base_Minimal_Resource):
                         hndl = self.get_lcp_handler(HTTP_Method.POST)
                         hndl(instance=obj, req=req_data_lcp, resp=resp_data_lcp)
                         if len(resp_data_lcp) > 0:
-                            resp_data.update(operation=resp_data_lcp)
+                            resp_data.update(operations=resp_data_lcp)
                         resp_data.add(resp)
                     except Exception as e:
                         self.log.exception(e)
@@ -141,7 +141,7 @@ class Base_Resource(Base_Minimal_Resource):
                                 msg = f'{self.name.capitalize()} with the id={req_data_id} no need to update'
                                 resp_data = Not_Modified_Response(msg)
                             if len(resp_data_lcp) > 0:
-                                resp_data.update(operation=resp_data_lcp)
+                                resp_data.update(operations=resp_data_lcp)
                             resp_data.add(resp)
                     except Exception as e:
                         self.log.exception(e)

@@ -1,6 +1,6 @@
 from document.exec_env import Exec_Env_Document, Exec_Env_Type_Document
 from marshmallow import Schema
-from marshmallow.fields import DateTime as Date_Time, Integer, Nested, Str
+from marshmallow.fields import DateTime as Date_Time, Integer, Nested, Str, Boolean
 from schema.base import Base_Schema
 from schema.validate import In
 from utils.datetime import FORMAT
@@ -40,6 +40,8 @@ class Exec_Env_Schema(Base_Schema):
                  description='Data related to the LCP.')
     description = Str(example='Apache HTTP Web Server.',
                       description='Short description of the execution environment,')
+    enabled = Boolean(required=True, default=True, example='Yes',
+                      description='Indicate if the execution environment is enabled or not')
 
 
 class Exec_Env_Type_Schema(Base_Schema):

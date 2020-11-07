@@ -145,7 +145,7 @@ class LCP(Base_LCP):
         save = False
         if doc.status is not None:
             instance.status = doc.status if not error else 'unknown'
-            save = True
+            doc.store = True
         if doc.store and not error:
             data = extract(result,
                            id='id',
