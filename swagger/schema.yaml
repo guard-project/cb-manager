@@ -236,9 +236,7 @@ definitions:
         format: date-time
         type: string
     required:
-    - data
     - id
-    - timestamp
     type: object
   Agent_Instance_Parameter:
     properties:
@@ -252,7 +250,6 @@ definitions:
         type: string
     required:
     - id
-    - timestamp
     type: object
   Agent_Instance_Resource:
     properties:
@@ -271,7 +268,6 @@ definitions:
     required:
     - content
     - id
-    - timestamp
     type: object
   Bad_Request_Response:
     properties:
@@ -392,6 +388,10 @@ definitions:
         description: Short description of the execution environment,
         example: Apache HTTP Web Server.
         type: string
+      enabled:
+        description: Indicate if the execution environment is enabled or not
+        example: 'Yes'
+        type: boolean
       hostname:
         description: Hostname of the execution environment.
         example: 192.168.1.2
@@ -409,6 +409,7 @@ definitions:
         example: vm
         type: string
     required:
+    - enabled
     - hostname
     - id
     - lcp
@@ -962,11 +963,10 @@ definitions:
         type: string
     required:
     - id
-    - timestamp
     type: object
 info:
   title: Context Broker Manager
-  version: 1.0.1
+  version: 1.0.2
 paths:
   /catalog/agent/:
     delete:
