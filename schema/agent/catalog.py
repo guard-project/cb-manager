@@ -35,8 +35,6 @@ class Agent_Catalog_Action_Schema(Schema):
     status = Str(enum=AGENT_STATUS, example=AGENT_STATUS[0],
                  description='Update the status the of the agent-instance if the command is executed correctly.',
                  validate=validate.OneOf(AGENT_STATUS))
-    store = Bool(default=False, example=True,
-                 description='Indicate if the results of the actions are stored in the data parameter of the agent instance.')
     description = Str(example='Start the execution of the agent.',
                       description='Short description of the agent actions.')
     example = Raw(example='forward',

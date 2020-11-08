@@ -16,7 +16,6 @@ class Agent_Catalog_Action_Inner_Doc(Inner_Doc):
     """Agent action."""
     config = Nested(Agent_Catalog_Action_Config_Inner_Doc, required=True)
     status = Text()
-    store = Boolean()
     description = Text()
     example = Text()
 
