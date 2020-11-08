@@ -55,11 +55,6 @@ definitions:
         - unknown
         example: started
         type: string
-      store:
-        description: Indicate if the results of the actions are stored in the data
-          parameter of the agent instance.
-        example: true
-        type: boolean
     required:
     - config
     - id
