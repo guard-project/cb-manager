@@ -14,29 +14,73 @@ Schema
 +======================+=========================================+==========+==========+==============+==============================+
 | ``id``               | String                                  | True     | True     | False        | firewall@mysql-server        |
 +----------------------+-----------------------------------------+----------+----------+--------------+------------------------------+
-| ``agent_catalog_id`` | String                                  | True     | True     | False        |  firewall                    |
+| ``agent_catalog_id`` | String                                  | True     | True     | False        | firewall                     |
 +----------------------+-----------------------------------------+----------+----------+--------------+------------------------------+
-| ``exec_env_id``      | String                                  | True     | True     | False        |  mysql-server                |
+| ``exec_env_id``      | String                                  | True     | True     | False        | mysql-server                 |
 +----------------------+-----------------------------------------+----------+----------+--------------+------------------------------+
-| ``status``           | Enum(String){started, stopped, unknown} | True     | True     | False        |  started                     |
+| ``status``           | Enum(String){started, stopped, unknown} | True     | True     | False        | started                      |
 +----------------------+-----------------------------------------+----------+----------+--------------+------------------------------+
-| ``parameters``       | List(Parameter)                         | False    | False    | False        |                              |
+| ``operations``       | List(Operation)                         | False    | True     | False        |                              |
 +----------------------+-----------------------------------------+----------+----------+--------------+------------------------------+
 | ``description``      | String                                  | False    | False    | False        | Collect system metrics       |
 |                      |                                         |          |          |              | from execution environments. |
 +----------------------+-----------------------------------------+----------+----------+--------------+------------------------------+
 
 
+Operation Schema
+----------------
+
++----------------+-----------------+----------+----------+--------------+---------+
+| Field          | Type            | Required | Readonly | Auto Managed | Example |
++================+=================+==========+==========+==============+=========+
+| ``actions``    | List(Action)    | False    | False    | False        |         |
++----------------+-----------------+----------+----------+--------------+---------+
+| ``parameters`` | List(Parameter) | False    | False    | False        |         |
++----------------+-----------------+----------+----------+--------------+---------+
+| ``resources``  | List(Resource)  | False    | False    | False        |         |
++----------------+-----------------+----------+----------+--------------+---------+
+
+
+Action Schema
+-------------
+
++---------------+----------+----------+----------+--------------+---------------------------+
+| Field         | Type     | Required | Readonly | Auto Managed | Example                   |
++===============+==========+==========+==========+==============+===========================+
+| ``id``        | String   | True     | True     | False        | period                    |
++---------------+----------+----------+----------+--------------+---------------------------+
+| ``data``      | Raw      | True     | False    | False        | { action: forward, n: 0 } |
++---------------+----------+----------+----------+--------------+---------------------------+
+| ``timestamp`` | DateTime | True     | True     | True         | 2020-11-07T23:04:21       |
++---------------+----------+----------+----------+--------------+---------------------------+
+
+
 Parameter Schema
 ----------------
 
-+-----------+--------+----------+----------+--------------+---------+
-| Field     | Type   | Required | Readonly | Auto Managed | Example |
-+===========+========+==========+==========+==============+=========+
-| ``id``    | String | True     | True     | False        | period  |
-+-----------+--------+----------+----------+--------------+---------+
-| ``value`` | String | True     | False    | False        | 10s     |
-+-----------+--------+----------+----------+--------------+---------+
++---------------+----------+----------+----------+--------------+---------------------+
+| Field         | Type     | Required | Readonly | Auto Managed | Example             |
++===============+==========+==========+==========+==============+=====================+
+| ``id``        | String   | True     | True     | False        | period              |
++---------------+----------+----------+----------+--------------+---------------------+
+| ``value``     | String   | True     | False    | False        | 10s                 |
++---------------+----------+----------+----------+--------------+---------------------+
+| ``timestamp`` | DateTime | True     | True     | True         | 2020-11-07T23:04:21 |
++---------------+----------+----------+----------+--------------+---------------------+
+
+
+Resource Schema
+---------------
+
++---------------+----------+----------+----------+--------------+---------------------+
+| Field         | Type     | Required | Readonly | Auto Managed | Example             |
++===============+==========+==========+==========+==============+=====================+
+| ``id``        | String   | True     | True     | False        | period              |
++---------------+----------+----------+----------+--------------+---------------------+
+| ``content``   | String   | True     | False    | False        | period: 10s         |
++---------------+----------+----------+----------+--------------+---------------------+
+| ``timestamp`` | DateTime | True     | True     | True         | 2020-11-07T23:04:21 |
++---------------+----------+----------+----------+--------------+---------------------+
 
 
 .. warning::
@@ -72,17 +116,19 @@ To create a new agent instance use the following |REST| call:
             "id": "<agent-instance-id>",
             "agent_catalog_id": "<agent-id>",
             "exec_env_id": "<exec-env-id>",
-            "parameters": [
-                {
-                    "id": "<parameter-id>",
-                    "value": "<parameter-value>",
-                }
-            ],
-            "actions": [
-                {
-                    "id": "<action-id>",
-                    "mode": "<action-mode-value>"
-                }
+            "operations": [
+                "parameters": [
+                    {
+                        "id": "<parameter-id>",
+                        "value": "<parameter-value>",
+                    }
+                ],
+                "actions": [
+                    {
+                        "id": "<action-id>",
+                        "mode": "<action-mode-value>"
+                    }
+                ]
             ]
         }
 
@@ -103,16 +149,16 @@ To create a new agent instance use the following |REST| call:
     :status 500: Server not available to satisfy the request.
 
     Replace the data with the correct values, for example <agent-instance-id> with "firewall@mysql-server".
- 
+
      .. note:
 
         It is possible to add additional data specific for this agent.
-        
+
         The ``actions`` fields is used to perform the actions defined in the catalog referenced by the ``id``.
 
         Any other fields (like, in the above example, ``mode`` are used in the ``cmd`` field of
         the action defined in the :ref:`agent-catalog`.
-        
+
         For example, if ``cmd`` is "firewall set {mode}" then it will be formatted using the values of the other fields.
 
         If the action has a field ``status`` in the catalog, this field is used to update the status of the agent instance
@@ -196,7 +242,7 @@ To get the list of the agent instances:
                 }
             }
         }
-        
+
     In this way, it will be returned only the ``parameters`` of the agent instance with ``id`` = "<agent-instance-id>".
 
 
@@ -215,17 +261,19 @@ To update an agent instance, use:
 
         {
             "id": "<agent-instance-id}",
-            "parameters": [
-                {
-                    "id": "<parameter-id>",
-                    "value": "<new-parameter-value>"
-                }
-            ],
-            "actions": [
-                {
-                    "id": "<action-id>",
-                    "mode": "<new-action-mode-value>"
-                }
+            "operations": [
+                "parameters": [
+                    {
+                        "id": "<parameter-id>",
+                        "value": "<new-parameter-value>"
+                    }
+                ],
+                "actions": [
+                    {
+                        "id": "<action-id>",
+                        "mode": "<new-action-mode-value>"
+                    }
+                ]
             ]
         }
 
@@ -254,7 +302,7 @@ To update an agent instance, use:
     of the agent instance with ``id`` = "<agent-instance-id>".
 
     .. note:
-    
+
         Also during the update it is possible to add additional data (not related to actions or parameters) for the specific agent instances.
 
     A possible response is:
