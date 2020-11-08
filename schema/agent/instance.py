@@ -51,9 +51,7 @@ class Agent_Instance_Operation_Schema(Base_Schema):
     """Represents the operations to perform with the agent instance installed in an execution environment."""
 
     actions = Nested(Agent_Instance_Action_Schema, many=True, unknown='INCLUDE',
-                     description='List of agent instance actions.',
-                     validate=Unique_List.apply('id'),
-                     error_messages=Unique_List.error_messages)
+                     description='List of agent instance actions.')
     parameters = Nested(Agent_Instance_Parameter_Schema, many=True, unknown='INCLUDE',
                         description='List of agent instance parameters.',
                         validate=Unique_List.apply('id'),
@@ -82,9 +80,7 @@ class Agent_Instance_Schema(Base_Schema):
                  description='Status of the agent instance',
                  validate=validate.OneOf(AGENT_STATUS))
     actions = Nested(Agent_Instance_Action_Schema, many=True, unknown='INCLUDE',
-                     description='List of agent instance actions.',
-                     validate=Unique_List.apply('id'),
-                     error_messages=Unique_List.error_messages)
+                     description='List of agent instance actions.')
     parameters = Nested(Agent_Instance_Parameter_Schema, many=True, unknown='INCLUDE',
                         description='List of agent instance parameters.',
                         validate=Unique_List.apply('id'),
