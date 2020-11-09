@@ -109,26 +109,26 @@ class LCP(Base_LCP):
                 req_op[type].append(config)
         return catalog_docs
 
+    def __frmt(self, x, data):
+        if isinstance(x, (list, tuple)):
+            return [self.__frmt(i, data) for i in x]
+        else:
+            try:
+                return x.format(**data)
+            except Exception as e:
+                self.log.exception(e)
+                return x
+
     def __transform_action(self, action, data):
-        def frmt(x):
-            if isinstance(x, (list, tuple)):
-                return [frmt(i) for i in x]
-            else:
-                try:
-                    return x.format(**data)
-                except Exception as e:
-                    self.log.exception(e)
-                    return x
+        return valmap(lambda x: self.__frmt(x, data), action)
 
-        return valmap(lambda x: frmt(x), action)
+    def __transform_parameter(self, parameter, data):
+        p = expand(parameter, value=data.get('value', None))
+        return valmap(lambda x: self.__frmt(x, data), p)
 
-    @staticmethod
-    def __transform_parameter(parameter, data):
-        return expand(parameter, value=data.get('value', None))
-
-    @staticmethod
-    def __transform_resource(resource, data):
-        return expand(resource, content=data.get('content', None).format(**data))
+    def __transform_resource(self, resource, data):
+        r = expand(resource, content=data.get('content', None))
+        return valmap(lambda x: self.__frmt(x, data), r)
 
     def __save(self, instance, data, type, catalogs, handler):
         results = filter(lambda r: r.get('type', None) == type, data)
