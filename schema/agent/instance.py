@@ -76,40 +76,6 @@ class Agent_Instance_Schema(Base_Schema):
                       description='Id of the execution environment where the agent instance is installed.',
                       validate=In.apply(Exec_Env_Document.get_ids),
                       error_messages=In.error_messages)
-    status = Str(required=True, readonly=True, enum=AGENT_STATUS, example=AGENT_STATUS[0],
-                 description='Status of the agent instance',
-                 validate=validate.OneOf(AGENT_STATUS))
-    actions = Nested(Agent_Instance_Action_Schema, many=True, unknown='INCLUDE',
-                     description='List of agent instance actions.')
-    parameters = Nested(Agent_Instance_Parameter_Schema, many=True, unknown='INCLUDE',
-                        description='List of agent instance parameters.',
-                        validate=Unique_List.apply('id'),
-                        error_messages=Unique_List.error_messages)
-    resources = Nested(Agent_Instance_Resource_Schema, many=True, unknown='INCLUDE',
-                       description='List of agent instance resources.',
-                       validate=Unique_List.apply('id'),
-                       error_messages=Unique_List.error_messages)
-    description = Str(example='Collect system metrics from execution environments.',
-                      description='Short description of the agent installed in the execution environment.')
-
-
-class Agent_Instance_Request_Schema(Base_Schema):
-    """Represents an agent instance installed in an execution environment."""
-    doc = Agent_Instance_Document
-
-    id = Str(required=True, example='filebeat@apache',
-             description='Id of the agent instance installed in an execution environment.')
-    agent_catalog_id = Str(required=True, readonly=True, example='filebeat',
-                           description='Id of the agent in the catalog.',
-                           validate=In.apply(Agent_Catalog_Document.get_ids),
-                           error_messages=In.error_messages)
-    exec_env_id = Str(required=True, readonly=True, example='apache',
-                      description='Id of the execution environment where the agent instance is installed.',
-                      validate=In.apply(Exec_Env_Document.get_ids),
-                      error_messages=In.error_messages)
-    status = Str(required=True, readonly=True, enum=AGENT_STATUS, example=AGENT_STATUS[0],
-                 description='Status of the agent instance',
-                 validate=validate.OneOf(AGENT_STATUS))
     operations = Nested(Agent_Instance_Operation_Schema, unknown='INCLUDE',
                      description='List of agent instance operations.')
     description = Str(example='Collect system metrics from execution environments.',
