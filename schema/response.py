@@ -1,6 +1,6 @@
 from lib.response import *
 from marshmallow import Schema, validate
-from marshmallow.fields import Bool, Constant, Integer, Nested, Str
+from marshmallow.fields import Bool, Constant, Integer, Nested, Raw, Str
 
 
 __all__ = [
@@ -53,7 +53,7 @@ RESPONSE_CODES = [
 
 
 class Exception_Response_Schema(Schema):
-    reason = Str(required=True, example='Connection timeout',
+    reason = Raw(required=True, example='Connection timeout',
                  description='Exception reason.')
     filename = Str(required=True, example='lib/connection.py',
                    description='Filename where the exception is raised.')

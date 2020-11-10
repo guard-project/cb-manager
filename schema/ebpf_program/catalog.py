@@ -37,11 +37,11 @@ class eBPF_Program_Catalog_Config_Metric_Schema(Schema):
 
     name = Str(required=True, example='packets_total',
                description='Metric name.')
-    map_name = Str(data_key='map-name', required=True, example='PKT_COUNTER',
+    map_name = Str(required=True, example='PKT_COUNTER',data_key='map-name',
                    description='Mapping value in the code.')
     open_metrics_metadata = Nested(eBPF_Program_Catalog_Config_Metric_Open_Metrics_Metadata_Schema,
-                                   data_key='open-metrics-metadata', unknown='INCLUDE',
-                                   description='Open Metrics Metadata.')
+                                   data_key='open-metrics-metadata',
+                                   unknown='INCLUDE', description='Open Metrics Metadata.')
 
 
 class eBPF_Program_Catalog_Config_Schema(Schema):

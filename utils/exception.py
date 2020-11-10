@@ -1,6 +1,7 @@
 from pathlib import Path
+from utils.json import loads
 
-import os
+import re
 import sys
 
 __all__ = [
@@ -15,7 +16,7 @@ def extract_info(exception):
     try:
         reason = eval(str(exception))
     except Exception:
-        reason = str(exception)
+        reason = str(exception) # FIXME if exception is in a JSON format
     return dict(reason=reason, filename=filename, line=exc_tb.tb_lineno)
 
 

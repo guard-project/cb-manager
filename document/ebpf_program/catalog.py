@@ -22,7 +22,7 @@ class eBPF_Program_Catalog_Config_Metric_Open_Metrics_Metadata_Inner_Doc(Inner_D
 class eBPF_Program_Catalog_Config_Metric_Inner_Doc(Inner_Doc):
     """eBPF program metric data."""
     name = Text(required=True)
-    map_name = Text(required=True)
+    map_name = Text() # FIXME required=True (map-name the correct name)
     open_metrics_metadata = Nested(
         eBPF_Program_Catalog_Config_Metric_Open_Metrics_Metadata_Inner_Doc)
 

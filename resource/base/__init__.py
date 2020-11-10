@@ -87,14 +87,20 @@ class Base_Resource(Base_Minimal_Resource):
                         self.rm_ignore_fields(req_data)
                         obj = self.doc(meta=dict(id=req_data_id),
                                        **req_data)
-                        obj.save()
                         msg = f'{self.name.capitalize()} with the id={req_data_id} correctly created'
                         resp_data_lcp = []
                         resp_data = Created_Response(msg)
                         hndl = self.get_lcp_handler(HTTP_Method.POST)
                         hndl(instance=obj, req=req_data_lcp, resp=resp_data_lcp)
                         if len(resp_data_lcp) > 0:
-                            resp_data.update(operations=resp_data_lcp)
+                            for rdl in resp_data_lcp:
+                                if rdl['error']:
+                                    msg = f'Not possible to create a {self.name} with the id={req_data_id}'
+                                    resp_data = Unprocessable_Entity_Response(msg)
+                                    break
+                            resp_data.update(lcp_response=resp_data_lcp)
+                        if not resp_data.error:
+                            obj.save()
                         resp_data.add(resp)
                     except Exception as e:
                         self.log.exception(e)
@@ -141,7 +147,7 @@ class Base_Resource(Base_Minimal_Resource):
                                 msg = f'{self.name.capitalize()} with the id={req_data_id} no need to update'
                                 resp_data = Not_Modified_Response(msg)
                             if len(resp_data_lcp) > 0:
-                                resp_data.update(operations=resp_data_lcp)
+                                resp_data.update(lcp_response=resp_data_lcp)
                             resp_data.add(resp)
                     except Exception as e:
                         self.log.exception(e)
@@ -168,14 +174,21 @@ class Base_Resource(Base_Minimal_Resource):
                     for hit in hits:
                         try:
                             obj = self.doc.get(id=hit.meta.id)
-                            obj.delete()
+
                             msg = f'{self.name.capitalize()} with the id={hit.meta.id} correctly deleted'
                             resp_data_lcp = []
                             resp_data = Reset_Content_Response(msg)
                             hndl = self.get_lcp_handler(HTTP_Method.DELETE)
                             hndl(instance=obj, req=hit, resp=resp_data_lcp)
                             if len(resp_data_lcp) > 0:
-                                resp_data.update(operation=resp_data_lcp)
+                                for rdl in resp_data_lcp:
+                                    if rdl['error']:
+                                        msg = f'Not possible to delete the {self.name} with the id={hit.meta.id}'
+                                        resp_data = Unprocessable_Entity_Response(msg)
+                                        break
+                                resp_data.update(lcp_response=resp_data_lcp)
+                            if not resp_data.error:
+                                obj.delete()
                             resp_data.add(resp)
                         except Exception as e:
                             self.log.exception(e)
