@@ -58,10 +58,7 @@ class Base_Resource(Base_Minimal_Resource):
                 resp_data = [dict(hit.to_dict(), id=hit.meta.id)
                              for hit in s.execute()]
                 if len(resp_data) > 0:
-                    resp_data, valid = self.schema(many=True, partial=True, unknown='INCLUDE',
-                                            method=HTTP_Method.GET).validate(data=resp_data,
-                                                                             response_type=Content_Response)
-                    resp_data.apply(resp)
+                    Content_Response(resp_data).apply(resp)
                 else:
                     msg = f'{self.name.capitalize()} based on the request {{query}} not found'
                     Not_Found_Response(msg, query=req_data).apply(resp)
