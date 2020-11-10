@@ -49,7 +49,7 @@ definitions:
       status:
         description: Update the status the of the agent-instance if the command is
           executed correctly.
-        enum: &id001
+        enum:
         - started
         - stopped
         - unknown
@@ -99,7 +99,7 @@ definitions:
         type: boolean
       type:
         description: Parameter type.
-        enum: &id002
+        enum: &id001
         - binary
         - boolean
         - choice
@@ -175,11 +175,6 @@ definitions:
     type: object
   Agent_Instance:
     properties:
-      actions:
-        description: List of agent instance actions.
-        items:
-          $ref: '#/definitions/Agent_Instance_Action'
-        type: array
       agent_catalog_id:
         description: Id of the agent in the catalog.
         example: filebeat
@@ -196,26 +191,14 @@ definitions:
         description: Id of the agent instance installed in an execution environment.
         example: filebeat@apache
         type: string
-      parameters:
-        description: List of agent instance parameters.
-        items:
-          $ref: '#/definitions/Agent_Instance_Parameter'
-        type: array
-      resources:
-        description: List of agent instance resources.
-        items:
-          $ref: '#/definitions/Agent_Instance_Resource'
-        type: array
-      status:
-        description: Status of the agent instance
-        enum: *id001
-        example: started
-        type: string
+      operations:
+        allOf:
+        - $ref: '#/definitions/Agent_Instance_Operation'
+        description: List of agent instance operations.
     required:
     - agent_catalog_id
     - exec_env_id
     - id
-    - status
     type: object
   Agent_Instance_Action:
     properties:
@@ -232,6 +215,24 @@ definitions:
         type: string
     required:
     - id
+    type: object
+  Agent_Instance_Operation:
+    properties:
+      actions:
+        description: List of agent instance actions.
+        items:
+          $ref: '#/definitions/Agent_Instance_Action'
+        type: array
+      parameters:
+        description: List of agent instance parameters.
+        items:
+          $ref: '#/definitions/Agent_Instance_Parameter'
+        type: array
+      resources:
+        description: List of agent instance resources.
+        items:
+          $ref: '#/definitions/Agent_Instance_Resource'
+        type: array
     type: object
   Agent_Instance_Parameter:
     properties:
@@ -371,7 +372,6 @@ definitions:
       reason:
         description: Exception reason.
         example: Connection timeout
-        type: string
     required:
     - filename
     - line
@@ -906,7 +906,7 @@ definitions:
         type: boolean
       type:
         description: Parameter type.
-        enum: *id002
+        enum: *id001
         example: integer
         type: string
       values:
