@@ -9,7 +9,7 @@ class Agent_Catalog_Action_Config_Inner_Doc(Inner_Doc):
     """Agent action configuration."""
     cmd = Text(required=True)
     args = Text()
-    daemon = Text()
+    daemon = Boolean()
 
 
 class Agent_Catalog_Action_Inner_Doc(Inner_Doc):

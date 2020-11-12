@@ -14,3 +14,4 @@
 ## 1.0.2
 
 - Fix error to get exact match in query.
+- Improved execution of action as daemon.

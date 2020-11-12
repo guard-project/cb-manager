@@ -21,8 +21,8 @@ class Agent_Catalog_Action_Config_Schema(Schema):
               description='Action command.')
     args = Str(many=True, example='-v',
                description='Action command argument')
-    daemon = Str(example='firewall',
-                 description='Key used to execute the command as daemon.')
+    daemon = Bool(default=False, example=True,
+                 description='Execute the command as daemon.')
 
 
 class Agent_Catalog_Action_Schema(Schema):
