@@ -1,5 +1,5 @@
 from marshmallow import validate
-from marshmallow.fields import Integer, List, Nested, Str
+from marshmallow.fields import Boolean, Integer, List, Nested, Str
 from schema.base import Base_Schema
 from schema.validate import Unique_List
 
@@ -77,3 +77,5 @@ class Query_Request_Schema(Base_Schema):
                    description='Order the filtered items.')
     limit = Nested(Query_Request_Limit_Schema,
                    description='Limit the number of items to return.')
+    force = Boolean(default=False, example=True,
+                    description='Force the execution of the request even there are some errors (example: delete a inconstent entries.')

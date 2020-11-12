@@ -612,6 +612,11 @@ definitions:
     type: object
   Query_Request:
     properties:
+      force:
+        description: 'Force the execution of the request even there are some errors
+          (example: delete a inconstent entries.'
+        example: true
+        type: boolean
       limit:
         allOf:
         - $ref: '#/definitions/Query_Request_Limit'

@@ -15,3 +15,4 @@
 
 - Fix error to get exact match in query.
 - Improved execution of action as daemon.
+- Force execution of request even if the LCP operation failed.
