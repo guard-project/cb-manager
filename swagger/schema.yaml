@@ -832,7 +832,9 @@ definitions:
     properties:
       code:
         description: Code of the eBPF program.
-        type: string
+        items:
+          type: string
+        type: array
       metrics:
         description: eBPF program metrics.
         items:

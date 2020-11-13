@@ -4,6 +4,7 @@ from marshmallow.fields import Bool, Nested, Raw, Str
 from schema.agent.catalog import PARAMETER_TYPES
 from schema.base import Base_Schema
 from schema.validate import Unique_List
+from utils.schema import List_or_One
 
 __all__ = [
     'eBPF_Program_Catalog_Schema'
@@ -47,8 +48,8 @@ class eBPF_Program_Catalog_Config_Metric_Schema(Schema):
 class eBPF_Program_Catalog_Config_Schema(Schema):
     """eBPF program configuration."""
 
-    code = Str(required=True,
-               description='Code of the eBPF program.')
+    code = List_or_One(Str, required=True,
+                       description='Code of the eBPF program.')
     metrics = Nested(eBPF_Program_Catalog_Config_Metric_Schema, many=True, unknown='INCLUDE',
                      description='eBPF program metrics.',
                      validate=Unique_List.apply('name'),
