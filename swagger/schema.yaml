@@ -358,6 +358,15 @@ definitions:
     required:
     - id
     type: object
+  Event:
+    properties:
+      id:
+        description: Id of the event.
+        example: BXrHRn5RPU55Qh9JwMZn
+        type: string
+    required:
+    - id
+    type: object
   Exception_Response:
     properties:
       filename:
@@ -3690,6 +3699,458 @@ paths:
       summary: < Ebpf program Update (Single).
       tags:
       - ebpf-program-instance
+  /event/:
+    delete:
+      description: Delete the event with the given `id` and filtered by the query
+        in the request body.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Query_Request'
+      responses:
+        '205':
+          description: < Event with the given `id` correctly deleted.
+          schema:
+            items:
+              $ref: '#/definitions/Reset_Content_Response'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '404':
+          description: < Event with the given `id` and based on the request query
+            not found.
+          schema:
+            $ref: '#/definitions/Not_Found_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to delete the event with the given `id` and based
+            on the request query.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Event Delete (Single).
+      tags:
+      - event
+    get:
+      description: Get the event with the given `id` and filtered by the query in
+        the request body.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Query_Request'
+      responses:
+        '200':
+          description: < Event with the given `id` and filtered by the query in the
+            request body.
+          schema:
+            items:
+              $ref: '#/definitions/Event'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '404':
+          description: < Event based on the request _query_ not found.
+          schema:
+            $ref: '#/definitions/Not_Found_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to get event with the request _query_.
+          schema:
+            $ref: '#/definitions/Unprocessable_Entity_Response'
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Event Read (Single).
+      tags:
+      - event
+    post:
+      description: Create a new event with the given `id`.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/Event'
+          type: array
+      responses:
+        '201':
+          description: < Event with the given `id` correctly created.
+          schema:
+            items:
+              $ref: '#/definitions/Created_Response'
+            type: array
+        '204':
+          description: No content to create the event with the given `id` and based
+            on the request.
+          schema:
+            $ref: '#/definitions/No_Content_Response'
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to create the event with the given `id` and based
+            on the request.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Event Create (Single).
+      tags:
+      - event
+    put:
+      description: Update the event with the given `id`.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/Event'
+          type: array
+      responses:
+        '200':
+          description: < Event with the given `id` correctly updated.
+          schema:
+            items:
+              $ref: '#/definitions/Ok_Response'
+            type: array
+        '204':
+          description: No content to update event with the given `id` and based on
+            the request.
+          schema:
+            $ref: '#/definitions/No_Content_Response'
+        '304':
+          description: Update of the event with the given `id` not necessary.
+          schema:
+            items:
+              $ref: '#/definitions/Not_Modified_Response'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to update the event with the given `id` and based
+            on the request.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Event Update (Single).
+      tags:
+      - event
+  /event/{id}:
+    delete:
+      description: Delete the event with the given `id` and filtered by the query
+        in the request body.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Query_Request'
+      responses:
+        '205':
+          description: < Event with the given `id` correctly deleted.
+          schema:
+            items:
+              $ref: '#/definitions/Reset_Content_Response'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '404':
+          description: < Event with the given `id` and based on the request query
+            not found.
+          schema:
+            $ref: '#/definitions/Not_Found_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to delete the event with the given `id` and based
+            on the request query.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Event Delete (Single).
+      tags:
+      - event
+    get:
+      description: Get the event with the given `id` and filtered by the query in
+        the request body.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Query_Request'
+      responses:
+        '200':
+          description: < Event with the given `id` and filtered by the query in the
+            request body.
+          schema:
+            items:
+              $ref: '#/definitions/Event'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '404':
+          description: < Event based on the request _query_ not found.
+          schema:
+            $ref: '#/definitions/Not_Found_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to get event with the request _query_.
+          schema:
+            $ref: '#/definitions/Unprocessable_Entity_Response'
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Event Read (Single).
+      tags:
+      - event
+    post:
+      description: Create a new event with the given `id`.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/Event'
+          type: array
+      responses:
+        '201':
+          description: < Event with the given `id` correctly created.
+          schema:
+            items:
+              $ref: '#/definitions/Created_Response'
+            type: array
+        '204':
+          description: No content to create the event with the given `id` and based
+            on the request.
+          schema:
+            $ref: '#/definitions/No_Content_Response'
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to create the event with the given `id` and based
+            on the request.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Event Create (Single).
+      tags:
+      - event
+    put:
+      description: Update the event with the given `id`.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/Event'
+          type: array
+      responses:
+        '200':
+          description: < Event with the given `id` correctly updated.
+          schema:
+            items:
+              $ref: '#/definitions/Ok_Response'
+            type: array
+        '204':
+          description: No content to update event with the given `id` and based on
+            the request.
+          schema:
+            $ref: '#/definitions/No_Content_Response'
+        '304':
+          description: Update of the event with the given `id` not necessary.
+          schema:
+            items:
+              $ref: '#/definitions/Not_Modified_Response'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to update the event with the given `id` and based
+            on the request.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Event Update (Single).
+      tags:
+      - event
   /exec-env/:
     delete:
       description: Delete the execution environment with the given `id` and filtered
@@ -5545,6 +6006,10 @@ tags:
   name: ebpf-program-instance
 - description: Represents an eBPF program instance installed in an execution environment.
   name: ebpf-program-instance
+- description: Represents the stored events.
+  name: event
+- description: Represents the stored events.
+  name: event
 - description: Represents an execution environment.
   name: exec-env
 - description: Represents an execution environment.

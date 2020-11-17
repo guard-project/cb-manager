@@ -3,6 +3,7 @@ from resource.connection import *
 from resource.dashboard import *
 from resource.data import *
 from resource.ebpf_program import *
+from resource.event import *
 from resource.exec_env import *
 from resource.network_link import *
 from utils.log import Log
@@ -20,6 +21,7 @@ db = [
     Data_Resource, Data_Selected_Resource,
     eBPF_Program_Catalog_Resource, eBPF_Program_Catalog_Selected_Resource,
     eBPF_Program_Instance_Resource, eBPF_Program_Instance_Selected_Resource,
+    Event_Resource, Event_Selected_Resource,
     Exec_Env_Resource, Exec_Env_Selected_Resource,
     Exec_Env_Type_Resource, Exec_Env_Type_Selected_Resource,
     Network_Link_Resource, Network_Link_Selected_Resource,
