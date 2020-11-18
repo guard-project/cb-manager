@@ -40,7 +40,6 @@ def heartbeat():
                     lcp.username = lcp.password = lcp.last_heartbeat = None
             else:
                 exec_env.enabled = False # if the field is None in the record
-                lcp.username = lcp.password = lcp.last_heartbeat = None
                 log.notice(f'Exec-env {id} at {exec_env.hostname} not enabled')
         except Exception as exception:
             log.error(f'Exception: {exception}')
