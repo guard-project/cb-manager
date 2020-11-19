@@ -1,9 +1,9 @@
-.. _event:
+.. _algorithm:
 
-Event
-=====
+Algorithm
+=========
 
-This index stores all the incoming events.
+This index stores all the algorithm data.
 
 Schema
 ------
@@ -28,39 +28,39 @@ Schema
 Create
 ------
 
-To create a new event use the following |REST| call:
+To create a new algorithm use the following |REST| call:
 
-.. http:post:: /event/(string:id)
+.. http:post:: /algorithm/(string:id)
 
     with the request body in |JSON| format:
 
     .. sourcecode:: http
 
-        POST /event HTTP/1.1
+        POST /algorithm HTTP/1.1
         Host: cb-manager.example.com
         Content-Type: application/json
 
         {
-            "id": "<event-id>"
+            "id": "<algorithm-id>"
         }
 
-    :param id: optional event id.
+    :param id: optional algorithm id.
 
     :reqheader Authorization: HTTP Basic Authentication with username and password.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
 
-    :status 201: Event correctly created.
-    :status 204: No content to create event based on the request.
+    :status 201: Algorithm correctly created.
+    :status 204: No content to create algorithm based on the request.
     :status 400: Request not valid.
     :status 401: Authentication failed.
     :status 406: Request validation failed.
     :status 415: Media type not supported.
-    :status 422: Not possible to create ore or more events based on the request.
+    :status 422: Not possible to create ore or more algorithms based on the request.
     :status 500: Server not available to satisfy the request.
 
-    Replace the data with the correct values, for example <event-id> with ``alert-attack``.
+    Replace the data with the correct values, for example <algorithm-id> with ``ddos-analysis``.
 
     .. note::
 
@@ -78,11 +78,11 @@ To create a new event use the following |REST| call:
                 "status": "Created",
                 "code": 201,
                 "error": false,
-                "message": "Event with id=<event-id> correctly created"
+                "message": "Algorithm with id=<algorithm-id> correctly created"
             }
         ]
 
-    Otherwise, if, for example, an event with the given ``id`` is already found, this is the response:
+    Otherwise, if, for example, an algorithm with the given ``id`` is already found, this is the response:
 
     .. sourcecode:: http
 
@@ -102,17 +102,17 @@ To create a new event use the following |REST| call:
 Read
 ----
 
-To get the list of events:
+To get the list of algorithms:
 
-.. http:get:: /event/(string: id)
+.. http:get:: /algorithm/(string: id)
 
-    The response includes all the events created.
+    The response includes all the algorithms created.
 
     It is possible to filter the results using the following request body:
 
     .. sourcecode:: http
 
-        GET /event HTTP/1.1
+        GET /algorithm HTTP/1.1
         Host: cb-manager.example.com
         Content-Type: application/json
 
@@ -121,66 +121,66 @@ To get the list of events:
             "where": {
                 "equals": {
                     "target:" "id",
-                    "expr": "<event-id>"
+                    "expr": "<algorithm-id>"
                 }
             }
         }
 
-    :param id: optional event id.
+    :param id: optional algorithm id.
 
     :reqheader Authorization: HTTP Basic Authentication with username and password.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
 
-    :status 200: List of events filtered by the query in the request body.
+    :status 200: List of algorithms filtered by the query in the request body.
     :status 400: Request not valid.
     :status 401: Authentication failed.
-    :status 404: Event based on the request query not found.
+    :status 404: Algorithm based on the request query not found.
     :status 406: Request validation failed.
     :status 415: Media type not supported.
-    :status 422: Not possible to get events with the request query.
+    :status 422: Not possible to get algorithms with the request query.
     :status 500: Server not available to satisfy the request.
 
-    In this way, it will be returned only the ``id`` of the event with ``id`` = "<event-id>".
+    In this way, it will be returned only the ``id`` of the algorithm with ``id`` = "<algorithm-id>".
 
 
 Update
 ------
 
-To update an event, use:
+To update an algorithm, use:
 
-.. http:put:: /event/(string:id)
+.. http:put:: /algorithm/(string:id)
 
     .. sourcecode:: http
 
-        PUT /event HTTP/1.1
+        PUT /algorithm HTTP/1.1
         Host: cb-manager.example.com
         Content-Type: application/json
 
         {
-            "id": "<event-id>",
-            "source": "<ip-address>"
+            "id": "<algorithm-id>",
+            "period": "<seconds>"
         }
 
-    :param id: optional event id.
+    :param id: optional algorithm id.
 
     :reqheader Authorization: HTTP Basic Authentication with username and password.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
 
-    :status 200: All events correctly updated.
-    :status 204: No content to update events based on the request.
-    :status 304: Update for one or more events not necessary.
+    :status 200: All algorithms correctly updated.
+    :status 204: No content to update algorithms based on the request.
+    :status 304: Update for one or more algorithms not necessary.
     :status 400: Request not valid.
     :status 401: Authentication failed.
     :status 406: Request validation failed.
     :status 415: Media type not supported.
-    :status 422: Not possible to update one or more events based on the request.
+    :status 422: Not possible to update one or more algorithms based on the request.
     :status 500: Server not available to satisfy the request.
 
-    This example add a new field ``source`` for the event with ``id`` = "<event-id>".
+    This example add a new field ``period`` for the algorithm with ``id`` = "<algorithm-id>".
 
     A possible response is:
 
@@ -194,7 +194,7 @@ To update an event, use:
                 "status": "OK",
                 "code": 200,
                 "error": false,
-                "message": "Event with id=<event-id> correctly updated"
+                "message": "Algorithm with id=<algorithm-id> correctly updated"
             }
         ]
 
@@ -210,7 +210,7 @@ To update an event, use:
                 "status": "Not Modified",
                 "code": 304,
                 "error": false,
-                "message": "Update for event with id=<event-id> not necessary"
+                "message": "Update for algorithm with id=<algorithm-id> not necessary"
             }
         ]
 
@@ -218,13 +218,13 @@ To update an event, use:
 Delete
 ------
 
-To delete events, use:
+To delete algorithms, use:
 
-.. http:delete:: /event/(string:id)
+.. http:delete:: /algorithm/(string:id)
 
     .. sourcecode:: http
 
-        DELETE /event HTTP/1.1
+        DELETE /algorithm HTTP/1.1
         Host: cb-manager.example.com
         Content-Type: application/json
 
@@ -232,28 +232,28 @@ To delete events, use:
             "where": {
                 "equals": {
                     "target:" "id",
-                    "expr": "<event-id>"
+                    "expr": "<algorithm-id>"
                 }
             }
         }
 
-    :param id: optional event id.
+    :param id: optional algorithm id.
 
     :reqheader Authorization: HTTP Basic Authentication with username and password.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
 
-    :status 205: All events correctly deleted.
+    :status 205: All algorithms correctly deleted.
     :status 400: Request not valid.
     :status 401: Authentication failed.
-    :status 404: Event based on the request query not found.
+    :status 404: Algorithm based on the request query not found.
     :status 406: Request validation failed.
     :status 415: Media type not supported.
-    :status 422: Not possible to delete one or more events based on the request query.
+    :status 422: Not possible to delete one or more algorithms based on the request query.
     :status 500: Server not available to satisfy the request.
 
-    This request removes the event with ``id`` = "<event-id>".
+    This request removes the algorithm with ``id`` = "<algorithm-id>".
 
     This is a possible response:
 
@@ -267,13 +267,13 @@ To delete events, use:
                 "status": "Reset Content",
                 "code": 200,
                 "error": false,
-                "message": "Event with id=<event-id> correctly deleted"
+                "message": "Algorithm with id=<algorithm-id> correctly deleted"
             }
         ]
 
     .. caution::
 
-        Without request body, it removes **all** the events.
+        Without request body, it removes **all** the algorithms.
 
 
 .. |JSON| replace:: :abbr:`JSON (JavaScript Object Notation)`

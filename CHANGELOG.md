@@ -18,3 +18,5 @@
 - Force execution of request even if the LCP operation failed.
 - Accept list of strings for eBPF-Program code.
 - Added Event management.
+- Added Algorithm management.
+- Fixed heartbeat period.
