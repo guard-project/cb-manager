@@ -16,7 +16,7 @@ __all__ = [
 def heartbeat():
     """Heartbeat procedure with the LCPs."""
     s = Exec_Env_Document.search()
-    res = s.execute()
+    res = s[0:s.count()].execute()
     threads = []
     for exec_env in res:
         if exec_env.lcp:
@@ -28,6 +28,7 @@ def heartbeat():
     t = Timer(Arg_Reader.db.hb_period, heartbeat)
     t.daemon = True
     t.start()
+
 
 def heartbeat_exec_env(exec_env):
     log = Log.get('heartbeat')

@@ -15,4 +15,4 @@ class Base_Document(Document):
     @classmethod
     def get_ids(cls):
         s = cls.search()
-        return [doc.meta.id for doc in s.execute()]
+        return [doc.meta.id for doc in s[0:s.count()].execute()]

@@ -20,7 +20,8 @@ class Query_Reader:
             self.__order(query)
             self.__limit(query)
         except Request_Error as req_err:
-            raise HTTP_Bad_Request(title=req_err.error, description=req_err.info)
+            raise HTTP_Bad_Request(title=req_err.error,
+                                   description=req_err.info)
         except HTTP_Bad_Request as http_bad_req:
             raise http_bad_req
         except Exception as exception:
@@ -42,20 +43,22 @@ class Query_Reader:
                         if q is None:
                             q = self.__where(dict(where={sub_op: sub_clause}))
                         else:
-                            q = q & self.__where(dict(where={sub_op: sub_clause}))
+                            q = q & self.__where(
+                                dict(where={sub_op: sub_clause}))
                 elif is_list(clause):
                     for sub_clause in clause:
                         if q is None:
                             q = self.__where(dict(where=sub_clause))
                         else:
-                           q = q & self.__where(dict(where=sub_clause))
+                            q = q & self.__where(dict(where=sub_clause))
             elif op == 'or':
                 if is_dict(clause):
                     for sub_op, sub_clause in clause.items():
                         if q is None:
                             q = self.__where(dict(where={sub_op: sub_clause}))
                         else:
-                            q = q | self.__where(dict(where={sub_op: sub_clause}))
+                            q = q | self.__where(
+                                dict(where={sub_op: sub_clause}))
                 elif is_list(clause):
                     for sub_clause in clause:
                         if q is None:
@@ -103,13 +106,9 @@ class Query_Reader:
 
     def __limit(self, query):
         limit = query.get('limit', {})
-        start = limit.get('from', None)
-        end = limit.get('to', None)
-        if end is None:
-            if start is not None:
-                self.s = self.s[start:]
-        else:
-            self.s = self.s[start:(end + 1)]
+        start = limit.get('from', 0)
+        end = limit.get('to', self.s.count() - 1)
+        self.s = self.s[start:(end + 1)]
 
     @staticmethod
     def __fix_target(prop):
