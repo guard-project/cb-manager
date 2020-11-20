@@ -50,11 +50,8 @@ def heartbeat_exec_env(exec_env):
                 log.warning(f'Reset LCP connection with {id}')
                 log.notice(f'response: {resp.content}')
                 lcp.username = lcp.password = lcp.last_heartbeat = None
+            exec_env.save()
         else:
-            exec_env.enabled = False # if the field is None in the record
             log.notice(f'Exec-env {id} at {exec_env.hostname} not enabled')
     except Exception as exception:
         log.error(f'Exception: {exception}')
-        lcp.username = lcp.password = lcp.last_heartbeat = None
-    else:
-        exec_env.save()
