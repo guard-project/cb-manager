@@ -19,9 +19,10 @@ def heartbeat():
     res = s.execute()
     threads = []
     for exec_env in res:
-        t = Thread(target=heartbeat_exec_env, args=(exec_env,))
-        threads.append(t)
-        t.start()
+        if exec_env.lcp:
+            t = Thread(target=heartbeat_exec_env, args=(exec_env,))
+            threads.append(t)
+            t.start()
     for t in threads:
         t.join()
     t = Timer(Arg_Reader.db.hb_period, heartbeat)

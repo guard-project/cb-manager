@@ -21,7 +21,7 @@ class Exec_Env_Document(Base_Document):
     # id already defined by Elasticsearch
     hostname = Text(required=True)
     type_id = Text(required=True)
-    lcp = Nested(LCP_Document_Inner_Doc, required=True)
+    lcp = Nested(LCP_Document_Inner_Doc)
     description = Text()
     enabled = Boolean(required=True)
 
