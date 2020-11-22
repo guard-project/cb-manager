@@ -4,6 +4,7 @@ from document.exec_env import Exec_Env_Document
 from lib.http import HTTP_Status
 from requests import post
 from threading import Thread, Timer
+from urllib3.exceptions import ConnectTimeoutError, NewConnectionError
 from utils.datetime import datetime_from_str, datetime_to_str
 from utils.hash import generate_password, hash
 from utils.log import Log
@@ -53,6 +54,10 @@ def heartbeat_exec_env(exec_env):
                 lcp.username = lcp.password = lcp.last_heartbeat = None
             exec_env.save()
         else:
-            log.notice(f'Exec-env {id} at {exec_env.hostname} not enabled')
+            log.notice(f'Exec-env {id} (LCP at {exec_env.hostname}:{lcp.port}) not enabled')
+    except NewConnectionError as exception:
+        log.error(f'Exec-env {id} (LCP at {exec_env.hostname}:{lcp.port}) connection refused')
+    except ConnectTimeoutError as exception:
+        log.error(f'Exec-env {id} (LCP at {exec_env.hostname}:{lcp.port}) connection timeout')
     except Exception as exception:
         log.error(f'Exception: {exception}')
