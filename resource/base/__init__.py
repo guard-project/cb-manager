@@ -139,6 +139,7 @@ class Base_Resource(Base_Minimal_Resource):
                             resp_data = Ok_Response(f'{self.name.capitalize()} with the id={req_data_id} correctly updated')
                             if len(resp_data_lcp) > 0:
                                 for rdl in resp_data_lcp:
+                                    print(rdl)
                                     if rdl['error']:
                                         resp_data = Unprocessable_Entity_Response(f'Not possible to update a {self.name} with the id={req_data_id}')
                                         break
