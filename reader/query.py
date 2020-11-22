@@ -16,9 +16,9 @@ class Query_Reader:
     def parse(self, query, id=None):
         try:
             self.__select(query)
-            self.__limit(query)
             self.s.query = self.__where(query, id=id)
             self.__order(query)
+            self.__limit(query)
         except Request_Error as req_err:
             raise HTTP_Bad_Request(title=req_err.error,
                                    description=req_err.info)
