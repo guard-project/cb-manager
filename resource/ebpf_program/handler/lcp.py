@@ -5,6 +5,7 @@ from requests import post as post_req, put as put_req, delete as delete_req
 from requests.auth import HTTPBasicAuth as HTTP_Basic_Auth
 from resource.base.handler.lcp import LCP as Base_LCP
 from utils.log import Log
+from utils.sequence import wrap
 
 __all__ = [
     'LCP'
@@ -65,7 +66,7 @@ class LCP(Base_LCP):
                              json=data(self.catalog))
         if resp_caller.content:
             try:
-                self.resp.append(resp_caller.json())
+                self.resp.extend(wrap(resp_caller.json()))
             except Exception as e:
                 self.log.exception(e)
                 msg = f'Response from LCP({exec_env.meta.id}@{exec_env.hostname}:{exec_env.lcp.port}) not valid'

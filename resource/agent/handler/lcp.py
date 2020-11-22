@@ -79,7 +79,7 @@ class LCP(Base_LCP):
                                                      handler=self.__save_resource)
                         if save_actions or save_parameters or save_resources:
                             instance.save()
-                        self.resp.append(resp_lcp_data)
+                        self.resp.extend(wrap(resp_lcp_data))
                         return True
                 except Exception as e:
                     self.log.exception(e)
