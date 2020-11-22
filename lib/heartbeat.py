@@ -56,8 +56,8 @@ def heartbeat_exec_env(exec_env):
         else:
             log.notice(f'Exec-env {id} (LCP at {exec_env.hostname}:{lcp.port}) not enabled')
     except ConnectTimeout as exception:
-        log.error(f'Exec-env {id} (LCP at {exec_env.hostname}:{lcp.port}) connection timeout')
+        log.error(f'Connection timeout with exec-env {id} (LCP at {exec_env.hostname}:{lcp.port})')
     except ConnectionError as exception:
-        log.error(f'Exec-env {id} (LCP at {exec_env.hostname}:{lcp.port}) connection refused')
+        log.error(f'Connection refused with exec-env {id} (LCP at {exec_env.hostname}:{lcp.port})')
     except Exception as exception:
         log.error(f'Exception: {exception}')
