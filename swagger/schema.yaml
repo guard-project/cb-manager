@@ -425,7 +425,6 @@ definitions:
     - enabled
     - hostname
     - id
-    - lcp
     - type_id
     type: object
   Exec_Env_Type:
