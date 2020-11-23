@@ -82,14 +82,14 @@ class LCP(Base_LCP):
                         self.resp.extend(wrap(resp_lcp_data))
                         return True
                 except Exception as e:
-                    self.log.exception(e)
                     msg = f'Response from LCP({exec_env.meta.id}@{exec_env.hostname}:{exec_env.lcp.port}) not valid'
+                    self.log.exception(msg, e)
                     uer = Unprocessable_Entity_Response(msg, exception=e)
                     uer.add(self.resp)
                     return False
             else:
                 msg = f'Request to LCP({exec_env.meta.id}@{exec_env.hostname}:{exec_env.lcp.port}) not executed'
-                self.resp.append(Unprocessable_Entity_Response(msg))
+                Unprocessable_Entity_Response(msg).add(self.resp)
                 return False
         return False
 
@@ -105,7 +105,7 @@ class LCP(Base_LCP):
                 d = catalog_doc.config.to_dict()
                 config = transform_handler(d, data_item)
                 config.update(id=id)
-                self.log.info(f'prepare {type}: {config}')
+                self.log.info(f'Prepare {type}: {config}')
                 req_op[type].append(config)
         return catalog_docs
 
@@ -116,7 +116,7 @@ class LCP(Base_LCP):
             try:
                 return x.format(**data)
             except Exception as e:
-                self.log.exception(e)
+                self.log.exception(f'Not possible to format {x}', e)
                 return x
 
     def __transform_action(self, action, data):

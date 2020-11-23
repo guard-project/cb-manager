@@ -50,7 +50,7 @@ def heartbeat_exec_env(exec_env):
                 log.success(f'LCP Connection with {id} established')
             else:
                 log.warning(f'Reset LCP connection with {id}')
-                log.notice(f'response: {resp.content}')
+                log.notice(f'Response: {resp.content}')
                 lcp.username = lcp.password = lcp.last_heartbeat = None
             exec_env.save()
         else:

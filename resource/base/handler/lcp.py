@@ -12,8 +12,8 @@ class LCP(object):
         try:
             return document.get(id=id)
         except Exception as e:
-            LCP.__log().exception(e)
             msg = f'{label} with id={id} not found.'
+            LCP.__log().exception(msg, e)
             Not_Found_Response(msg, exception=e).add(resp)
             return None
 

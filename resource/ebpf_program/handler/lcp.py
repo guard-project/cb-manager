@@ -68,8 +68,8 @@ class LCP(Base_LCP):
             try:
                 self.resp.extend(wrap(resp_caller.json()))
             except Exception as e:
-                self.log.exception(e)
                 msg = f'Response from LCP({exec_env.meta.id}@{exec_env.hostname}:{exec_env.lcp.port}) not valid'
+                self.log.exception(msg, e)
                 uer = Unprocessable_Entity_Response(msg, exception=e)
                 uer.add(self.resp)
         else:
