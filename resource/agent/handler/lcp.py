@@ -104,9 +104,7 @@ class LCP(Base_LCP):
                 self.catalogs[type][id] = catalog_doc
                 d = catalog_doc.config.to_dict()
                 config = transform_handler(d, data_item)
-                config.update(id=id)
-                if type == 'action':
-                    config['output_format'] = data_item.get('output_format', 'plain')
+                config.update(**data_item)
                 self.log.info(f'Prepare {type}: {config}')
                 req_op[type].append(config)
         return catalog_docs
