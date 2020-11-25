@@ -9,13 +9,13 @@ __all__ = [
 class Agent_Instance_Action_Inner_Doc(Inner_Doc):
     """Action of the agent instance installed in an execution environment."""
     id = Text(required=True)
-    # data = Raw() # FIXME Raw?
     timestamp = Date(required=True)
+    output_format = Text()
+
 
 class Agent_Instance_Parameter_Inner_Doc(Inner_Doc):
     """Parameter of the agent instance installed in an execution environment."""
     id = Text(required=True)
-    # cvalue = Raw() # FIXME Raw?
     timestamp = Date(required=True)
 
 

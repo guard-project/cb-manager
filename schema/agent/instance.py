@@ -13,14 +13,16 @@ __all__ = [
     'Agent_Instance_Schema'
 ]
 
+OUTPUT_FORMATS = ['plain', 'lines', 'json']
+
 
 class Agent_Instance_Action_Schema(Schema):
     """Action of the agent instance installed in an execution environment."""
 
     id = Str(required=True, example='list',
              description='Action id.')
-    data = Raw(example='drop: all',
-               description='Action data.')
+    output_format = Str(enum=OUTPUT_FORMATS, default=OUTPUT_FORMATS[0],
+                        example=OUTPUT_FORMATS[1], description='Format of the output of the command.')
     timestamp = Date_Time(format=FORMAT, readonly=True,
                           description="Timestamp of the last time the action was executed correctly.")
 
@@ -77,6 +79,6 @@ class Agent_Instance_Schema(Base_Schema):
                       validate=In.apply(Exec_Env_Document.get_ids),
                       error_messages=In.error_messages)
     operations = Nested(Agent_Instance_Operation_Schema, unknown='INCLUDE',
-                     description='List of agent instance operations.')
+                        description='List of agent instance operations.')
     description = Str(example='Collect system metrics from execution environments.',
                       description='Short description of the agent installed in the execution environment.')

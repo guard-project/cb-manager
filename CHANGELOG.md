@@ -20,3 +20,4 @@
 - Added Event management.
 - Added Algorithm management.
 - Fixed heartbeat period.
+- Stdout and stderr response format: plain, lines, and JSON.
