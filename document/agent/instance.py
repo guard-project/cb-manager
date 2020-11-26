@@ -10,21 +10,21 @@ class Agent_Instance_Action_Inner_Doc(Inner_Doc):
     """Action of the agent instance installed in an execution environment."""
     id = Text(required=True)
     timestamp = Date(required=True)
-    output_format = Text()
 
 
 class Agent_Instance_Parameter_Inner_Doc(Inner_Doc):
     """Parameter of the agent instance installed in an execution environment."""
     id = Text(required=True)
     timestamp = Date(required=True)
+    # value
 
 
 class Agent_Instance_Resource_Inner_Doc(Inner_Doc):
     """Resource of the agent instance installed in an execution environment."""
     id = Text(required=True)
+    timestamp = Date(required=True)
     path = Text(required=True)
     content = Text(required=True)
-    timestamp = Date(required=True)
 
 
 class Agent_Instance_Document(Base_Document):
@@ -50,25 +50,29 @@ class Agent_Instance_Document(Base_Document):
     def edit_parameter(self, parameter):
         so = self.Status_Operation
         id = parameter.get('id', None)
-        for p in self.parameters:
-            val = parameter.get('value', None)
-            ts = parameter.get('timestamp', None)
-            if p.id == id:
-                if p.value != val or p.timestamp != ts:
-                    p.value = val
-                    p.timestamp = ts
-                    return so.UPDATED
-                return so.NOT_MODIFIED
-        self.parameters.append(Agent_Instance_Parameter_Inner_Doc(**parameter))
-        return so.UPDATED
+        ts = parameter.get('timestamp', None)
+        value = parameter.get('value', {})
+        new_value = value.get('new', None)
+        if new_value is not None:
+            for p in self.parameters:
+                if p.id == id:
+                    if p.value != new_value or p.timestamp != ts:
+                        p.value = new_value
+                        p.timestamp = ts
+                        return so.UPDATED
+                    return so.NOT_MODIFIED
+            self.parameters.append(Agent_Instance_Parameter_Inner_Doc(**parameter))
+            return so.UPDATED
+        return so.NOT_MODIFIED
 
-    def edit_resource(self, data):
+    def edit_resource(self, resource):
         so = self.Status_Operation
-        id = data.get('id', None)
+        id = resource.get('id', None)
+        ts = resource.get('timestamp', None)
+        data = resource.get('data', {})
+        path = data.get('path', None)
+        cnt = data.get('content', None)
         for r in self.resources:
-            path = data.get('path', None)
-            cnt = data.get('content', None)
-            ts = data.get('timestamp', None)
             if r.id == id:
                 if r.id != id or r.path != path or r.content != cnt or r.timestamp != ts:
                     r.path = path
@@ -76,5 +80,5 @@ class Agent_Instance_Document(Base_Document):
                     r.timestamp = ts
                     return so.UPDATED
                 return so.NOT_MODIFIED
-        self.resources.append(Agent_Instance_Resource_Inner_Doc(**data))
+        self.resources.append(Agent_Instance_Resource_Inner_Doc(**resource))
         return so.UPDATED
