@@ -44,6 +44,7 @@ class Agent_Instance_Document(Base_Document):
 
     def edit_action(self, action):
         so = self.Status_Operation
+        action.pop('type', None)
         self.actions.append(Agent_Instance_Action_Inner_Doc(**action))
         return so.UPDATED
 
@@ -61,6 +62,7 @@ class Agent_Instance_Document(Base_Document):
                         p.timestamp = ts
                         return so.UPDATED
                     return so.NOT_MODIFIED
+            parameter.pop('type', None)
             self.parameters.append(Agent_Instance_Parameter_Inner_Doc(**parameter))
             return so.UPDATED
         return so.NOT_MODIFIED
@@ -80,5 +82,6 @@ class Agent_Instance_Document(Base_Document):
                     r.timestamp = ts
                     return so.UPDATED
                 return so.NOT_MODIFIED
+        resource.pop('type', None)
         self.resources.append(Agent_Instance_Resource_Inner_Doc(**resource))
         return so.UPDATED

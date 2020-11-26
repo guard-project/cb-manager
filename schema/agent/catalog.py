@@ -22,7 +22,7 @@ class Agent_Catalog_Action_Config_Schema(Schema):
     args = Str(many=True, example='-v',
                description='Action command argument')
     daemon = Bool(default=False, example=True,
-                 description='Execute the command as daemon.')
+                  description='Execute the command as daemon.')
 
 
 class Agent_Catalog_Action_Schema(Schema):
@@ -37,8 +37,6 @@ class Agent_Catalog_Action_Schema(Schema):
                  validate=validate.OneOf(AGENT_STATUS))
     description = Str(example='Start the execution of the agent.',
                       description='Short description of the agent actions.')
-    example = Raw(example='forward',
-                  description='Example of action parameter.')
 
 
 class Agent_Catalog_Parameter_Config_Schema(Schema):
@@ -77,7 +75,7 @@ class Agent_Catalog_Resource_Config_Schema(Schema):
     """Agent resource configuration."""
 
     path = Str(required=True, example='/usr/share/filebeat/filebeat.yml',
-               description='File path')
+               description='File path.')
 
 
 class Agent_Catalog_Resource_Schema(Schema):
@@ -87,10 +85,8 @@ class Agent_Catalog_Resource_Schema(Schema):
              description='Resource id.')
     config = Nested(Agent_Catalog_Resource_Config_Schema, unknown='INCLUDE', required=True,
                     description='Resource configuration.')
-    description = Str(example='Enable the agent.',
-                      description='Short description of the parameter.', )
-    example = Raw(example='10s',
-                  description='Example of parameter value.')
+    description = Str(example='Filebeat configuration file.',
+                      description='Short description of the resource.')
 
 
 class Agent_Catalog_Schema(Base_Schema):
