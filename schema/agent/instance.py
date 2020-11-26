@@ -21,10 +21,9 @@ class Agent_Instance_Action_Schema(Schema):
 
     id = Str(required=True, example='list',
              description='Action id.')
-    output_format = Str(enum=OUTPUT_FORMATS, default=OUTPUT_FORMATS[0],
-                        example=OUTPUT_FORMATS[1], description='Format of the output of the command.')
     timestamp = Date_Time(format=FORMAT, readonly=True,
                           description="Timestamp of the last time the action was executed correctly.")
+    data = Raw(required=True, description='Action data.')
 
 
 class Agent_Instance_Parameter_Schema(Schema):
@@ -36,7 +35,7 @@ class Agent_Instance_Parameter_Schema(Schema):
                 description='Paremeter value.'),
     timestamp = Date_Time(format=FORMAT, readonly=True,
                           description="Timestamp of the last time the parameter was set correctly.")
-
+    data = Raw(required=True, description='Parameter data.')
 
 class Agent_Instance_Resource_Schema(Schema):
     """Resource of the agent instance installed in an execution environment."""
@@ -47,7 +46,7 @@ class Agent_Instance_Resource_Schema(Schema):
                   description='Resource content.')
     timestamp = Date_Time(format=FORMAT, readonly=True,
                           description="Timestamp of the last time the resource data was updated or created correctly.")
-
+    data = Raw(required=True, description='Resource data.')
 
 class Agent_Instance_Operation_Schema(Base_Schema):
     """Represents the operations to perform with the agent instance installed in an execution environment."""
