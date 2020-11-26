@@ -63,7 +63,6 @@ class Base_Resource(Base_Minimal_Resource):
                     Not_Found_Response(msg, query=req_data).apply(resp)
             except Exception as e:
                 msg = f'Not possible to get {self.names} with the request {{query}}'
-                self.log.exception(msg, e)
                 Unprocessable_Entity_Response(msg, exception=e,
                                               query=req_data).apply(resp)
         else:
@@ -92,7 +91,8 @@ class Base_Resource(Base_Minimal_Resource):
                             for rdl in resp_data_lcp:
                                 if rdl['error']:
                                     msg = f'Not possible to create a {self.name} with the id={req_data_id}'
-                                    resp_data = Unprocessable_Entity_Response(msg)
+                                    resp_data = Unprocessable_Entity_Response(
+                                        msg)
                                     break
                             resp_data.update(lcp_response=resp_data_lcp)
                         force = req_data.get('force', False)
@@ -104,7 +104,6 @@ class Base_Resource(Base_Minimal_Resource):
                         resp_data.add(resp)
                     except Exception as e:
                         msg = f'Not possible to create a {self.name} with the id={req_data_id}'
-                        self.log.exception(msg, e)
                         Unprocessable_Entity_Response(msg,
                                                       exception=e).add(resp)
             else:
@@ -135,11 +134,13 @@ class Base_Resource(Base_Minimal_Resource):
                             hndl = self.get_lcp_handler(HTTP_Method.PUT)
                             modified = hndl(instance=obj, req=req_data_lcp,
                                             resp=resp_data_lcp)
-                            resp_data = Ok_Response(f'{self.name.capitalize()} with the id={req_data_id} correctly updated')
+                            resp_data = Ok_Response(
+                                f'{self.name.capitalize()} with the id={req_data_id} correctly updated')
                             if len(resp_data_lcp) > 0:
                                 for rdl in resp_data_lcp:
                                     if rdl['error']:
-                                        resp_data = Unprocessable_Entity_Response(f'Not possible to update a {self.name} with the id={req_data_id}')
+                                        resp_data = Unprocessable_Entity_Response(
+                                            f'Not possible to update a {self.name} with the id={req_data_id}')
                                         break
                                 resp_data.update(lcp_response=resp_data_lcp)
                             force = req_data.get('force', False)
@@ -149,13 +150,14 @@ class Base_Resource(Base_Minimal_Resource):
                                     modified = True
                                     if force:
                                         msg = f'Some errors occur but the {self.name} with the id={req_data_id} forcedly updated'
-                                        resp_data = Unprocessable_Entity_Response(msg)
+                                        resp_data = Unprocessable_Entity_Response(
+                                            msg)
                             if not modified:
-                                resp_data = Not_Modified_Response(f'{self.name.capitalize()} with the id={req_data_id} no need to update')
+                                resp_data = Not_Modified_Response(
+                                    f'{self.name.capitalize()} with the id={req_data_id} no need to update')
                             resp_data.add(resp)
                     except Exception as e:
                         msg = f'Not possible to update a {self.name} with the id={req_data_id}'
-                        self.log.exception(msg, e)
                         Unprocessable_Entity_Response(msg,
                                                       exception=e).add(resp)
             else:
@@ -188,7 +190,8 @@ class Base_Resource(Base_Minimal_Resource):
                                 for rdl in resp_data_lcp:
                                     if rdl['error']:
                                         msg = f'Not possible to delete the {self.name} with the id={hit.meta.id}'
-                                        resp_data = Unprocessable_Entity_Response(msg)
+                                        resp_data = Unprocessable_Entity_Response(
+                                            msg)
                                         break
                                 resp_data.update(lcp_response=resp_data_lcp)
                             force = req_data.get('force', False)
@@ -196,20 +199,19 @@ class Base_Resource(Base_Minimal_Resource):
                                 obj.delete()
                                 if force:
                                     msg = f'Some errors occur but the {self.name} with the id={hit.meta.id} forcedly deleted'
-                                    resp_data = Unprocessable_Entity_Response(msg)
+                                    resp_data = Unprocessable_Entity_Response(
+                                        msg)
                             resp_data.add(resp)
                         except Exception as e:
                             msg = f'Not possible to delete the {self.name} with the id={hit.meta.id}'
-                            self.log.exception(msg, e)
                             Unprocessable_Entity_Response(msg,
                                                           exception=e).add(resp)
                 else:
                     msg = f'{self.names.capitalize()} based on the request {{query}} not found'
                     Not_Found_Response(msg,
-                                        query=req_data).apply(resp)
+                                       query=req_data).apply(resp)
             except Exception as e:
                 msg = f'Not possible to delete {self.names} with the request {{query}}'
-                self.log.exception(msg, e)
                 Unprocessable_Entity_Response(msg, exception=e,
                                               query=req_data).apply(resp)
         else:
@@ -218,7 +220,8 @@ class Base_Resource(Base_Minimal_Resource):
     def rm_ignore_fields(self, data):
         for ign_f in self.ignore_fields:
             if data.pop(ign_f, None) is not None:
-                self.log.info(f'Field {ign_f} in the request ignored when update {self.names}')
+                self.log.info(
+                    f'Field {ign_f} in the request ignored when update {self.names}')
 
     @ classmethod
     def get_lcp_handler(cls, method):
