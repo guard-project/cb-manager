@@ -50,7 +50,6 @@ class Log:
         def __exception(message, exception):
             logger.error(message)
             logger.debug(to_str(exception))
-            logger.warn(to_str(exception))
         logger.exception = __exception
 
         logger.setLevel(level)
