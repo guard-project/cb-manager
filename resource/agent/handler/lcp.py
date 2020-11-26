@@ -147,35 +147,18 @@ class LCP(Base_LCP):
             instance.status = doc.status if not error else 'unknown'
             save = True
         if not error:
-            data = extract(result,
-                           id='id',
-                           data='stdout',
-                           timestamp='timestamp')
-            instance.edit_action(data)
+            instance.edit_action(result)
             save = True
         return save
 
     def __save_parameter(self, instance, doc, result, error):
         if not error:
-            data = extract(result,
-                           id='id',
-                           timestamp='timestamp')
-            val = result.get('value', None)
-            if is_dict(val):
-                data.update(**extract(val, value='new'))
-            else:
-                data.update(value=val)
-            instance.edit_parameter(data)
+            instance.edit_parameter(result)
             return True
         return False
 
     def __save_resource(self, instance, doc, result, error):
         if not error:
-            data = extract(result,
-                           id='id',
-                           path='path',
-                           content='content',
-                           timestamp='timestamp')
-            instance.edit_resource(data)
+            instance.edit_resource(result)
             return True
         return False
