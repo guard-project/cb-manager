@@ -39,9 +39,6 @@ definitions:
         description: Short description of the agent actions.
         example: Start the execution of the agent.
         type: string
-      example:
-        description: Example of action parameter.
-        example: forward
       id:
         description: Action name
         example: start
@@ -49,7 +46,7 @@ definitions:
       status:
         description: Update the status the of the agent-instance if the command is
           executed correctly.
-        enum:
+        enum: &id001
         - started
         - stopped
         - unknown
@@ -99,7 +96,7 @@ definitions:
         type: boolean
       type:
         description: Parameter type.
-        enum: &id001
+        enum: &id002
         - binary
         - boolean
         - choice
@@ -150,12 +147,9 @@ definitions:
         - $ref: '#/definitions/Agent_Catalog_Resource_Config'
         description: Resource configuration.
       description:
-        description: Short description of the parameter.
-        example: Enable the agent.
+        description: Short description of the resource.
+        example: Filebeat configuration file.
         type: string
-      example:
-        description: Example of parameter value.
-        example: 10s
       id:
         description: Resource id.
         example: filebeat-config
@@ -167,7 +161,7 @@ definitions:
   Agent_Catalog_Resource_Config:
     properties:
       path:
-        description: File path
+        description: File path.
         example: /usr/share/filebeat/filebeat.yml
         type: string
     required:
@@ -195,23 +189,30 @@ definitions:
         allOf:
         - $ref: '#/definitions/Agent_Instance_Operation'
         description: List of agent instance operations.
+      status:
+        description: Status of the agent.
+        enum: *id001
+        example: started
+        type: string
     required:
     - agent_catalog_id
     - exec_env_id
     - id
+    - status
     type: object
   Agent_Instance_Action:
     properties:
-      data:
-        description: Action data.
-        example: 'drop: all'
       id:
         description: Action id.
         example: list
         type: string
-      timestamp:
-        description: Timestamp of the last time the action was executed correctly.
-        format: date-time
+      output_format:
+        description: Output format for stdout and stderr result of action execution.
+        enum:
+        - plain
+        - lines
+        - json
+        example: lines
         type: string
     required:
     - id
@@ -240,10 +241,6 @@ definitions:
         description: Parameter id.
         example: period
         type: string
-      timestamp:
-        description: Timestamp of the last time the parameter was set correctly.
-        format: date-time
-        type: string
     required:
     - id
     type: object
@@ -251,15 +248,11 @@ definitions:
     properties:
       content:
         description: Resource content.
+        example: 'period: 10s'
         type: string
       id:
-        description: Resource path.
-        example: /opt/firewall.xml
-        type: string
-      timestamp:
-        description: Timestamp of the last time the resource data was updated or created
-          correctly.
-        format: date-time
+        description: Resource id.
+        example: filebeat-config
         type: string
     required:
     - content
@@ -930,7 +923,7 @@ definitions:
         type: boolean
       type:
         description: Parameter type.
-        enum: *id001
+        enum: *id002
         example: integer
         type: string
       values:

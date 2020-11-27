@@ -152,7 +152,7 @@ class Base_Resource(Base_Minimal_Resource):
                                         msg = f'Some errors occur but the {self.name} with the id={req_data_id} forcedly updated'
                                         resp_data = Unprocessable_Entity_Response(
                                             msg)
-                            if not modified:
+                            if not resp_data.error and not modified:
                                 resp_data = Not_Modified_Response(
                                     f'{self.name.capitalize()} with the id={req_data_id} no need to update')
                             resp_data.add(resp)
