@@ -22,6 +22,6 @@ else:
     es_conn(endpoint=db.es_endpoint, timeout=db.es_timeout,
             retry_period=db.es_retry_period)
 
-    waitress.serve(api(title=title, version=version, ident=ident,
+    waitress.serve(api(title=title, version=version,
                         dev_username=db.dev_username, dev_password=db.dev_password),
-                   host=db.host, port=db.port, expose_tracebacks=False)
+                    host=db.host, port=db.port, expose_tracebacks=False, ident=ident)
