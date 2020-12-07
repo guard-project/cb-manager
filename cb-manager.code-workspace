@@ -31,6 +31,7 @@
 			"chdir",
 			"cmds",
 			"codeclimate",
+			"coloredlogs",
 			"cprofile",
 			"cubebeat",
 			"currentmodule",
