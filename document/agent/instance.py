@@ -57,8 +57,8 @@ class Agent_Instance_Document(Base_Document):
         if new_value is not None:
             for p in self.parameters:
                 if p.id == id:
-                    if p.value != new_value or p.timestamp != ts:
-                        p.value = new_value
+                    if p.value.new != new_value or p.timestamp != ts:
+                        p.value = value
                         p.timestamp = ts
                         return so.UPDATED
                     return so.NOT_MODIFIED
