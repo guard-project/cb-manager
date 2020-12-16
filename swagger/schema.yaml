@@ -978,7 +978,7 @@ definitions:
     type: object
 info:
   title: Context Broker Manager
-  version: 1.0.2
+  version: 1.0.3
 paths:
   /catalog/agent/:
     delete:
