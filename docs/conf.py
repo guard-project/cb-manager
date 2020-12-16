@@ -58,7 +58,7 @@ exclude_patterns = []
 
 html_logo = '../logo.png'
 html_favicon = '../logo.ico'
-html_theme = 'divio-docs-theme'
+html_theme = 'divio_docs_theme'
 
 issues_github_path = "guard-project/cb-manager"
 
