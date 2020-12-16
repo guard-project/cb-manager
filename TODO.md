@@ -11,13 +11,15 @@ APIs to interact with the ``Context Broker``'s database. Through a **REST** Inte
 
 ---
 
-### Todo
+## Todo
+
 - [ ] add top file signature
 - [ ] add markdown support for readthedocs
 - [ ] add CONTRIBUTING.md
 - [ ] add CHANGELOG, TODO and CONTRIBUTING in docs
 
-### In Progress
+## In Progress
+
 - [ ] Improve documentation
 
 ### Done ✓
