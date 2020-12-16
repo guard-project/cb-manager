@@ -1,4 +1,5 @@
 pyenchant
+recommonmark
 sphinx
 sphinx_copybutton
 sphinx_issues
