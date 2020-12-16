@@ -48,11 +48,12 @@ If you are looking for information on a specific function, class or method, this
 
    api
 
+
 Additional Notes
 ----------------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    contributing
    changelog
