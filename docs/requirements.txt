@@ -1,8 +1,8 @@
-divio-docs-theme
 pyenchant
 sphinx
 sphinx_copybutton
 sphinx_issues
+sphinx_rtd_theme
 sphinx-autobuild
 sphinxcontrib-autoprogram
 sphinxcontrib.httpdomain

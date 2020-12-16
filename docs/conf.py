@@ -10,7 +10,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-import divio_docs_theme
+import sphinx_rtd_theme
 import os
 import sys
 sys.path.insert(0, os.path.abspath('..'))
@@ -58,7 +58,7 @@ exclude_patterns = []
 
 html_logo = '../logo.png'
 html_favicon = '../logo.ico'
-html_theme = 'divio_docs_theme'
+html_theme = 'sphinx_rtd_theme'
 
 issues_github_path = "guard-project/cb-manager"
 
