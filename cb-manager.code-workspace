@@ -62,6 +62,7 @@
 			"ldap",
 			"libbeat",
 			"lowercase",
+			"mathjax",
 			"maxdepth",
 			"metricbeat",
 			"mkdocs",
@@ -110,7 +111,7 @@
 		"restructuredtext.builtDocumentationPath": "docs/.build/html",
 		"restructuredtext.confPath": "docs/conf.py",
 		"restructuredtext.experimental": true,
-		"workbench.colorTheme": "Kimbie Dark",
+		"workbench.colorTheme": "Iris",
 		"editor.fontFamily": "Fira Code Retina"
 	}
 }
