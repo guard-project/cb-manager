@@ -838,8 +838,6 @@ Exception
 
 .. autofunction:: extract_info
 
-.. autofunction:: reload_import
-
 .. autofunction:: to_str
 
 
