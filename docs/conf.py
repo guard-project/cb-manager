@@ -13,6 +13,9 @@
 import sphinx_rtd_theme
 import os
 import sys
+
+from shutil import copyfile
+
 sys.path.insert(0, os.path.abspath('..'))
 
 
@@ -41,6 +44,10 @@ extensions = [
     'sphinxcontrib.httpdomain',
     'sphinxcontrib.spelling',
 ]
+
+# Copy needed files from parent directory.
+for filename in ['LICENSE', 'CONTRIBUTING.md', 'CHANGELOG.md']:
+    copyfile(f'../{filename}', f'./{filename}')
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
