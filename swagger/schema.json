@@ -8041,28 +8041,21 @@
     "Query_Request_Limit": {
       "type": "object",
       "properties": {
-        "from": {
-          "type": "integer",
-          "format": "int32",
-          "example": 1,
-          "description": "Started index of the items to return."
-        },
         "to": {
           "type": "integer",
-          "format": "int32",
           "example": 5,
           "description": "Ended index of the items to return."
+        },
+        "from": {
+          "type": "integer",
+          "example": 1,
+          "description": "Started index of the items to return."
         }
       }
     },
     "Query_Request_Order": {
       "type": "object",
       "properties": {
-        "target": {
-          "type": "string",
-          "example": "name",
-          "description": "The field to compare."
-        },
         "mode": {
           "type": "string",
           "enum": [
@@ -8071,6 +8064,11 @@
           ],
           "example": "asc",
           "description": "Order mode."
+        },
+        "target": {
+          "type": "string",
+          "example": "name",
+          "description": "The field to compare."
         }
       },
       "required": [
@@ -8100,13 +8098,12 @@
     "Query_Request_Clause": {
       "type": "object",
       "properties": {
-        "reg_exp": {
-          "description": "The target field must be satisfy the regular expression in expr.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/Query_Request_Filter"
-            }
-          ]
+        "or": {
+          "description": "At least the clause has to be satisfied.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Query_Request_Clause"
+          }
         },
         "equals": {
           "description": "The target field must be equal to the expr value.",
@@ -8116,15 +8113,31 @@
             }
           ]
         },
-        "or": {
-          "description": "At least the clause has to be satisfied.",
+        "lte": {
+          "description": "The target field must be lower or equal to the expr value.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Query_Request_Filter"
+            }
+          ]
+        },
+        "and": {
+          "description": "All the clause has to be satisfied.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/Query_Request_Clause"
           }
         },
-        "wildcard": {
-          "description": "The target field must be satisfy the wildcard in expr.",
+        "not": {
+          "description": "The clause has to be not satisfied.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Query_Request_Clause"
+            }
+          ]
+        },
+        "lt": {
+          "description": "The target field must be lower than the expr value.",
           "allOf": [
             {
               "$ref": "#/definitions/Query_Request_Filter"
@@ -8139,12 +8152,13 @@
             }
           ]
         },
-        "and": {
-          "description": "All the clause has to be satisfied.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Query_Request_Clause"
-          }
+        "wildcard": {
+          "description": "The target field must be satisfy the wildcard in expr.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Query_Request_Filter"
+            }
+          ]
         },
         "gte": {
           "description": "The target field must be greater or equal to the expr value.",
@@ -8154,24 +8168,8 @@
             }
           ]
         },
-        "lt": {
-          "description": "The target field must be lower than the expr value.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/Query_Request_Filter"
-            }
-          ]
-        },
-        "not": {
-          "description": "The clause has to be not satisfied.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/Query_Request_Clause"
-            }
-          ]
-        },
-        "lte": {
-          "description": "The target field must be lower or equal to the expr value.",
+        "reg_exp": {
+          "description": "The target field must be satisfy the regular expression in expr.",
           "allOf": [
             {
               "$ref": "#/definitions/Query_Request_Filter"
@@ -8191,13 +8189,6 @@
             }
           ]
         },
-        "order": {
-          "description": "Order the filtered items.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Query_Request_Order"
-          }
-        },
         "select": {
           "type": "array",
           "items": {
@@ -8206,10 +8197,12 @@
             "description": "Fields to return."
           }
         },
-        "force": {
-          "type": "boolean",
-          "example": true,
-          "description": "Force the execution of the request even there are some errors (example: delete a inconstent entries."
+        "order": {
+          "description": "Order the filtered items.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Query_Request_Order"
+          }
         },
         "where": {
           "description": "Filter the items based on different conditions.",
@@ -8218,6 +8211,11 @@
               "$ref": "#/definitions/Query_Request_Clause"
             }
           ]
+        },
+        "force": {
+          "type": "boolean",
+          "example": true,
+          "description": "Force the execution of the request even there are some errors (example: delete a inconstent entries."
         }
       }
     },
@@ -8229,15 +8227,14 @@
           "example": "lib/connection.py",
           "description": "Filename where the exception is raised."
         },
+        "line": {
+          "type": "integer",
+          "example": 80,
+          "description": "Line where the exception is raised."
+        },
         "reason": {
           "example": "Connection timeout",
           "description": "Exception reason."
-        },
-        "line": {
-          "type": "integer",
-          "format": "int32",
-          "example": 80,
-          "description": "Line where the exception is raised."
         }
       },
       "required": [
@@ -8249,11 +8246,11 @@
     "Reset_Content_Response": {
       "type": "object",
       "properties": {
+        "status": {
+          "default": "Reset Content"
+        },
         "code": {
           "default": 205
-        },
-        "error": {
-          "default": false
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -8268,8 +8265,8 @@
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
         },
-        "status": {
-          "default": "Reset Content"
+        "error": {
+          "default": false
         }
       },
       "required": [
@@ -8279,11 +8276,11 @@
     "Bad_Request_Response": {
       "type": "object",
       "properties": {
+        "status": {
+          "default": "Bad Request"
+        },
         "code": {
           "default": 400
-        },
-        "error": {
-          "default": true
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -8298,8 +8295,8 @@
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
         },
-        "status": {
-          "default": "Bad Request"
+        "error": {
+          "default": true
         }
       },
       "required": [
@@ -8309,11 +8306,11 @@
     "Unauthorized_Response": {
       "type": "object",
       "properties": {
+        "status": {
+          "default": "Unauthorized"
+        },
         "code": {
           "default": 401
-        },
-        "error": {
-          "default": true
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -8328,8 +8325,8 @@
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
         },
-        "status": {
-          "default": "Unauthorized"
+        "error": {
+          "default": true
         }
       },
       "required": [
@@ -8339,11 +8336,11 @@
     "Not_Found_Response": {
       "type": "object",
       "properties": {
+        "status": {
+          "default": "Not Found"
+        },
         "code": {
           "default": 404
-        },
-        "error": {
-          "default": true
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -8358,8 +8355,8 @@
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
         },
-        "status": {
-          "default": "Not Found"
+        "error": {
+          "default": true
         }
       },
       "required": [
@@ -8369,11 +8366,11 @@
     "Not_Acceptable_Response": {
       "type": "object",
       "properties": {
+        "status": {
+          "default": "Not Acceptable"
+        },
         "code": {
           "default": 406
-        },
-        "error": {
-          "default": true
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -8388,8 +8385,8 @@
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
         },
-        "status": {
-          "default": "Not Acceptable"
+        "error": {
+          "default": true
         }
       },
       "required": [
@@ -8399,11 +8396,11 @@
     "Unsupported_Media_Type_Response": {
       "type": "object",
       "properties": {
+        "status": {
+          "default": "Unsupported Media Type"
+        },
         "code": {
           "default": 415
-        },
-        "error": {
-          "default": true
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -8418,8 +8415,8 @@
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
         },
-        "status": {
-          "default": "Unsupported Media Type"
+        "error": {
+          "default": true
         }
       },
       "required": [
@@ -8429,11 +8426,11 @@
     "Unprocessable_Entity_Response": {
       "type": "object",
       "properties": {
+        "status": {
+          "default": "Unprocessable Entity"
+        },
         "code": {
           "default": 422
-        },
-        "error": {
-          "default": true
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -8448,8 +8445,8 @@
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
         },
-        "status": {
-          "default": "Unprocessable Entity"
+        "error": {
+          "default": true
         }
       },
       "required": [
@@ -8459,11 +8456,11 @@
     "Internal_Server_Error_Response": {
       "type": "object",
       "properties": {
+        "status": {
+          "default": "Internal Server Error"
+        },
         "code": {
           "default": 500
-        },
-        "error": {
-          "default": true
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -8478,52 +8475,12 @@
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
         },
-        "status": {
-          "default": "Internal Server Error"
+        "error": {
+          "default": true
         }
       },
       "required": [
         "message"
-      ]
-    },
-    "Agent_Catalog_Resource_Config": {
-      "type": "object",
-      "properties": {
-        "path": {
-          "type": "string",
-          "example": "/usr/share/filebeat/filebeat.yml",
-          "description": "File path."
-        }
-      },
-      "required": [
-        "path"
-      ]
-    },
-    "Agent_Catalog_Resource": {
-      "type": "object",
-      "properties": {
-        "description": {
-          "type": "string",
-          "example": "Filebeat configuration file.",
-          "description": "Short description of the resource."
-        },
-        "id": {
-          "type": "string",
-          "example": "filebeat-config",
-          "description": "Resource id."
-        },
-        "config": {
-          "description": "Resource configuration.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/Agent_Catalog_Resource_Config"
-            }
-          ]
-        }
-      },
-      "required": [
-        "config",
-        "id"
       ]
     },
     "Agent_Catalog_Parameter_Config": {
@@ -8562,10 +8519,32 @@
     "Agent_Catalog_Parameter": {
       "type": "object",
       "properties": {
+        "list": {
+          "type": "boolean",
+          "example": true,
+          "description": "Indicate if the parameter can have multiple values."
+        },
+        "example": {
+          "example": "10s",
+          "description": "Example of parameter value."
+        },
+        "description": {
+          "type": "string",
+          "example": "Enable the agent.",
+          "description": "Short description of the parameter."
+        },
         "values": {
           "type": "string",
           "example": "mysql",
           "description": "Possible values if the parameter type is choice."
+        },
+        "config": {
+          "description": "Parameter configuration.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Agent_Catalog_Parameter_Config"
+            }
+          ]
         },
         "type": {
           "type": "string",
@@ -8585,28 +8564,6 @@
           "type": "string",
           "example": "log-period",
           "description": "Parameter id."
-        },
-        "list": {
-          "type": "boolean",
-          "example": true,
-          "description": "Indicate if the parameter can have multiple values."
-        },
-        "config": {
-          "description": "Parameter configuration.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/Agent_Catalog_Parameter_Config"
-            }
-          ]
-        },
-        "example": {
-          "example": "10s",
-          "description": "Example of parameter value."
-        },
-        "description": {
-          "type": "string",
-          "example": "Enable the agent.",
-          "description": "Short description of the parameter."
         }
       },
       "required": [
@@ -8623,15 +8580,15 @@
           "example": true,
           "description": "Execute the command as daemon."
         },
-        "cmd": {
-          "type": "string",
-          "example": "service filebeat start",
-          "description": "Action command."
-        },
         "args": {
           "type": "string",
           "example": "-v",
           "description": "Action command argument"
+        },
+        "cmd": {
+          "type": "string",
+          "example": "service filebeat start",
+          "description": "Action command."
         }
       },
       "required": [
@@ -8641,15 +8598,13 @@
     "Agent_Catalog_Action": {
       "type": "object",
       "properties": {
-        "description": {
-          "type": "string",
-          "example": "Start the execution of the agent.",
-          "description": "Short description of the agent actions."
-        },
-        "id": {
-          "type": "string",
-          "example": "start",
-          "description": "Action name"
+        "config": {
+          "description": "Action config.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Agent_Catalog_Action_Config"
+            }
+          ]
         },
         "status": {
           "type": "string",
@@ -8661,13 +8616,55 @@
           "example": "started",
           "description": "Update the status the of the agent-instance if the command is executed correctly."
         },
+        "description": {
+          "type": "string",
+          "example": "Start the execution of the agent.",
+          "description": "Short description of the agent actions."
+        },
+        "id": {
+          "type": "string",
+          "example": "start",
+          "description": "Action name"
+        }
+      },
+      "required": [
+        "config",
+        "id"
+      ]
+    },
+    "Agent_Catalog_Resource_Config": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "example": "/usr/share/filebeat/filebeat.yml",
+          "description": "File path."
+        }
+      },
+      "required": [
+        "path"
+      ]
+    },
+    "Agent_Catalog_Resource": {
+      "type": "object",
+      "properties": {
         "config": {
-          "description": "Action config.",
+          "description": "Resource configuration.",
           "allOf": [
             {
-              "$ref": "#/definitions/Agent_Catalog_Action_Config"
+              "$ref": "#/definitions/Agent_Catalog_Resource_Config"
             }
           ]
+        },
+        "description": {
+          "type": "string",
+          "example": "Filebeat configuration file.",
+          "description": "Short description of the resource."
+        },
+        "id": {
+          "type": "string",
+          "example": "filebeat-config",
+          "description": "Resource id."
         }
       },
       "required": [
@@ -8678,17 +8675,10 @@
     "Agent_Catalog": {
       "type": "object",
       "properties": {
-        "id": {
+        "description": {
           "type": "string",
-          "example": "filebeat",
-          "description": "Id of the agent in the catalog."
-        },
-        "resources": {
-          "description": "Resource properties.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Agent_Catalog_Resource"
-          }
+          "example": "Collect system metrics from execution environments.",
+          "description": "Short description of the agent."
         },
         "parameters": {
           "description": "Parameter properties.",
@@ -8704,10 +8694,17 @@
             "$ref": "#/definitions/Agent_Catalog_Action"
           }
         },
-        "description": {
+        "resources": {
+          "description": "Resource properties.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Agent_Catalog_Resource"
+          }
+        },
+        "id": {
           "type": "string",
-          "example": "Collect system metrics from execution environments.",
-          "description": "Short description of the agent."
+          "example": "filebeat",
+          "description": "Id of the agent in the catalog."
         }
       },
       "required": [
@@ -8717,11 +8714,11 @@
     "Created_Response": {
       "type": "object",
       "properties": {
+        "status": {
+          "default": "Created"
+        },
         "code": {
           "default": 201
-        },
-        "error": {
-          "default": false
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -8736,8 +8733,8 @@
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
         },
-        "status": {
-          "default": "Created"
+        "error": {
+          "default": false
         }
       },
       "required": [
@@ -8747,11 +8744,11 @@
     "No_Content_Response": {
       "type": "object",
       "properties": {
+        "status": {
+          "default": "No Content"
+        },
         "code": {
           "default": 204
-        },
-        "error": {
-          "default": false
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -8766,8 +8763,8 @@
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
         },
-        "status": {
-          "default": "No Content"
+        "error": {
+          "default": false
         }
       },
       "required": [
@@ -8777,11 +8774,11 @@
     "Ok_Response": {
       "type": "object",
       "properties": {
+        "status": {
+          "default": "OK"
+        },
         "code": {
           "default": 200
-        },
-        "error": {
-          "default": false
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -8796,8 +8793,8 @@
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
         },
-        "status": {
-          "default": "OK"
+        "error": {
+          "default": false
         }
       },
       "required": [
@@ -8807,11 +8804,11 @@
     "Not_Modified_Response": {
       "type": "object",
       "properties": {
+        "status": {
+          "default": "Not Modified"
+        },
         "code": {
           "default": 304
-        },
-        "error": {
-          "default": false
         },
         "exception": {
           "description": "Message of the occurred exception.",
@@ -8826,8 +8823,8 @@
           "example": "Request not valid: two ids provided.",
           "description": "Human readable message that describes the status of the operation."
         },
-        "status": {
-          "default": "Not Modified"
+        "error": {
+          "default": false
         }
       },
       "required": [
@@ -8837,15 +8834,15 @@
     "Agent_Instance_Resource": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "example": "filebeat-config",
-          "description": "Resource id."
-        },
         "content": {
           "type": "string",
           "example": "period: 10s",
           "description": "Resource content."
+        },
+        "id": {
+          "type": "string",
+          "example": "filebeat-config",
+          "description": "Resource id."
         }
       },
       "required": [
@@ -8869,11 +8866,6 @@
     "Agent_Instance_Action": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "example": "list",
-          "description": "Action id."
-        },
         "output_format": {
           "type": "string",
           "enum": [
@@ -8883,6 +8875,11 @@
           ],
           "example": "lines",
           "description": "Output format for stdout and stderr result of action execution."
+        },
+        "id": {
+          "type": "string",
+          "example": "list",
+          "description": "Action id."
         }
       },
       "required": [
@@ -8918,21 +8915,6 @@
     "Agent_Instance": {
       "type": "object",
       "properties": {
-        "agent_catalog_id": {
-          "type": "string",
-          "example": "filebeat",
-          "description": "Id of the agent in the catalog."
-        },
-        "exec_env_id": {
-          "type": "string",
-          "example": "apache",
-          "description": "Id of the execution environment where the agent instance is installed."
-        },
-        "id": {
-          "type": "string",
-          "example": "filebeat@apache",
-          "description": "Id of the agent instance installed in an execution environment."
-        },
         "operations": {
           "description": "List of agent instance operations.",
           "allOf": [
@@ -8946,6 +8928,11 @@
           "example": "Collect system metrics from execution environments.",
           "description": "Short description of the agent installed in the execution environment."
         },
+        "exec_env_id": {
+          "type": "string",
+          "example": "apache",
+          "description": "Id of the execution environment where the agent instance is installed."
+        },
         "status": {
           "type": "string",
           "enum": [
@@ -8955,6 +8942,16 @@
           ],
           "example": "started",
           "description": "Status of the agent."
+        },
+        "agent_catalog_id": {
+          "type": "string",
+          "example": "filebeat",
+          "description": "Id of the agent in the catalog."
+        },
+        "id": {
+          "type": "string",
+          "example": "filebeat@apache",
+          "description": "Id of the agent instance installed in an execution environment."
         }
       },
       "required": [
@@ -8980,15 +8977,15 @@
     "Connection": {
       "type": "object",
       "properties": {
-        "exec_env_id": {
-          "type": "string",
-          "example": "apache",
-          "description": "Id of the connected execution environment."
-        },
         "description": {
           "type": "string",
           "example": "Added to this network for debug purposes.",
           "description": "Short description of the connection."
+        },
+        "exec_env_id": {
+          "type": "string",
+          "example": "apache",
+          "description": "Id of the connected execution environment."
         },
         "network_link_id": {
           "type": "string",
@@ -9010,21 +9007,10 @@
     "Data": {
       "type": "object",
       "properties": {
-        "timestamp_agent": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2019/02/14 15:23:30",
-          "description": "Timestamp when the agent instance collected the data"
-        },
         "agent_instance_id": {
           "type": "string",
           "example": "filebeat@apache",
           "description": "Id of the agent instance in the execution environment\n                                           that collected the data"
-        },
-        "id": {
-          "type": "string",
-          "example": "BXrHRn5RPU55Qh9JwMZn",
-          "description": "Id of the data."
         },
         "timestamp_event": {
           "type": "string",
@@ -9036,71 +9022,35 @@
           "type": "string",
           "example": "packet-capture@apache",
           "description": "Id of the eBPF program instance in the execution\n                                                  environment that collected the data"
+        },
+        "timestamp_agent": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2019/02/14 15:23:30",
+          "description": "Timestamp when the agent instance collected the data"
+        },
+        "id": {
+          "type": "string",
+          "example": "BXrHRn5RPU55Qh9JwMZn",
+          "description": "Id of the data."
         }
       },
       "required": [
         "id"
       ]
     },
-    "eBPF_Program_Catalog_Parameter": {
-      "type": "object",
-      "properties": {
-        "values": {
-          "type": "string",
-          "example": "yes",
-          "description": "Possible values if the parameter type is choice."
-        },
-        "type": {
-          "type": "string",
-          "enum": [
-            "binary",
-            "boolean",
-            "choice",
-            "integer",
-            "number",
-            "time-duration",
-            "string"
-          ],
-          "description": "Parameter type.",
-          "example": "integer"
-        },
-        "id": {
-          "type": "string",
-          "example": "interface",
-          "description": "Parameter id."
-        },
-        "list": {
-          "type": "boolean",
-          "example": true,
-          "description": "Indicate if the parameter can have multiple values."
-        },
-        "example": {
-          "example": "eno0",
-          "description": "Example of parameter value."
-        },
-        "description": {
-          "type": "string",
-          "example": "Network Interface to attach.",
-          "description": "Short description of the parameter."
-        }
-      },
-      "required": [
-        "id",
-        "type"
-      ]
-    },
     "eBPF_Program_Catalog_Config_Metric_Open_Metrics_Metadata_Label": {
       "type": "object",
       "properties": {
-        "value": {
-          "type": "string",
-          "example": "UDP",
-          "description": "Label value."
-        },
         "name": {
           "type": "string",
           "example": "IP_PROTO",
           "description": "Label name."
+        },
+        "value": {
+          "type": "string",
+          "example": "UDP",
+          "description": "Label value."
         }
       },
       "required": [
@@ -9111,17 +9061,17 @@
     "eBPF_Program_Catalog_Config_Metric_Open_Metrics_Metadata": {
       "type": "object",
       "properties": {
-        "help": {
-          "type": "string",
-          "example": "This metric represents the number of packets that has travelled trough this probe.",
-          "description": "Metric help."
-        },
         "labels": {
           "description": "Labels of Open Metrics Metadata.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/eBPF_Program_Catalog_Config_Metric_Open_Metrics_Metadata_Label"
           }
+        },
+        "help": {
+          "type": "string",
+          "example": "This metric represents the number of packets that has travelled trough this probe.",
+          "description": "Metric help."
         },
         "type": {
           "type": "string",
@@ -9136,6 +9086,14 @@
     "eBPF_Program_Catalog_Config_Metric": {
       "type": "object",
       "properties": {
+        "open-metrics-metadata": {
+          "description": "Open Metrics Metadata.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/eBPF_Program_Catalog_Config_Metric_Open_Metrics_Metadata"
+            }
+          ]
+        },
         "map-name": {
           "type": "string",
           "example": "PKT_COUNTER",
@@ -9145,14 +9103,6 @@
           "type": "string",
           "example": "packets_total",
           "description": "Metric name."
-        },
-        "open-metrics-metadata": {
-          "description": "Open Metrics Metadata.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/eBPF_Program_Catalog_Config_Metric_Open_Metrics_Metadata"
-            }
-          ]
         }
       },
       "required": [
@@ -9182,18 +9132,63 @@
         "code"
       ]
     },
+    "eBPF_Program_Catalog_Parameter": {
+      "type": "object",
+      "properties": {
+        "list": {
+          "type": "boolean",
+          "example": true,
+          "description": "Indicate if the parameter can have multiple values."
+        },
+        "example": {
+          "example": "eno0",
+          "description": "Example of parameter value."
+        },
+        "description": {
+          "type": "string",
+          "example": "Network Interface to attach.",
+          "description": "Short description of the parameter."
+        },
+        "values": {
+          "type": "string",
+          "example": "yes",
+          "description": "Possible values if the parameter type is choice."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "binary",
+            "boolean",
+            "choice",
+            "integer",
+            "number",
+            "time-duration",
+            "string"
+          ],
+          "description": "Parameter type.",
+          "example": "integer"
+        },
+        "id": {
+          "type": "string",
+          "example": "interface",
+          "description": "Parameter id."
+        }
+      },
+      "required": [
+        "id",
+        "type"
+      ]
+    },
     "eBPF_Program_Catalog": {
       "type": "object",
       "properties": {
+        "config": {
+          "$ref": "#/definitions/eBPF_Program_Catalog_Config"
+        },
         "description": {
           "type": "string",
           "example": "Transparent service to capture packets flowing through the interface it\n                                 is attached to, apply filters and obtain capture in .pcap format.",
           "description": "Description of eBPF program."
-        },
-        "id": {
-          "type": "string",
-          "example": "packet-capture",
-          "description": "Id of the eBPF_Program_ in the catalog."
         },
         "parameters": {
           "type": "array",
@@ -9201,8 +9196,10 @@
             "$ref": "#/definitions/eBPF_Program_Catalog_Parameter"
           }
         },
-        "config": {
-          "$ref": "#/definitions/eBPF_Program_Catalog_Config"
+        "id": {
+          "type": "string",
+          "example": "packet-capture",
+          "description": "Id of the eBPF_Program_ in the catalog."
         }
       },
       "required": [
@@ -9231,23 +9228,6 @@
     "eBPF_Program_Instance": {
       "type": "object",
       "properties": {
-        "exec_env_id": {
-          "type": "string",
-          "example": "apache",
-          "description": "Id of the execution environment where the eBPF program\n                                     instance is installed"
-        },
-        "id": {
-          "type": "string",
-          "example": "packet-capture@apache",
-          "description": "Id of the eBPF program installed in an execution environment."
-        },
-        "parameters": {
-          "description": "List of eBPF program instance parameters.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/eBPF_Program_Instance_Parameter"
-          }
-        },
         "ebpf_program_catalog_id": {
           "type": "string",
           "example": "packet-capture",
@@ -9257,6 +9237,23 @@
           "type": "string",
           "example": "Collect system metrics from Apache HTTP Web Server.",
           "description": "Short description of the agent installed in the execution environment."
+        },
+        "exec_env_id": {
+          "type": "string",
+          "example": "apache",
+          "description": "Id of the execution environment where the eBPF program\n                                     instance is installed"
+        },
+        "parameters": {
+          "description": "List of eBPF program instance parameters.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/eBPF_Program_Instance_Parameter"
+          }
+        },
+        "id": {
+          "type": "string",
+          "example": "packet-capture@apache",
+          "description": "Id of the eBPF program installed in an execution environment."
         }
       },
       "required": [
@@ -9281,21 +9278,16 @@
     "LCP": {
       "type": "object",
       "properties": {
-        "port": {
-          "type": "integer",
-          "format": "int32",
-          "example": 5000,
-          "description": "TCP port number of LCP in the execution environment."
-        },
-        "password": {
-          "type": "string",
-          "description": "Password for the CB to connect to this LCP."
-        },
         "started": {
           "type": "string",
           "format": "date-time",
           "example": "2019/02/14 15:23:30",
           "description": "Timestamp when the LCP is started"
+        },
+        "port": {
+          "type": "integer",
+          "example": 5000,
+          "description": "TCP port number of LCP in the execution environment."
         },
         "last_heartbeat": {
           "type": "string",
@@ -9306,6 +9298,10 @@
         "username": {
           "type": "string",
           "description": "Username for the CB to connect to this LCP."
+        },
+        "password": {
+          "type": "string",
+          "description": "Password for the CB to connect to this LCP."
         }
       },
       "required": [
@@ -9315,6 +9311,26 @@
     "Exec_Env": {
       "type": "object",
       "properties": {
+        "description": {
+          "type": "string",
+          "example": "Apache HTTP Web Server.",
+          "description": "Short description of the execution environment,"
+        },
+        "hostname": {
+          "type": "string",
+          "example": "192.168.1.2",
+          "description": "Hostname of the execution environment."
+        },
+        "enabled": {
+          "type": "boolean",
+          "example": "Yes",
+          "description": "Indicate if the execution environment is enabled or not"
+        },
+        "type_id": {
+          "type": "string",
+          "example": "vm",
+          "description": "Id of the execution environment type."
+        },
         "lcp": {
           "description": "Data related to the LCP.",
           "allOf": [
@@ -9327,26 +9343,6 @@
           "type": "string",
           "example": "apache",
           "description": "Id of the execution environment."
-        },
-        "type_id": {
-          "type": "string",
-          "example": "vm",
-          "description": "Id of the execution environment type."
-        },
-        "enabled": {
-          "type": "boolean",
-          "example": "Yes",
-          "description": "Indicate if the execution environment is enabled or not"
-        },
-        "hostname": {
-          "type": "string",
-          "example": "192.168.1.2",
-          "description": "Hostname of the execution environment."
-        },
-        "description": {
-          "type": "string",
-          "example": "Apache HTTP Web Server.",
-          "description": "Short description of the execution environment,"
         }
       },
       "required": [
@@ -9359,6 +9355,11 @@
     "Exec_Env_Type": {
       "type": "object",
       "properties": {
+        "name": {
+          "type": "string",
+          "example": "Virtual Machine",
+          "description": "Name of the execution environment."
+        },
         "description": {
           "type": "string",
           "example": "Linux container.",
@@ -9368,11 +9369,6 @@
           "type": "string",
           "example": "vm",
           "description": "Id of the execution environment type."
-        },
-        "name": {
-          "type": "string",
-          "example": "Virtual Machine",
-          "description": "Name of the execution environment."
         }
       },
       "required": [
@@ -9407,6 +9403,11 @@
     "Network_Link_Type": {
       "type": "object",
       "properties": {
+        "name": {
+          "type": "string",
+          "example": "Point to point",
+          "description": "Name of the network link type."
+        },
         "description": {
           "type": "string",
           "example": "Communications connection between two communication endpoints.",
@@ -9416,11 +9417,6 @@
           "type": "string",
           "example": "pnt2pnt",
           "description": "Id of the network link type."
-        },
-        "name": {
-          "type": "string",
-          "example": "Point to point",
-          "description": "Name of the network link type."
         }
       },
       "required": [

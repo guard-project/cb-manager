@@ -378,7 +378,6 @@ definitions:
       line:
         description: Line where the exception is raised.
         example: 80
-        format: int32
         type: integer
       reason:
         description: Exception reason.
@@ -471,7 +470,6 @@ definitions:
       port:
         description: TCP port number of LCP in the execution environment.
         example: 5000
-        format: int32
         type: integer
       started:
         description: Timestamp when the LCP is started
@@ -711,12 +709,10 @@ definitions:
       from:
         description: Started index of the items to return.
         example: 1
-        format: int32
         type: integer
       to:
         description: Ended index of the items to return.
         example: 5
-        format: int32
         type: integer
     type: object
   Query_Request_Order:
