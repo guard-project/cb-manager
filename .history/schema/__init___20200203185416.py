@@ -1,1 +1,0 @@
-from .query import QuerySchema as Query
