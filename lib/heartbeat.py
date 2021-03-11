@@ -1,10 +1,12 @@
-from reader.arg import Arg_Reader
 from datetime import datetime, timedelta
-from document.exec_env import Exec_Env_Document
-from lib.http import HTTP_Status
+from threading import Thread, Timer
+
 from requests import post
 from requests.exceptions import ConnectionError, ConnectTimeout
-from threading import Thread, Timer
+
+from document.exec_env import Exec_Env_Document
+from lib.http import HTTP_Status
+from reader.arg import Arg_Reader
 from utils.datetime import datetime_from_str, datetime_to_str
 from utils.hash import generate_password, hash
 from utils.log import Log
@@ -37,7 +39,8 @@ def heartbeat_exec_env(exec_env):
         id = exec_env.meta.id
         lcp = exec_env.lcp
         if exec_env.enabled:
-            resp = post(f'http://{exec_env.hostname}:{lcp.port}/status',
+            schema = 'https' if lcp.https else 'http'
+            resp = post(f'{schema}://{exec_env.hostname}:{lcp.port}/status',
                         timeout=Arg_Reader.db.hb_timeout,
                         json=dict(id=id, username=lcp.username, password=lcp.password))
             if resp.status_code == HTTP_Status.OK:
@@ -52,6 +55,8 @@ def heartbeat_exec_env(exec_env):
                 log.warning(f'Reset LCP connection with {id}')
                 log.notice(f'Response: {resp.content}')
                 lcp.username = lcp.password = lcp.last_heartbeat = None
+            if not lcp.https:
+                lcp.https = False
             exec_env.save()
         else:
             log.notice(f'Exec-env {id} (LCP at {exec_env.hostname}:{lcp.port}) not enabled')

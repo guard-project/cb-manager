@@ -1,10 +1,12 @@
+from resource.base.handler.lcp import LCP as Base_LCP
+
+from requests import post as post_req
+from requests.auth import HTTPBasicAuth as HTTP_Basic_Auth
+from toolz import valmap
+
 from document.agent.catalog import Agent_Catalog_Document
 from document.exec_env import Exec_Env_Document
 from lib.response import Unprocessable_Entity_Response
-from requests import post as post_req
-from requests.auth import HTTPBasicAuth as HTTP_Basic_Auth
-from resource.base.handler.lcp import LCP as Base_LCP
-from toolz import valmap
 from utils.log import Log
 from utils.sequence import expand, extract, is_dict, wrap
 
@@ -52,7 +54,8 @@ class LCP(Base_LCP):
     def __apply(self, instance, exec_env):
         if self.num > 0:
             username, password = exec_env.lcp.username, exec_env.lcp.password
-            resp_lcp = post_req(f'http://{exec_env.hostname}:{exec_env.lcp.port}/config',
+            schema = 'https' if exec_env.lcp.https else 'http'
+            resp_lcp = post_req(f'{schema}://{exec_env.hostname}:{exec_env.lcp.port}/config',
                                 auth=HTTP_Basic_Auth(username, password), json=self.req_lcp)
             if resp_lcp.content:
                 try:

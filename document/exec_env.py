@@ -1,5 +1,8 @@
+from elasticsearch_dsl import Boolean, Date
+from elasticsearch_dsl import InnerDoc as Inner_Doc
+from elasticsearch_dsl import Integer, Nested, Text
+
 from document.base import Base_Document
-from elasticsearch_dsl import Date, InnerDoc as Inner_Doc, Integer, Nested, Text, Boolean
 
 __all__ = [
     'Exec_Env_Document',
@@ -10,6 +13,7 @@ __all__ = [
 class LCP_Document_Inner_Doc(Inner_Doc):
     """LCP configuration data."""
     port = Integer(required=True)
+    https = Boolean(required=True)
     started = Date()
     last_heartbeat = Date()
     username = Text()

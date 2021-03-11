@@ -23,3 +23,6 @@
 - Stdout and stderr response format: plain, lines, and JSON.
 
 ## 1.0.3
+
+- Added option to force the use of HTTPS instead of HTTP.
+- Added support to enable/disable HTTP Authentication.

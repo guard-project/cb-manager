@@ -1,5 +1,6 @@
-from about import title, description, version
 from argparse import ArgumentParser as Argument_Parser
+
+from about import description, title, version
 from reader.config import Config_Reader
 from utils.log import Log
 from utils.time import get_seconds
@@ -26,6 +27,10 @@ class Arg_Reader:
             help='Hostname/IP of the REST Server', default=cls.cr.cb_host)
         add('--port', '-p', type=int,
             help='TCP Port of the REST Server', default=cls.cr.cb_port)
+        add('--auth', '-t',
+            help='Enable HTTP authentication', action='store_true')
+        add('--https', '-q',
+            help='Force to use HTTPS instead of HTTP', action='store_true')
 
         add('--hb-timeout', '-b', type=str,
             help='Timeout (with unit, e.g.: 10s) for heartbeat with LCP', default=cls.cr.hb_timeout)
@@ -35,6 +40,8 @@ class Arg_Reader:
             help='Period (with unit, e.g.: 1min) for auth expiration used in the heartbeat with the LCP',
             default=cls.cr.hb_auth_expiration)
 
+        add('--apm-enabled', '-n',
+            help='Elastic APM hostname/IP:port', action='store_true')
         add('--apm-server', '-m', type=str,
             help='Elastic APM hostname/IP:port',
             default=cls.cr.elastic_apm_server)
@@ -72,6 +79,10 @@ class Arg_Reader:
         for field in ('hb_timeout', 'hb_period', 'hb_auth_expiration',
                       'es_timeout', 'es_retry_period'):
             setattr(cls.db, field, get_seconds(getattr(cls.db, field)))
+
+        cls.db.auth = cls.db.auth or cls.cr.cb_auth
+        cls.db.https = cls.db.https or cls.cr.cb_https
+        cls.db.apm_enabled = cls.db.apm_enabled or cls.cr.elastic_apm_enabled
 
         if cls.db.write_config:
             cls.cr.write(cls.db)
