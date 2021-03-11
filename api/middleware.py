@@ -1,6 +1,7 @@
-from document.exec_env import Exec_Env_Document
-from falcon_auth import BasicAuthBackend as Basic_Auth_Backend
 from falcon.errors import HTTPUnauthorized as HTTP_Unauthorized
+from falcon_auth import BasicAuthBackend as Basic_Auth_Backend
+
+from document.exec_env import Exec_Env_Document
 from lib.response import Unauthorized_Response
 from utils.hash import hash
 from utils.log import Log
@@ -22,7 +23,7 @@ class Basic_Auth_Backend_Middleware(Basic_Auth_Backend):
         try:
             return super().authenticate(req, resp, resource)
         except HTTP_Unauthorized as e:
-            self.log.exception(e)
+            self.log.exception('Unauthorized request', e)
             Unauthorized_Response().apply(resp)
 
     def __auth(self, username, password):
