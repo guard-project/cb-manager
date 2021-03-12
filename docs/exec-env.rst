@@ -36,6 +36,8 @@ LCP Schema
 +=========+==========+=========+==========+==========+==============+=========+
 | ``port``           | Integer | True     | False    | False        | 4000    |
 +--------------------+---------+----------+----------+--------------+---------+
+| ``https``          | Boolean | True     | True     | False        | True    |
++--------------------+---------+----------+----------+--------------+---------+
 | ``started``        | Date    | False    | True     | True         |         |
 +--------------------+---------+----------+----------+--------------+---------+
 | ``last_heartbeat`` | Date    | False    | True     | True         |         |
@@ -55,6 +57,7 @@ LCP Schema
     - ``id`` is required but it is auto-generated if not provided.
       It is recommended to provide a friendly for simplify the retrieve of connected date in other indices.
     - ``type_id`` should be one of those stored in :ref:`exec-env-type` index.
+    - ``https`` indicate if the communication with the |LCP| is done with |HTTPS| instead of |HTTP|.
 
 
 .. _exec-env-create:
@@ -80,7 +83,8 @@ To create a new Execution Environment use the following |REST| call:
             "type_id": "<exec-env-type-id>",
             "hostname":"<ip-address>",
             "lcp": {
-                "port": "<lcp-port>"
+                "port": "<lcp-port>",
+                "https": "<use-https>"
             }
         }
 
@@ -338,6 +342,8 @@ To delete an execution environment, use:
         Without request body, it removes *all* the execution environments.
 
 
+.. |HTTP| replace:: :abbr:`HTTP (HyperText Transfer Protocol)`
+.. |HTTPS| replace:: :abbr:`HTTPS (HyperText Transfer Protocol over Secure Socket Layer)`
 .. |JSON| replace:: :abbr:`JSON (JavaScript Object Notation)`
 .. |LCP| replace:: :abbr:`LCP (Local Control Plane)`
 .. |REST| replace:: :abbr:`REST (Representational State Transfer)`
