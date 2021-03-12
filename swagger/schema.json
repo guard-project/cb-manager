@@ -23,12 +23,20 @@
       "description": "Represents an agent instance installed in an execution environment."
     },
     {
-      "name": "algorithm",
-      "description": "Represents the algorithms."
+      "name": "algorithm-catalog",
+      "description": "Represents an algorithm in the catalog."
     },
     {
-      "name": "algorithm",
-      "description": "Represents the algorithms."
+      "name": "algorithm-catalog",
+      "description": "Represents an algorithm in the catalog."
+    },
+    {
+      "name": "algorithm-instance",
+      "description": "Represents an algorithm instance."
+    },
+    {
+      "name": "algorithm-instance",
+      "description": "Represents an algorithm instance."
     },
     {
       "name": "connection",
@@ -1425,10 +1433,10 @@
         }
       }
     },
-    "/algorithm/": {
+    "/catalog/algorithm/": {
       "delete": {
-        "summary": "< Algorithm Delete (Single).",
-        "description": "Delete the algorithm with the given `id` and filtered by the query in the request body.",
+        "summary": "< Algorithm catalog Delete (Single).",
+        "description": "Delete the algorithm catalog with the given `id` and filtered by the query in the request body.",
         "parameters": [
           {
             "name": "id",
@@ -1446,11 +1454,11 @@
           }
         ],
         "tags": [
-          "algorithm"
+          "algorithm-catalog"
         ],
         "responses": {
           "205": {
-            "description": "< Algorithm with the given `id` correctly deleted.",
+            "description": "< Algorithm catalog with the given `id` correctly deleted.",
             "schema": {
               "type": "array",
               "items": {
@@ -1471,7 +1479,7 @@
             }
           },
           "404": {
-            "description": "< Algorithm with the given `id` and based on the request query not found.",
+            "description": "< Algorithm catalog with the given `id` and based on the request query not found.",
             "schema": {
               "$ref": "#/definitions/Not_Found_Response"
             }
@@ -1489,7 +1497,7 @@
             }
           },
           "422": {
-            "description": "Not possible to delete the algorithm with the given `id` and based on the request query.",
+            "description": "Not possible to delete the algorithm catalog with the given `id` and based on the request query.",
             "schema": {
               "type": "array",
               "items": {
@@ -1506,8 +1514,8 @@
         }
       },
       "get": {
-        "summary": "< Algorithm Read (Single).",
-        "description": "Get the algorithm with the given `id` and filtered by the query in the request body.",
+        "summary": "< Algorithm catalog Read (Single).",
+        "description": "Get the algorithm catalog with the given `id` and filtered by the query in the request body.",
         "parameters": [
           {
             "name": "id",
@@ -1525,15 +1533,15 @@
           }
         ],
         "tags": [
-          "algorithm"
+          "algorithm-catalog"
         ],
         "responses": {
           "200": {
-            "description": "< Algorithm with the given `id` and filtered by the query in the request body.",
+            "description": "< Algorithm catalog with the given `id` and filtered by the query in the request body.",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Algorithm"
+                "$ref": "#/definitions/Algorithm_Catalog"
               }
             }
           },
@@ -1550,7 +1558,7 @@
             }
           },
           "404": {
-            "description": "< Algorithm based on the request _query_ not found.",
+            "description": "< Algorithm catalog based on the request _query_ not found.",
             "schema": {
               "$ref": "#/definitions/Not_Found_Response"
             }
@@ -1568,7 +1576,7 @@
             }
           },
           "422": {
-            "description": "Not possible to get algorithm with the request _query_.",
+            "description": "Not possible to get algorithm catalogs with the request _query_.",
             "schema": {
               "$ref": "#/definitions/Unprocessable_Entity_Response"
             }
@@ -1582,8 +1590,8 @@
         }
       },
       "post": {
-        "summary": "< Algorithm Create (Single).",
-        "description": "Create a new algorithm with the given `id`.",
+        "summary": "< Algorithm catalog Create (Single).",
+        "description": "Create a new algorithm catalog with the given `id`.",
         "parameters": [
           {
             "name": "id",
@@ -1598,17 +1606,17 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Algorithm"
+                "$ref": "#/definitions/Algorithm_Catalog"
               }
             }
           }
         ],
         "tags": [
-          "algorithm"
+          "algorithm-catalog"
         ],
         "responses": {
           "201": {
-            "description": "< Algorithm with the given `id` correctly created.",
+            "description": "< Algorithm catalog with the given `id` correctly created.",
             "schema": {
               "type": "array",
               "items": {
@@ -1617,7 +1625,7 @@
             }
           },
           "204": {
-            "description": "No content to create the algorithm with the given `id` and based on the request.",
+            "description": "No content to create the algorithm catalog with the given `id` and based on the request.",
             "schema": {
               "$ref": "#/definitions/No_Content_Response"
             }
@@ -1647,7 +1655,7 @@
             }
           },
           "422": {
-            "description": "Not possible to create the algorithm with the given `id` and based on the request.",
+            "description": "Not possible to create the algorithm catalog with the given `id` and based on the request.",
             "schema": {
               "type": "array",
               "items": {
@@ -1664,8 +1672,8 @@
         }
       },
       "put": {
-        "summary": "< Algorithm Update (Single).",
-        "description": "Update the algorithm with the given `id`.",
+        "summary": "< Algorithm catalog Update (Single).",
+        "description": "Update the algorithm catalog with the given `id`.",
         "parameters": [
           {
             "name": "id",
@@ -1680,17 +1688,17 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Algorithm"
+                "$ref": "#/definitions/Algorithm_Catalog"
               }
             }
           }
         ],
         "tags": [
-          "algorithm"
+          "algorithm-catalog"
         ],
         "responses": {
           "200": {
-            "description": "< Algorithm with the given `id` correctly updated.",
+            "description": "< Algorithm catalog with the given `id` correctly updated.",
             "schema": {
               "type": "array",
               "items": {
@@ -1699,13 +1707,13 @@
             }
           },
           "204": {
-            "description": "No content to update algorithm with the given `id` and based on the request.",
+            "description": "No content to update algorithm catalogs with the given `id` and based on the request.",
             "schema": {
               "$ref": "#/definitions/No_Content_Response"
             }
           },
           "304": {
-            "description": "Update of the algorithm with the given `id` not necessary.",
+            "description": "Update of the algorithm catalog with the given `id` not necessary.",
             "schema": {
               "type": "array",
               "items": {
@@ -1738,7 +1746,7 @@
             }
           },
           "422": {
-            "description": "Not possible to update the algorithm with the given `id` and based on the request.",
+            "description": "Not possible to update the algorithm catalog with the given `id` and based on the request.",
             "schema": {
               "type": "array",
               "items": {
@@ -1755,10 +1763,10 @@
         }
       }
     },
-    "/algorithm/{id}": {
+    "/catalog/algorithm/{id}": {
       "delete": {
-        "summary": "< Algorithm Delete (Single).",
-        "description": "Delete the algorithm with the given `id` and filtered by the query in the request body.",
+        "summary": "< Algorithm catalog Delete (Single).",
+        "description": "Delete the algorithm catalog with the given `id` and filtered by the query in the request body.",
         "parameters": [
           {
             "name": "id",
@@ -1776,11 +1784,11 @@
           }
         ],
         "tags": [
-          "algorithm"
+          "algorithm-catalog"
         ],
         "responses": {
           "205": {
-            "description": "< Algorithm with the given `id` correctly deleted.",
+            "description": "< Algorithm catalog with the given `id` correctly deleted.",
             "schema": {
               "type": "array",
               "items": {
@@ -1801,7 +1809,7 @@
             }
           },
           "404": {
-            "description": "< Algorithm with the given `id` and based on the request query not found.",
+            "description": "< Algorithm catalog with the given `id` and based on the request query not found.",
             "schema": {
               "$ref": "#/definitions/Not_Found_Response"
             }
@@ -1819,7 +1827,7 @@
             }
           },
           "422": {
-            "description": "Not possible to delete the algorithm with the given `id` and based on the request query.",
+            "description": "Not possible to delete the algorithm catalog with the given `id` and based on the request query.",
             "schema": {
               "type": "array",
               "items": {
@@ -1836,8 +1844,8 @@
         }
       },
       "get": {
-        "summary": "< Algorithm Read (Single).",
-        "description": "Get the algorithm with the given `id` and filtered by the query in the request body.",
+        "summary": "< Algorithm catalog Read (Single).",
+        "description": "Get the algorithm catalog with the given `id` and filtered by the query in the request body.",
         "parameters": [
           {
             "name": "id",
@@ -1855,15 +1863,15 @@
           }
         ],
         "tags": [
-          "algorithm"
+          "algorithm-catalog"
         ],
         "responses": {
           "200": {
-            "description": "< Algorithm with the given `id` and filtered by the query in the request body.",
+            "description": "< Algorithm catalog with the given `id` and filtered by the query in the request body.",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Algorithm"
+                "$ref": "#/definitions/Algorithm_Catalog"
               }
             }
           },
@@ -1880,7 +1888,7 @@
             }
           },
           "404": {
-            "description": "< Algorithm based on the request _query_ not found.",
+            "description": "< Algorithm catalog based on the request _query_ not found.",
             "schema": {
               "$ref": "#/definitions/Not_Found_Response"
             }
@@ -1898,7 +1906,7 @@
             }
           },
           "422": {
-            "description": "Not possible to get algorithm with the request _query_.",
+            "description": "Not possible to get algorithm catalogs with the request _query_.",
             "schema": {
               "$ref": "#/definitions/Unprocessable_Entity_Response"
             }
@@ -1912,8 +1920,8 @@
         }
       },
       "post": {
-        "summary": "< Algorithm Create (Single).",
-        "description": "Create a new algorithm with the given `id`.",
+        "summary": "< Algorithm catalog Create (Single).",
+        "description": "Create a new algorithm catalog with the given `id`.",
         "parameters": [
           {
             "name": "id",
@@ -1928,17 +1936,17 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Algorithm"
+                "$ref": "#/definitions/Algorithm_Catalog"
               }
             }
           }
         ],
         "tags": [
-          "algorithm"
+          "algorithm-catalog"
         ],
         "responses": {
           "201": {
-            "description": "< Algorithm with the given `id` correctly created.",
+            "description": "< Algorithm catalog with the given `id` correctly created.",
             "schema": {
               "type": "array",
               "items": {
@@ -1947,7 +1955,7 @@
             }
           },
           "204": {
-            "description": "No content to create the algorithm with the given `id` and based on the request.",
+            "description": "No content to create the algorithm catalog with the given `id` and based on the request.",
             "schema": {
               "$ref": "#/definitions/No_Content_Response"
             }
@@ -1977,7 +1985,7 @@
             }
           },
           "422": {
-            "description": "Not possible to create the algorithm with the given `id` and based on the request.",
+            "description": "Not possible to create the algorithm catalog with the given `id` and based on the request.",
             "schema": {
               "type": "array",
               "items": {
@@ -1994,8 +2002,8 @@
         }
       },
       "put": {
-        "summary": "< Algorithm Update (Single).",
-        "description": "Update the algorithm with the given `id`.",
+        "summary": "< Algorithm catalog Update (Single).",
+        "description": "Update the algorithm catalog with the given `id`.",
         "parameters": [
           {
             "name": "id",
@@ -2010,17 +2018,17 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Algorithm"
+                "$ref": "#/definitions/Algorithm_Catalog"
               }
             }
           }
         ],
         "tags": [
-          "algorithm"
+          "algorithm-catalog"
         ],
         "responses": {
           "200": {
-            "description": "< Algorithm with the given `id` correctly updated.",
+            "description": "< Algorithm catalog with the given `id` correctly updated.",
             "schema": {
               "type": "array",
               "items": {
@@ -2029,13 +2037,13 @@
             }
           },
           "204": {
-            "description": "No content to update algorithm with the given `id` and based on the request.",
+            "description": "No content to update algorithm catalogs with the given `id` and based on the request.",
             "schema": {
               "$ref": "#/definitions/No_Content_Response"
             }
           },
           "304": {
-            "description": "Update of the algorithm with the given `id` not necessary.",
+            "description": "Update of the algorithm catalog with the given `id` not necessary.",
             "schema": {
               "type": "array",
               "items": {
@@ -2068,7 +2076,667 @@
             }
           },
           "422": {
-            "description": "Not possible to update the algorithm with the given `id` and based on the request.",
+            "description": "Not possible to update the algorithm catalog with the given `id` and based on the request.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Unprocessable_Entity_Response"
+              }
+            }
+          },
+          "500": {
+            "description": "Server not available to satisfy the request.",
+            "schema": {
+              "$ref": "#/definitions/Internal_Server_Error_Response"
+            }
+          }
+        }
+      }
+    },
+    "/instance/algorithm/": {
+      "delete": {
+        "summary": "< Algorithm instance Delete (Single).",
+        "description": "Delete the algorithm instance with the given `id` and filtered by the query in the request body.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "type": "String"
+          },
+          {
+            "in": "body",
+            "required": true,
+            "name": "payload",
+            "schema": {
+              "$ref": "#/definitions/Query_Request"
+            }
+          }
+        ],
+        "tags": [
+          "algorithm-instance"
+        ],
+        "responses": {
+          "205": {
+            "description": "< Algorithm instance with the given `id` correctly deleted.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Reset_Content_Response"
+              }
+            }
+          },
+          "400": {
+            "description": "Request not valid.",
+            "schema": {
+              "$ref": "#/definitions/Bad_Request_Response"
+            }
+          },
+          "401": {
+            "description": "Authentication failed.",
+            "schema": {
+              "$ref": "#/definitions/Unauthorized_Response"
+            }
+          },
+          "404": {
+            "description": "< Algorithm instance with the given `id` and based on the request query not found.",
+            "schema": {
+              "$ref": "#/definitions/Not_Found_Response"
+            }
+          },
+          "406": {
+            "description": "Request validation failed.",
+            "schema": {
+              "$ref": "#/definitions/Not_Acceptable_Response"
+            }
+          },
+          "415": {
+            "description": "Media type not supported.",
+            "schema": {
+              "$ref": "#/definitions/Unsupported_Media_Type_Response"
+            }
+          },
+          "422": {
+            "description": "Not possible to delete the algorithm instance with the given `id` and based on the request query.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Unprocessable_Entity_Response"
+              }
+            }
+          },
+          "500": {
+            "description": "Server not available to satisfy the request.",
+            "schema": {
+              "$ref": "#/definitions/Internal_Server_Error_Response"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "< Algorithm instance Read (Single).",
+        "description": "Get the algorithm instance with the given `id` and filtered by the query in the request body.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "type": "String"
+          },
+          {
+            "in": "body",
+            "required": true,
+            "name": "payload",
+            "schema": {
+              "$ref": "#/definitions/Query_Request"
+            }
+          }
+        ],
+        "tags": [
+          "algorithm-instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "< Algorithm instance with the given `id` and filtered by the query in the request body.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Algorithm_Instance"
+              }
+            }
+          },
+          "400": {
+            "description": "Request not valid.",
+            "schema": {
+              "$ref": "#/definitions/Bad_Request_Response"
+            }
+          },
+          "401": {
+            "description": "Authentication failed.",
+            "schema": {
+              "$ref": "#/definitions/Unauthorized_Response"
+            }
+          },
+          "404": {
+            "description": "< Algorithm instance based on the request _query_ not found.",
+            "schema": {
+              "$ref": "#/definitions/Not_Found_Response"
+            }
+          },
+          "406": {
+            "description": "Request validation failed.",
+            "schema": {
+              "$ref": "#/definitions/Not_Acceptable_Response"
+            }
+          },
+          "415": {
+            "description": "Media type not supported.",
+            "schema": {
+              "$ref": "#/definitions/Unsupported_Media_Type_Response"
+            }
+          },
+          "422": {
+            "description": "Not possible to get algorithm instances with the request _query_.",
+            "schema": {
+              "$ref": "#/definitions/Unprocessable_Entity_Response"
+            }
+          },
+          "500": {
+            "description": "Server not available to satisfy the request.",
+            "schema": {
+              "$ref": "#/definitions/Internal_Server_Error_Response"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "< Algorithm instance Create (Single).",
+        "description": "Create a new algorithm instance with the given `id`.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "type": "String"
+          },
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Algorithm_Instance"
+              }
+            }
+          }
+        ],
+        "tags": [
+          "algorithm-instance"
+        ],
+        "responses": {
+          "201": {
+            "description": "< Algorithm instance with the given `id` correctly created.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Created_Response"
+              }
+            }
+          },
+          "204": {
+            "description": "No content to create the algorithm instance with the given `id` and based on the request.",
+            "schema": {
+              "$ref": "#/definitions/No_Content_Response"
+            }
+          },
+          "400": {
+            "description": "Request not valid.",
+            "schema": {
+              "$ref": "#/definitions/Bad_Request_Response"
+            }
+          },
+          "401": {
+            "description": "Authentication failed.",
+            "schema": {
+              "$ref": "#/definitions/Unauthorized_Response"
+            }
+          },
+          "406": {
+            "description": "Request validation failed.",
+            "schema": {
+              "$ref": "#/definitions/Not_Acceptable_Response"
+            }
+          },
+          "415": {
+            "description": "Media type not supported.",
+            "schema": {
+              "$ref": "#/definitions/Unsupported_Media_Type_Response"
+            }
+          },
+          "422": {
+            "description": "Not possible to create the algorithm instance with the given `id` and based on the request.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Unprocessable_Entity_Response"
+              }
+            }
+          },
+          "500": {
+            "description": "Server not available to satisfy the request.",
+            "schema": {
+              "$ref": "#/definitions/Internal_Server_Error_Response"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "< Algorithm instance Update (Single).",
+        "description": "Update the algorithm instance with the given `id`.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "type": "String"
+          },
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Algorithm_Instance"
+              }
+            }
+          }
+        ],
+        "tags": [
+          "algorithm-instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "< Algorithm instance with the given `id` correctly updated.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Ok_Response"
+              }
+            }
+          },
+          "204": {
+            "description": "No content to update algorithm instances with the given `id` and based on the request.",
+            "schema": {
+              "$ref": "#/definitions/No_Content_Response"
+            }
+          },
+          "304": {
+            "description": "Update of the algorithm instance with the given `id` not necessary.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Not_Modified_Response"
+              }
+            }
+          },
+          "400": {
+            "description": "Request not valid.",
+            "schema": {
+              "$ref": "#/definitions/Bad_Request_Response"
+            }
+          },
+          "401": {
+            "description": "Authentication failed.",
+            "schema": {
+              "$ref": "#/definitions/Unauthorized_Response"
+            }
+          },
+          "406": {
+            "description": "Request validation failed.",
+            "schema": {
+              "$ref": "#/definitions/Not_Acceptable_Response"
+            }
+          },
+          "415": {
+            "description": "Media type not supported.",
+            "schema": {
+              "$ref": "#/definitions/Unsupported_Media_Type_Response"
+            }
+          },
+          "422": {
+            "description": "Not possible to update the algorithm instance with the given `id` and based on the request.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Unprocessable_Entity_Response"
+              }
+            }
+          },
+          "500": {
+            "description": "Server not available to satisfy the request.",
+            "schema": {
+              "$ref": "#/definitions/Internal_Server_Error_Response"
+            }
+          }
+        }
+      }
+    },
+    "/instance/algorithm/{id}": {
+      "delete": {
+        "summary": "< Algorithm instance Delete (Single).",
+        "description": "Delete the algorithm instance with the given `id` and filtered by the query in the request body.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "type": "String"
+          },
+          {
+            "in": "body",
+            "required": true,
+            "name": "payload",
+            "schema": {
+              "$ref": "#/definitions/Query_Request"
+            }
+          }
+        ],
+        "tags": [
+          "algorithm-instance"
+        ],
+        "responses": {
+          "205": {
+            "description": "< Algorithm instance with the given `id` correctly deleted.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Reset_Content_Response"
+              }
+            }
+          },
+          "400": {
+            "description": "Request not valid.",
+            "schema": {
+              "$ref": "#/definitions/Bad_Request_Response"
+            }
+          },
+          "401": {
+            "description": "Authentication failed.",
+            "schema": {
+              "$ref": "#/definitions/Unauthorized_Response"
+            }
+          },
+          "404": {
+            "description": "< Algorithm instance with the given `id` and based on the request query not found.",
+            "schema": {
+              "$ref": "#/definitions/Not_Found_Response"
+            }
+          },
+          "406": {
+            "description": "Request validation failed.",
+            "schema": {
+              "$ref": "#/definitions/Not_Acceptable_Response"
+            }
+          },
+          "415": {
+            "description": "Media type not supported.",
+            "schema": {
+              "$ref": "#/definitions/Unsupported_Media_Type_Response"
+            }
+          },
+          "422": {
+            "description": "Not possible to delete the algorithm instance with the given `id` and based on the request query.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Unprocessable_Entity_Response"
+              }
+            }
+          },
+          "500": {
+            "description": "Server not available to satisfy the request.",
+            "schema": {
+              "$ref": "#/definitions/Internal_Server_Error_Response"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "< Algorithm instance Read (Single).",
+        "description": "Get the algorithm instance with the given `id` and filtered by the query in the request body.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "type": "String"
+          },
+          {
+            "in": "body",
+            "required": true,
+            "name": "payload",
+            "schema": {
+              "$ref": "#/definitions/Query_Request"
+            }
+          }
+        ],
+        "tags": [
+          "algorithm-instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "< Algorithm instance with the given `id` and filtered by the query in the request body.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Algorithm_Instance"
+              }
+            }
+          },
+          "400": {
+            "description": "Request not valid.",
+            "schema": {
+              "$ref": "#/definitions/Bad_Request_Response"
+            }
+          },
+          "401": {
+            "description": "Authentication failed.",
+            "schema": {
+              "$ref": "#/definitions/Unauthorized_Response"
+            }
+          },
+          "404": {
+            "description": "< Algorithm instance based on the request _query_ not found.",
+            "schema": {
+              "$ref": "#/definitions/Not_Found_Response"
+            }
+          },
+          "406": {
+            "description": "Request validation failed.",
+            "schema": {
+              "$ref": "#/definitions/Not_Acceptable_Response"
+            }
+          },
+          "415": {
+            "description": "Media type not supported.",
+            "schema": {
+              "$ref": "#/definitions/Unsupported_Media_Type_Response"
+            }
+          },
+          "422": {
+            "description": "Not possible to get algorithm instances with the request _query_.",
+            "schema": {
+              "$ref": "#/definitions/Unprocessable_Entity_Response"
+            }
+          },
+          "500": {
+            "description": "Server not available to satisfy the request.",
+            "schema": {
+              "$ref": "#/definitions/Internal_Server_Error_Response"
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "< Algorithm instance Create (Single).",
+        "description": "Create a new algorithm instance with the given `id`.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "type": "String"
+          },
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Algorithm_Instance"
+              }
+            }
+          }
+        ],
+        "tags": [
+          "algorithm-instance"
+        ],
+        "responses": {
+          "201": {
+            "description": "< Algorithm instance with the given `id` correctly created.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Created_Response"
+              }
+            }
+          },
+          "204": {
+            "description": "No content to create the algorithm instance with the given `id` and based on the request.",
+            "schema": {
+              "$ref": "#/definitions/No_Content_Response"
+            }
+          },
+          "400": {
+            "description": "Request not valid.",
+            "schema": {
+              "$ref": "#/definitions/Bad_Request_Response"
+            }
+          },
+          "401": {
+            "description": "Authentication failed.",
+            "schema": {
+              "$ref": "#/definitions/Unauthorized_Response"
+            }
+          },
+          "406": {
+            "description": "Request validation failed.",
+            "schema": {
+              "$ref": "#/definitions/Not_Acceptable_Response"
+            }
+          },
+          "415": {
+            "description": "Media type not supported.",
+            "schema": {
+              "$ref": "#/definitions/Unsupported_Media_Type_Response"
+            }
+          },
+          "422": {
+            "description": "Not possible to create the algorithm instance with the given `id` and based on the request.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Unprocessable_Entity_Response"
+              }
+            }
+          },
+          "500": {
+            "description": "Server not available to satisfy the request.",
+            "schema": {
+              "$ref": "#/definitions/Internal_Server_Error_Response"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "< Algorithm instance Update (Single).",
+        "description": "Update the algorithm instance with the given `id`.",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "type": "String"
+          },
+          {
+            "name": "payload",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Algorithm_Instance"
+              }
+            }
+          }
+        ],
+        "tags": [
+          "algorithm-instance"
+        ],
+        "responses": {
+          "200": {
+            "description": "< Algorithm instance with the given `id` correctly updated.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Ok_Response"
+              }
+            }
+          },
+          "204": {
+            "description": "No content to update algorithm instances with the given `id` and based on the request.",
+            "schema": {
+              "$ref": "#/definitions/No_Content_Response"
+            }
+          },
+          "304": {
+            "description": "Update of the algorithm instance with the given `id` not necessary.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Not_Modified_Response"
+              }
+            }
+          },
+          "400": {
+            "description": "Request not valid.",
+            "schema": {
+              "$ref": "#/definitions/Bad_Request_Response"
+            }
+          },
+          "401": {
+            "description": "Authentication failed.",
+            "schema": {
+              "$ref": "#/definitions/Unauthorized_Response"
+            }
+          },
+          "406": {
+            "description": "Request validation failed.",
+            "schema": {
+              "$ref": "#/definitions/Not_Acceptable_Response"
+            }
+          },
+          "415": {
+            "description": "Media type not supported.",
+            "schema": {
+              "$ref": "#/definitions/Unsupported_Media_Type_Response"
+            }
+          },
+          "422": {
+            "description": "Not possible to update the algorithm instance with the given `id` and based on the request.",
             "schema": {
               "type": "array",
               "items": {
@@ -8038,6 +8706,123 @@
   },
   "swagger": "2.0",
   "definitions": {
+    "Query_Request_Limit": {
+      "type": "object",
+      "properties": {
+        "to": {
+          "type": "integer",
+          "example": 5,
+          "description": "Ended index of the items to return."
+        },
+        "from": {
+          "type": "integer",
+          "example": 1,
+          "description": "Started index of the items to return."
+        }
+      }
+    },
+    "Query_Request_Filter": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string",
+          "example": "id",
+          "description": "The field to compare."
+        },
+        "expr": {
+          "type": "string",
+          "example": "apache",
+          "description": "The expression to compare to the field."
+        }
+      },
+      "required": [
+        "expr",
+        "target"
+      ]
+    },
+    "Query_Request_Clause": {
+      "type": "object",
+      "properties": {
+        "not": {
+          "description": "The clause has to be not satisfied.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Query_Request_Clause"
+            }
+          ]
+        },
+        "wildcard": {
+          "description": "The target field must be satisfy the wildcard in expr.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Query_Request_Filter"
+            }
+          ]
+        },
+        "gt": {
+          "description": "The target field must be greater to the expr value.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Query_Request_Filter"
+            }
+          ]
+        },
+        "reg_exp": {
+          "description": "The target field must be satisfy the regular expression in expr.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Query_Request_Filter"
+            }
+          ]
+        },
+        "equals": {
+          "description": "The target field must be equal to the expr value.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Query_Request_Filter"
+            }
+          ]
+        },
+        "lt": {
+          "description": "The target field must be lower than the expr value.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Query_Request_Filter"
+            }
+          ]
+        },
+        "and": {
+          "description": "All the clause has to be satisfied.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Query_Request_Clause"
+          }
+        },
+        "gte": {
+          "description": "The target field must be greater or equal to the expr value.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Query_Request_Filter"
+            }
+          ]
+        },
+        "lte": {
+          "description": "The target field must be lower or equal to the expr value.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Query_Request_Filter"
+            }
+          ]
+        },
+        "or": {
+          "description": "At least the clause has to be satisfied.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Query_Request_Clause"
+          }
+        }
+      }
+    },
     "Query_Request_Order": {
       "type": "object",
       "properties": {
@@ -8061,136 +8846,15 @@
         "target"
       ]
     },
-    "Query_Request_Limit": {
-      "type": "object",
-      "properties": {
-        "to": {
-          "type": "integer",
-          "example": 5,
-          "description": "Ended index of the items to return."
-        },
-        "from": {
-          "type": "integer",
-          "example": 1,
-          "description": "Started index of the items to return."
-        }
-      }
-    },
-    "Query_Request_Filter": {
-      "type": "object",
-      "properties": {
-        "expr": {
-          "type": "string",
-          "example": "apache",
-          "description": "The expression to compare to the field."
-        },
-        "target": {
-          "type": "string",
-          "example": "id",
-          "description": "The field to compare."
-        }
-      },
-      "required": [
-        "expr",
-        "target"
-      ]
-    },
-    "Query_Request_Clause": {
-      "type": "object",
-      "properties": {
-        "lt": {
-          "description": "The target field must be lower than the expr value.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/Query_Request_Filter"
-            }
-          ]
-        },
-        "gt": {
-          "description": "The target field must be greater to the expr value.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/Query_Request_Filter"
-            }
-          ]
-        },
-        "and": {
-          "description": "All the clause has to be satisfied.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Query_Request_Clause"
-          }
-        },
-        "equals": {
-          "description": "The target field must be equal to the expr value.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/Query_Request_Filter"
-            }
-          ]
-        },
-        "wildcard": {
-          "description": "The target field must be satisfy the wildcard in expr.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/Query_Request_Filter"
-            }
-          ]
-        },
-        "lte": {
-          "description": "The target field must be lower or equal to the expr value.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/Query_Request_Filter"
-            }
-          ]
-        },
-        "or": {
-          "description": "At least the clause has to be satisfied.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Query_Request_Clause"
-          }
-        },
-        "not": {
-          "description": "The clause has to be not satisfied.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/Query_Request_Clause"
-            }
-          ]
-        },
-        "gte": {
-          "description": "The target field must be greater or equal to the expr value.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/Query_Request_Filter"
-            }
-          ]
-        },
-        "reg_exp": {
-          "description": "The target field must be satisfy the regular expression in expr.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/Query_Request_Filter"
-            }
-          ]
-        }
-      }
-    },
     "Query_Request": {
       "type": "object",
       "properties": {
-        "force": {
-          "type": "boolean",
-          "example": true,
-          "description": "Force the execution of the request even there are some errors (example: delete a inconstent entries."
-        },
-        "order": {
-          "description": "Order the filtered items.",
+        "select": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Query_Request_Order"
+            "type": "string",
+            "example": "id",
+            "description": "Fields to return."
           }
         },
         "limit": {
@@ -8201,14 +8865,6 @@
             }
           ]
         },
-        "select": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "example": "id",
-            "description": "Fields to return."
-          }
-        },
         "where": {
           "description": "Filter the items based on different conditions.",
           "allOf": [
@@ -8216,12 +8872,29 @@
               "$ref": "#/definitions/Query_Request_Clause"
             }
           ]
+        },
+        "order": {
+          "description": "Order the filtered items.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Query_Request_Order"
+          }
+        },
+        "force": {
+          "type": "boolean",
+          "example": true,
+          "description": "Force the execution of the request even there are some errors (example: delete a inconstent entries."
         }
       }
     },
     "Exception_Response": {
       "type": "object",
       "properties": {
+        "line": {
+          "type": "integer",
+          "example": 80,
+          "description": "Line where the exception is raised."
+        },
         "filename": {
           "type": "string",
           "example": "lib/connection.py",
@@ -8230,11 +8903,6 @@
         "reason": {
           "example": "Connection timeout",
           "description": "Exception reason."
-        },
-        "line": {
-          "type": "integer",
-          "example": 80,
-          "description": "Line where the exception is raised."
         }
       },
       "required": [
@@ -8246,6 +8914,11 @@
     "Reset_Content_Response": {
       "type": "object",
       "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
         "code": {
           "default": 205
         },
@@ -8256,11 +8929,6 @@
               "$ref": "#/definitions/Exception_Response"
             }
           ]
-        },
-        "message": {
-          "type": "string",
-          "example": "Request not valid: two ids provided.",
-          "description": "Human readable message that describes the status of the operation."
         },
         "status": {
           "default": "Reset Content"
@@ -8276,6 +8944,11 @@
     "Bad_Request_Response": {
       "type": "object",
       "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
         "code": {
           "default": 400
         },
@@ -8286,11 +8959,6 @@
               "$ref": "#/definitions/Exception_Response"
             }
           ]
-        },
-        "message": {
-          "type": "string",
-          "example": "Request not valid: two ids provided.",
-          "description": "Human readable message that describes the status of the operation."
         },
         "status": {
           "default": "Bad Request"
@@ -8306,6 +8974,11 @@
     "Unauthorized_Response": {
       "type": "object",
       "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
         "code": {
           "default": 401
         },
@@ -8316,11 +8989,6 @@
               "$ref": "#/definitions/Exception_Response"
             }
           ]
-        },
-        "message": {
-          "type": "string",
-          "example": "Request not valid: two ids provided.",
-          "description": "Human readable message that describes the status of the operation."
         },
         "status": {
           "default": "Unauthorized"
@@ -8336,6 +9004,11 @@
     "Not_Found_Response": {
       "type": "object",
       "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
         "code": {
           "default": 404
         },
@@ -8346,11 +9019,6 @@
               "$ref": "#/definitions/Exception_Response"
             }
           ]
-        },
-        "message": {
-          "type": "string",
-          "example": "Request not valid: two ids provided.",
-          "description": "Human readable message that describes the status of the operation."
         },
         "status": {
           "default": "Not Found"
@@ -8366,6 +9034,11 @@
     "Not_Acceptable_Response": {
       "type": "object",
       "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
         "code": {
           "default": 406
         },
@@ -8376,11 +9049,6 @@
               "$ref": "#/definitions/Exception_Response"
             }
           ]
-        },
-        "message": {
-          "type": "string",
-          "example": "Request not valid: two ids provided.",
-          "description": "Human readable message that describes the status of the operation."
         },
         "status": {
           "default": "Not Acceptable"
@@ -8396,6 +9064,11 @@
     "Unsupported_Media_Type_Response": {
       "type": "object",
       "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
         "code": {
           "default": 415
         },
@@ -8406,11 +9079,6 @@
               "$ref": "#/definitions/Exception_Response"
             }
           ]
-        },
-        "message": {
-          "type": "string",
-          "example": "Request not valid: two ids provided.",
-          "description": "Human readable message that describes the status of the operation."
         },
         "status": {
           "default": "Unsupported Media Type"
@@ -8426,6 +9094,11 @@
     "Unprocessable_Entity_Response": {
       "type": "object",
       "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
         "code": {
           "default": 422
         },
@@ -8436,11 +9109,6 @@
               "$ref": "#/definitions/Exception_Response"
             }
           ]
-        },
-        "message": {
-          "type": "string",
-          "example": "Request not valid: two ids provided.",
-          "description": "Human readable message that describes the status of the operation."
         },
         "status": {
           "default": "Unprocessable Entity"
@@ -8456,6 +9124,11 @@
     "Internal_Server_Error_Response": {
       "type": "object",
       "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
         "code": {
           "default": 500
         },
@@ -8466,11 +9139,6 @@
               "$ref": "#/definitions/Exception_Response"
             }
           ]
-        },
-        "message": {
-          "type": "string",
-          "example": "Request not valid: two ids provided.",
-          "description": "Human readable message that describes the status of the operation."
         },
         "status": {
           "default": "Internal Server Error"
@@ -8559,6 +9227,11 @@
     "Agent_Catalog_Parameter": {
       "type": "object",
       "properties": {
+        "description": {
+          "type": "string",
+          "example": "Enable the agent.",
+          "description": "Short description of the parameter."
+        },
         "config": {
           "description": "Parameter configuration.",
           "allOf": [
@@ -8567,15 +9240,24 @@
             }
           ]
         },
-        "description": {
-          "type": "string",
-          "example": "Enable the agent.",
-          "description": "Short description of the parameter."
+        "list": {
+          "type": "boolean",
+          "example": true,
+          "description": "Indicate if the parameter can have multiple values."
         },
         "values": {
           "type": "string",
           "example": "mysql",
           "description": "Possible values if the parameter type is choice."
+        },
+        "id": {
+          "type": "string",
+          "example": "log-period",
+          "description": "Parameter id."
+        },
+        "example": {
+          "example": "10s",
+          "description": "Example of parameter value."
         },
         "type": {
           "type": "string",
@@ -8590,20 +9272,6 @@
           ],
           "example": "binary",
           "description": "Parameter type."
-        },
-        "example": {
-          "example": "10s",
-          "description": "Example of parameter value."
-        },
-        "list": {
-          "type": "boolean",
-          "example": true,
-          "description": "Indicate if the parameter can have multiple values."
-        },
-        "id": {
-          "type": "string",
-          "example": "log-period",
-          "description": "Parameter id."
         }
       },
       "required": [
@@ -8615,15 +9283,15 @@
     "Agent_Catalog_Action_Config": {
       "type": "object",
       "properties": {
-        "daemon": {
-          "type": "boolean",
-          "example": true,
-          "description": "Execute the command as daemon."
-        },
         "args": {
           "type": "string",
           "example": "-v",
           "description": "Action command argument"
+        },
+        "daemon": {
+          "type": "boolean",
+          "example": true,
+          "description": "Execute the command as daemon."
         },
         "cmd": {
           "type": "string",
@@ -8638,16 +9306,6 @@
     "Agent_Catalog_Action": {
       "type": "object",
       "properties": {
-        "status": {
-          "type": "string",
-          "enum": [
-            "started",
-            "stopped",
-            "unknown"
-          ],
-          "example": "started",
-          "description": "Update the status the of the agent-instance if the command is executed correctly."
-        },
         "config": {
           "description": "Action config.",
           "allOf": [
@@ -8660,6 +9318,16 @@
           "type": "string",
           "example": "Start the execution of the agent.",
           "description": "Short description of the agent actions."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "started",
+            "stopped",
+            "unknown"
+          ],
+          "example": "started",
+          "description": "Update the status the of the agent-instance if the command is executed correctly."
         },
         "id": {
           "type": "string",
@@ -8675,13 +9343,6 @@
     "Agent_Catalog": {
       "type": "object",
       "properties": {
-        "resources": {
-          "description": "Resource properties.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Agent_Catalog_Resource"
-          }
-        },
         "description": {
           "type": "string",
           "example": "Collect system metrics from execution environments.",
@@ -8691,6 +9352,13 @@
           "type": "string",
           "example": "filebeat",
           "description": "Id of the agent in the catalog."
+        },
+        "resources": {
+          "description": "Resource properties.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Agent_Catalog_Resource"
+          }
         },
         "parameters": {
           "description": "Parameter properties.",
@@ -8714,6 +9382,11 @@
     "Created_Response": {
       "type": "object",
       "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
         "code": {
           "default": 201
         },
@@ -8724,11 +9397,6 @@
               "$ref": "#/definitions/Exception_Response"
             }
           ]
-        },
-        "message": {
-          "type": "string",
-          "example": "Request not valid: two ids provided.",
-          "description": "Human readable message that describes the status of the operation."
         },
         "status": {
           "default": "Created"
@@ -8744,6 +9412,11 @@
     "No_Content_Response": {
       "type": "object",
       "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
         "code": {
           "default": 204
         },
@@ -8754,11 +9427,6 @@
               "$ref": "#/definitions/Exception_Response"
             }
           ]
-        },
-        "message": {
-          "type": "string",
-          "example": "Request not valid: two ids provided.",
-          "description": "Human readable message that describes the status of the operation."
         },
         "status": {
           "default": "No Content"
@@ -8774,6 +9442,11 @@
     "Ok_Response": {
       "type": "object",
       "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
         "code": {
           "default": 200
         },
@@ -8784,11 +9457,6 @@
               "$ref": "#/definitions/Exception_Response"
             }
           ]
-        },
-        "message": {
-          "type": "string",
-          "example": "Request not valid: two ids provided.",
-          "description": "Human readable message that describes the status of the operation."
         },
         "status": {
           "default": "OK"
@@ -8804,6 +9472,11 @@
     "Not_Modified_Response": {
       "type": "object",
       "properties": {
+        "message": {
+          "type": "string",
+          "example": "Request not valid: two ids provided.",
+          "description": "Human readable message that describes the status of the operation."
+        },
         "code": {
           "default": 304
         },
@@ -8815,11 +9488,6 @@
             }
           ]
         },
-        "message": {
-          "type": "string",
-          "example": "Request not valid: two ids provided.",
-          "description": "Human readable message that describes the status of the operation."
-        },
         "status": {
           "default": "Not Modified"
         },
@@ -8829,6 +9497,25 @@
       },
       "required": [
         "message"
+      ]
+    },
+    "Agent_Instance_Resource": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string",
+          "example": "period: 10s",
+          "description": "Resource content."
+        },
+        "id": {
+          "type": "string",
+          "example": "filebeat-config",
+          "description": "Resource id."
+        }
+      },
+      "required": [
+        "content",
+        "id"
       ]
     },
     "Agent_Instance_Parameter": {
@@ -8867,28 +9554,16 @@
         "id"
       ]
     },
-    "Agent_Instance_Resource": {
-      "type": "object",
-      "properties": {
-        "content": {
-          "type": "string",
-          "example": "period: 10s",
-          "description": "Resource content."
-        },
-        "id": {
-          "type": "string",
-          "example": "filebeat-config",
-          "description": "Resource id."
-        }
-      },
-      "required": [
-        "content",
-        "id"
-      ]
-    },
     "Agent_Instance_Operation": {
       "type": "object",
       "properties": {
+        "resources": {
+          "description": "List of agent instance resources.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Agent_Instance_Resource"
+          }
+        },
         "parameters": {
           "description": "List of agent instance parameters.",
           "type": "array",
@@ -8902,41 +9577,16 @@
           "items": {
             "$ref": "#/definitions/Agent_Instance_Action"
           }
-        },
-        "resources": {
-          "description": "List of agent instance resources.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Agent_Instance_Resource"
-          }
         }
       }
     },
     "Agent_Instance": {
       "type": "object",
       "properties": {
-        "exec_env_id": {
-          "type": "string",
-          "example": "apache",
-          "description": "Id of the execution environment where the agent instance is installed."
-        },
         "description": {
           "type": "string",
           "example": "Collect system metrics from execution environments.",
           "description": "Short description of the agent installed in the execution environment."
-        },
-        "operations": {
-          "description": "List of agent instance operations.",
-          "allOf": [
-            {
-              "$ref": "#/definitions/Agent_Instance_Operation"
-            }
-          ]
-        },
-        "id": {
-          "type": "string",
-          "example": "filebeat@apache",
-          "description": "Id of the agent instance installed in an execution environment."
         },
         "status": {
           "type": "string",
@@ -8948,10 +9598,28 @@
           "example": "started",
           "description": "Status of the agent."
         },
+        "id": {
+          "type": "string",
+          "example": "filebeat@apache",
+          "description": "Id of the agent instance installed in an execution environment."
+        },
         "agent_catalog_id": {
           "type": "string",
           "example": "filebeat",
           "description": "Id of the agent in the catalog."
+        },
+        "exec_env_id": {
+          "type": "string",
+          "example": "apache",
+          "description": "Id of the execution environment where the agent instance is installed."
+        },
+        "operations": {
+          "description": "List of agent instance operations.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Agent_Instance_Operation"
+            }
+          ]
         }
       },
       "required": [
@@ -8961,16 +9629,138 @@
         "status"
       ]
     },
-    "Algorithm": {
+    "Algorithm_Catalog_Parameter": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "example": "Enable the algorithm.",
+          "description": "Short description of the parameter."
+        },
+        "list": {
+          "type": "boolean",
+          "example": true,
+          "description": "Indicate if the parameter can have multiple values."
+        },
+        "values": {
+          "type": "string",
+          "example": "mysql",
+          "description": "Possible values if the parameter type is choice."
+        },
+        "id": {
+          "type": "string",
+          "example": "frequency",
+          "description": "Parameter id."
+        },
+        "example": {
+          "example": "10s",
+          "description": "Example of parameter value."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "binary",
+            "boolean",
+            "choice",
+            "integer",
+            "number",
+            "time-duration",
+            "string"
+          ],
+          "example": "binary",
+          "description": "Parameter type."
+        }
+      },
+      "required": [
+        "id",
+        "type"
+      ]
+    },
+    "Algorithm_Catalog": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "example": "Predict DDoS attacks.",
+          "description": "Short description of the algorithm."
+        },
+        "parameters": {
+          "description": "Parameter properties.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Algorithm_Catalog_Parameter"
+          }
+        },
+        "id": {
+          "type": "string",
+          "example": "ddos-prediction",
+          "description": "Id of the algorithm in the catalog."
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "Algorithm_Instance_Parameter": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string",
-          "example": "BXrHRn5RPU55Qh9JwMZn",
-          "description": "Id of the algorithm."
+          "example": "period",
+          "description": "Parameter id."
         }
       },
       "required": [
+        "id"
+      ]
+    },
+    "Algorithm_Instance_Operation": {
+      "type": "object",
+      "properties": {
+        "parameters": {
+          "description": "List of algorithm instance parameters.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Algorithm_Instance_Parameter"
+          }
+        }
+      }
+    },
+    "Algorithm_Instance": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string",
+          "example": "Collect system metrics from execution environments.",
+          "description": "Short description of the algorithm installed in the execution environment."
+        },
+        "id": {
+          "type": "string",
+          "example": "ddos-predictor-1",
+          "description": "Id of the algorithm instance."
+        },
+        "algorithm_catalog_id": {
+          "type": "string",
+          "example": "ddos-predictor",
+          "description": "Id of the algorithm in the catalog."
+        },
+        "exec_env_id": {
+          "type": "string",
+          "example": "apache",
+          "description": "Id of the execution environment where the algorithm instance is installed."
+        },
+        "operations": {
+          "description": "List of algorithm instance operations.",
+          "allOf": [
+            {
+              "$ref": "#/definitions/Algorithm_Instance_Operation"
+            }
+          ]
+        }
+      },
+      "required": [
+        "algorithm_catalog_id",
+        "exec_env_id",
         "id"
       ]
     },
@@ -9007,10 +9797,11 @@
     "Data": {
       "type": "object",
       "properties": {
-        "agent_instance_id": {
+        "timestamp_agent": {
           "type": "string",
-          "example": "filebeat@apache",
-          "description": "Id of the agent instance in the execution environment\n                                           that collected the data"
+          "format": "date-time",
+          "example": "2019/02/14 15:23:30",
+          "description": "Timestamp when the agent instance collected the data"
         },
         "timestamp_event": {
           "type": "string",
@@ -9023,11 +9814,10 @@
           "example": "BXrHRn5RPU55Qh9JwMZn",
           "description": "Id of the data."
         },
-        "timestamp_agent": {
+        "agent_instance_id": {
           "type": "string",
-          "format": "date-time",
-          "example": "2019/02/14 15:23:30",
-          "description": "Timestamp when the agent instance collected the data"
+          "example": "filebeat@apache",
+          "description": "Id of the agent instance in the execution environment\n                                           that collected the data"
         },
         "ebpf_program_instance_id": {
           "type": "string",
@@ -9061,22 +9851,22 @@
     "eBPF_Program_Catalog_Config_Metric_Open_Metrics_Metadata": {
       "type": "object",
       "properties": {
-        "type": {
-          "type": "string",
-          "example": "counter",
-          "description": "Metric type."
-        },
-        "help": {
-          "type": "string",
-          "example": "This metric represents the number of packets that has travelled trough this probe.",
-          "description": "Metric help."
-        },
         "labels": {
           "description": "Labels of Open Metrics Metadata.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/eBPF_Program_Catalog_Config_Metric_Open_Metrics_Metadata_Label"
           }
+        },
+        "help": {
+          "type": "string",
+          "example": "This metric represents the number of packets that has travelled trough this probe.",
+          "description": "Metric help."
+        },
+        "type": {
+          "type": "string",
+          "example": "counter",
+          "description": "Metric type."
         }
       },
       "required": [
@@ -9135,10 +9925,29 @@
     "eBPF_Program_Catalog_Parameter": {
       "type": "object",
       "properties": {
+        "description": {
+          "type": "string",
+          "example": "Network Interface to attach.",
+          "description": "Short description of the parameter."
+        },
+        "list": {
+          "type": "boolean",
+          "example": true,
+          "description": "Indicate if the parameter can have multiple values."
+        },
         "values": {
           "type": "string",
           "example": "yes",
           "description": "Possible values if the parameter type is choice."
+        },
+        "id": {
+          "type": "string",
+          "example": "interface",
+          "description": "Parameter id."
+        },
+        "example": {
+          "example": "eno0",
+          "description": "Example of parameter value."
         },
         "type": {
           "type": "string",
@@ -9153,25 +9962,6 @@
           ],
           "description": "Parameter type.",
           "example": "integer"
-        },
-        "example": {
-          "example": "eno0",
-          "description": "Example of parameter value."
-        },
-        "list": {
-          "type": "boolean",
-          "example": true,
-          "description": "Indicate if the parameter can have multiple values."
-        },
-        "description": {
-          "type": "string",
-          "example": "Network Interface to attach.",
-          "description": "Short description of the parameter."
-        },
-        "id": {
-          "type": "string",
-          "example": "interface",
-          "description": "Parameter id."
         }
       },
       "required": [
@@ -9185,16 +9975,16 @@
         "config": {
           "$ref": "#/definitions/eBPF_Program_Catalog_Config"
         },
+        "description": {
+          "type": "string",
+          "example": "Transparent service to capture packets flowing through the interface it\n                                 is attached to, apply filters and obtain capture in .pcap format.",
+          "description": "Description of eBPF program."
+        },
         "parameters": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/eBPF_Program_Catalog_Parameter"
           }
-        },
-        "description": {
-          "type": "string",
-          "example": "Transparent service to capture packets flowing through the interface it\n                                 is attached to, apply filters and obtain capture in .pcap format.",
-          "description": "Description of eBPF program."
         },
         "id": {
           "type": "string",
@@ -9228,16 +10018,6 @@
     "eBPF_Program_Instance": {
       "type": "object",
       "properties": {
-        "exec_env_id": {
-          "type": "string",
-          "example": "apache",
-          "description": "Id of the execution environment where the eBPF program\n                                     instance is installed"
-        },
-        "ebpf_program_catalog_id": {
-          "type": "string",
-          "example": "packet-capture",
-          "description": "Id of the agent in the catalog."
-        },
         "description": {
           "type": "string",
           "example": "Collect system metrics from Apache HTTP Web Server.",
@@ -9247,6 +10027,16 @@
           "type": "string",
           "example": "packet-capture@apache",
           "description": "Id of the eBPF program installed in an execution environment."
+        },
+        "ebpf_program_catalog_id": {
+          "type": "string",
+          "example": "packet-capture",
+          "description": "Id of the agent in the catalog."
+        },
+        "exec_env_id": {
+          "type": "string",
+          "example": "apache",
+          "description": "Id of the execution environment where the eBPF program\n                                     instance is installed"
         },
         "parameters": {
           "description": "List of eBPF program instance parameters.",
@@ -9283,6 +10073,12 @@
           "example": 5000,
           "description": "TCP port number of LCP in the execution environment."
         },
+        "last_heartbeat": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2019/02/14 15:23:33",
+          "description": "Timestamp of the expiration of the API access configuration."
+        },
         "started": {
           "type": "string",
           "format": "date-time",
@@ -9296,12 +10092,6 @@
         "username": {
           "type": "string",
           "description": "Username for the CB to connect to this LCP."
-        },
-        "last_heartbeat": {
-          "type": "string",
-          "format": "date-time",
-          "example": "2019/02/14 15:23:33",
-          "description": "Timestamp of the expiration of the API access configuration."
         }
       },
       "required": [
@@ -9311,20 +10101,10 @@
     "Exec_Env": {
       "type": "object",
       "properties": {
-        "enabled": {
-          "type": "boolean",
-          "example": "Yes",
-          "description": "Indicate if the execution environment is enabled or not"
-        },
         "type_id": {
           "type": "string",
           "example": "vm",
           "description": "Id of the execution environment type."
-        },
-        "hostname": {
-          "type": "string",
-          "example": "192.168.1.2",
-          "description": "Hostname of the execution environment."
         },
         "description": {
           "type": "string",
@@ -9336,6 +10116,11 @@
           "example": "apache",
           "description": "Id of the execution environment."
         },
+        "enabled": {
+          "type": "boolean",
+          "example": "Yes",
+          "description": "Indicate if the execution environment is enabled or not"
+        },
         "lcp": {
           "description": "Data related to the LCP.",
           "allOf": [
@@ -9343,6 +10128,11 @@
               "$ref": "#/definitions/LCP"
             }
           ]
+        },
+        "hostname": {
+          "type": "string",
+          "example": "192.168.1.2",
+          "description": "Hostname of the execution environment."
         }
       },
       "required": [

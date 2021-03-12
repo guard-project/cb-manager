@@ -7,6 +7,7 @@ from resource.ebpf_program import *
 from resource.event import *
 from resource.exec_env import *
 from resource.network_link import *
+
 from utils.log import Log
 from utils.sequence import wrap
 
@@ -17,7 +18,8 @@ __all__ = [
 db = [
     Agent_Catalog_Resource, Agent_Catalog_Selected_Resource,
     Agent_Instance_Resource, Agent_Instance_Selected_Resource,
-    Algorithm_Resource, Algorithm_Selected_Resource,
+    Algorithm_Catalog_Resource, Algorithm_Catalog_Selected_Resource,
+    Algorithm_Instance_Resource, Algorithm_Instance_Selected_Resource,
     Connection_Resource, Connection_Selected_Resource,
     Dashboard_Resource,
     Data_Resource, Data_Selected_Resource,

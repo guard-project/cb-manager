@@ -258,11 +258,103 @@ definitions:
     - content
     - id
     type: object
-  Algorithm:
+  Algorithm_Catalog:
+    properties:
+      description:
+        description: Short description of the algorithm.
+        example: Predict DDoS attacks.
+        type: string
+      id:
+        description: Id of the algorithm in the catalog.
+        example: ddos-prediction
+        type: string
+      parameters:
+        description: Parameter properties.
+        items:
+          $ref: '#/definitions/Algorithm_Catalog_Parameter'
+        type: array
+    required:
+    - id
+    type: object
+  Algorithm_Catalog_Parameter:
+    properties:
+      description:
+        description: Short description of the parameter.
+        example: Enable the algorithm.
+        type: string
+      example:
+        description: Example of parameter value.
+        example: 10s
+      id:
+        description: Parameter id.
+        example: frequency
+        type: string
+      list:
+        description: Indicate if the parameter can have multiple values.
+        example: true
+        type: boolean
+      type:
+        description: Parameter type.
+        enum:
+        - binary
+        - boolean
+        - choice
+        - integer
+        - number
+        - time-duration
+        - string
+        example: binary
+        type: string
+      values:
+        description: Possible values if the parameter type is choice.
+        example: mysql
+        type: string
+    required:
+    - id
+    - type
+    type: object
+  Algorithm_Instance:
+    properties:
+      algorithm_catalog_id:
+        description: Id of the algorithm in the catalog.
+        example: ddos-predictor
+        type: string
+      description:
+        description: Short description of the algorithm installed in the execution
+          environment.
+        example: Collect system metrics from execution environments.
+        type: string
+      exec_env_id:
+        description: Id of the execution environment where the algorithm instance
+          is installed.
+        example: apache
+        type: string
+      id:
+        description: Id of the algorithm instance.
+        example: ddos-predictor-1
+        type: string
+      operations:
+        allOf:
+        - $ref: '#/definitions/Algorithm_Instance_Operation'
+        description: List of algorithm instance operations.
+    required:
+    - algorithm_catalog_id
+    - exec_env_id
+    - id
+    type: object
+  Algorithm_Instance_Operation:
+    properties:
+      parameters:
+        description: List of algorithm instance parameters.
+        items:
+          $ref: '#/definitions/Algorithm_Instance_Parameter'
+        type: array
+    type: object
+  Algorithm_Instance_Parameter:
     properties:
       id:
-        description: Id of the algorithm.
-        example: BXrHRn5RPU55Qh9JwMZn
+        description: Parameter id.
+        example: period
         type: string
     required:
     - id
@@ -1880,10 +1972,10 @@ paths:
       summary: < Agent instance Update (Single).
       tags:
       - agent-instance
-  /algorithm/:
+  /catalog/algorithm/:
     delete:
-      description: Delete the algorithm with the given `id` and filtered by the query
-        in the request body.
+      description: Delete the algorithm catalog with the given `id` and filtered by
+        the query in the request body.
       parameters:
       - in: path
         name: id
@@ -1896,7 +1988,7 @@ paths:
           $ref: '#/definitions/Query_Request'
       responses:
         '205':
-          description: < Algorithm with the given `id` correctly deleted.
+          description: < Algorithm catalog with the given `id` correctly deleted.
           schema:
             items:
               $ref: '#/definitions/Reset_Content_Response'
@@ -1910,8 +2002,8 @@ paths:
           schema:
             $ref: '#/definitions/Unauthorized_Response'
         '404':
-          description: < Algorithm with the given `id` and based on the request query
-            not found.
+          description: < Algorithm catalog with the given `id` and based on the request
+            query not found.
           schema:
             $ref: '#/definitions/Not_Found_Response'
         '406':
@@ -1923,8 +2015,8 @@ paths:
           schema:
             $ref: '#/definitions/Unsupported_Media_Type_Response'
         '422':
-          description: Not possible to delete the algorithm with the given `id` and
-            based on the request query.
+          description: Not possible to delete the algorithm catalog with the given
+            `id` and based on the request query.
           schema:
             items:
               $ref: '#/definitions/Unprocessable_Entity_Response'
@@ -1933,12 +2025,12 @@ paths:
           description: Server not available to satisfy the request.
           schema:
             $ref: '#/definitions/Internal_Server_Error_Response'
-      summary: < Algorithm Delete (Single).
+      summary: < Algorithm catalog Delete (Single).
       tags:
-      - algorithm
+      - algorithm-catalog
     get:
-      description: Get the algorithm with the given `id` and filtered by the query
-        in the request body.
+      description: Get the algorithm catalog with the given `id` and filtered by the
+        query in the request body.
       parameters:
       - in: path
         name: id
@@ -1951,11 +2043,11 @@ paths:
           $ref: '#/definitions/Query_Request'
       responses:
         '200':
-          description: < Algorithm with the given `id` and filtered by the query in
-            the request body.
+          description: < Algorithm catalog with the given `id` and filtered by the
+            query in the request body.
           schema:
             items:
-              $ref: '#/definitions/Algorithm'
+              $ref: '#/definitions/Algorithm_Catalog'
             type: array
         '400':
           description: Request not valid.
@@ -1966,7 +2058,7 @@ paths:
           schema:
             $ref: '#/definitions/Unauthorized_Response'
         '404':
-          description: < Algorithm based on the request _query_ not found.
+          description: < Algorithm catalog based on the request _query_ not found.
           schema:
             $ref: '#/definitions/Not_Found_Response'
         '406':
@@ -1978,18 +2070,18 @@ paths:
           schema:
             $ref: '#/definitions/Unsupported_Media_Type_Response'
         '422':
-          description: Not possible to get algorithm with the request _query_.
+          description: Not possible to get algorithm catalogs with the request _query_.
           schema:
             $ref: '#/definitions/Unprocessable_Entity_Response'
         '500':
           description: Server not available to satisfy the request.
           schema:
             $ref: '#/definitions/Internal_Server_Error_Response'
-      summary: < Algorithm Read (Single).
+      summary: < Algorithm catalog Read (Single).
       tags:
-      - algorithm
+      - algorithm-catalog
     post:
-      description: Create a new algorithm with the given `id`.
+      description: Create a new algorithm catalog with the given `id`.
       parameters:
       - in: path
         name: id
@@ -2000,18 +2092,18 @@ paths:
         required: true
         schema:
           items:
-            $ref: '#/definitions/Algorithm'
+            $ref: '#/definitions/Algorithm_Catalog'
           type: array
       responses:
         '201':
-          description: < Algorithm with the given `id` correctly created.
+          description: < Algorithm catalog with the given `id` correctly created.
           schema:
             items:
               $ref: '#/definitions/Created_Response'
             type: array
         '204':
-          description: No content to create the algorithm with the given `id` and
-            based on the request.
+          description: No content to create the algorithm catalog with the given `id`
+            and based on the request.
           schema:
             $ref: '#/definitions/No_Content_Response'
         '400':
@@ -2031,8 +2123,8 @@ paths:
           schema:
             $ref: '#/definitions/Unsupported_Media_Type_Response'
         '422':
-          description: Not possible to create the algorithm with the given `id` and
-            based on the request.
+          description: Not possible to create the algorithm catalog with the given
+            `id` and based on the request.
           schema:
             items:
               $ref: '#/definitions/Unprocessable_Entity_Response'
@@ -2041,11 +2133,11 @@ paths:
           description: Server not available to satisfy the request.
           schema:
             $ref: '#/definitions/Internal_Server_Error_Response'
-      summary: < Algorithm Create (Single).
+      summary: < Algorithm catalog Create (Single).
       tags:
-      - algorithm
+      - algorithm-catalog
     put:
-      description: Update the algorithm with the given `id`.
+      description: Update the algorithm catalog with the given `id`.
       parameters:
       - in: path
         name: id
@@ -2056,22 +2148,22 @@ paths:
         required: true
         schema:
           items:
-            $ref: '#/definitions/Algorithm'
+            $ref: '#/definitions/Algorithm_Catalog'
           type: array
       responses:
         '200':
-          description: < Algorithm with the given `id` correctly updated.
+          description: < Algorithm catalog with the given `id` correctly updated.
           schema:
             items:
               $ref: '#/definitions/Ok_Response'
             type: array
         '204':
-          description: No content to update algorithm with the given `id` and based
-            on the request.
+          description: No content to update algorithm catalogs with the given `id`
+            and based on the request.
           schema:
             $ref: '#/definitions/No_Content_Response'
         '304':
-          description: Update of the algorithm with the given `id` not necessary.
+          description: Update of the algorithm catalog with the given `id` not necessary.
           schema:
             items:
               $ref: '#/definitions/Not_Modified_Response'
@@ -2093,8 +2185,8 @@ paths:
           schema:
             $ref: '#/definitions/Unsupported_Media_Type_Response'
         '422':
-          description: Not possible to update the algorithm with the given `id` and
-            based on the request.
+          description: Not possible to update the algorithm catalog with the given
+            `id` and based on the request.
           schema:
             items:
               $ref: '#/definitions/Unprocessable_Entity_Response'
@@ -2103,13 +2195,13 @@ paths:
           description: Server not available to satisfy the request.
           schema:
             $ref: '#/definitions/Internal_Server_Error_Response'
-      summary: < Algorithm Update (Single).
+      summary: < Algorithm catalog Update (Single).
       tags:
-      - algorithm
-  /algorithm/{id}:
+      - algorithm-catalog
+  /catalog/algorithm/{id}:
     delete:
-      description: Delete the algorithm with the given `id` and filtered by the query
-        in the request body.
+      description: Delete the algorithm catalog with the given `id` and filtered by
+        the query in the request body.
       parameters:
       - in: path
         name: id
@@ -2122,7 +2214,7 @@ paths:
           $ref: '#/definitions/Query_Request'
       responses:
         '205':
-          description: < Algorithm with the given `id` correctly deleted.
+          description: < Algorithm catalog with the given `id` correctly deleted.
           schema:
             items:
               $ref: '#/definitions/Reset_Content_Response'
@@ -2136,8 +2228,8 @@ paths:
           schema:
             $ref: '#/definitions/Unauthorized_Response'
         '404':
-          description: < Algorithm with the given `id` and based on the request query
-            not found.
+          description: < Algorithm catalog with the given `id` and based on the request
+            query not found.
           schema:
             $ref: '#/definitions/Not_Found_Response'
         '406':
@@ -2149,8 +2241,8 @@ paths:
           schema:
             $ref: '#/definitions/Unsupported_Media_Type_Response'
         '422':
-          description: Not possible to delete the algorithm with the given `id` and
-            based on the request query.
+          description: Not possible to delete the algorithm catalog with the given
+            `id` and based on the request query.
           schema:
             items:
               $ref: '#/definitions/Unprocessable_Entity_Response'
@@ -2159,12 +2251,12 @@ paths:
           description: Server not available to satisfy the request.
           schema:
             $ref: '#/definitions/Internal_Server_Error_Response'
-      summary: < Algorithm Delete (Single).
+      summary: < Algorithm catalog Delete (Single).
       tags:
-      - algorithm
+      - algorithm-catalog
     get:
-      description: Get the algorithm with the given `id` and filtered by the query
-        in the request body.
+      description: Get the algorithm catalog with the given `id` and filtered by the
+        query in the request body.
       parameters:
       - in: path
         name: id
@@ -2177,11 +2269,11 @@ paths:
           $ref: '#/definitions/Query_Request'
       responses:
         '200':
-          description: < Algorithm with the given `id` and filtered by the query in
-            the request body.
+          description: < Algorithm catalog with the given `id` and filtered by the
+            query in the request body.
           schema:
             items:
-              $ref: '#/definitions/Algorithm'
+              $ref: '#/definitions/Algorithm_Catalog'
             type: array
         '400':
           description: Request not valid.
@@ -2192,7 +2284,7 @@ paths:
           schema:
             $ref: '#/definitions/Unauthorized_Response'
         '404':
-          description: < Algorithm based on the request _query_ not found.
+          description: < Algorithm catalog based on the request _query_ not found.
           schema:
             $ref: '#/definitions/Not_Found_Response'
         '406':
@@ -2204,18 +2296,18 @@ paths:
           schema:
             $ref: '#/definitions/Unsupported_Media_Type_Response'
         '422':
-          description: Not possible to get algorithm with the request _query_.
+          description: Not possible to get algorithm catalogs with the request _query_.
           schema:
             $ref: '#/definitions/Unprocessable_Entity_Response'
         '500':
           description: Server not available to satisfy the request.
           schema:
             $ref: '#/definitions/Internal_Server_Error_Response'
-      summary: < Algorithm Read (Single).
+      summary: < Algorithm catalog Read (Single).
       tags:
-      - algorithm
+      - algorithm-catalog
     post:
-      description: Create a new algorithm with the given `id`.
+      description: Create a new algorithm catalog with the given `id`.
       parameters:
       - in: path
         name: id
@@ -2226,18 +2318,18 @@ paths:
         required: true
         schema:
           items:
-            $ref: '#/definitions/Algorithm'
+            $ref: '#/definitions/Algorithm_Catalog'
           type: array
       responses:
         '201':
-          description: < Algorithm with the given `id` correctly created.
+          description: < Algorithm catalog with the given `id` correctly created.
           schema:
             items:
               $ref: '#/definitions/Created_Response'
             type: array
         '204':
-          description: No content to create the algorithm with the given `id` and
-            based on the request.
+          description: No content to create the algorithm catalog with the given `id`
+            and based on the request.
           schema:
             $ref: '#/definitions/No_Content_Response'
         '400':
@@ -2257,8 +2349,8 @@ paths:
           schema:
             $ref: '#/definitions/Unsupported_Media_Type_Response'
         '422':
-          description: Not possible to create the algorithm with the given `id` and
-            based on the request.
+          description: Not possible to create the algorithm catalog with the given
+            `id` and based on the request.
           schema:
             items:
               $ref: '#/definitions/Unprocessable_Entity_Response'
@@ -2267,11 +2359,11 @@ paths:
           description: Server not available to satisfy the request.
           schema:
             $ref: '#/definitions/Internal_Server_Error_Response'
-      summary: < Algorithm Create (Single).
+      summary: < Algorithm catalog Create (Single).
       tags:
-      - algorithm
+      - algorithm-catalog
     put:
-      description: Update the algorithm with the given `id`.
+      description: Update the algorithm catalog with the given `id`.
       parameters:
       - in: path
         name: id
@@ -2282,22 +2374,22 @@ paths:
         required: true
         schema:
           items:
-            $ref: '#/definitions/Algorithm'
+            $ref: '#/definitions/Algorithm_Catalog'
           type: array
       responses:
         '200':
-          description: < Algorithm with the given `id` correctly updated.
+          description: < Algorithm catalog with the given `id` correctly updated.
           schema:
             items:
               $ref: '#/definitions/Ok_Response'
             type: array
         '204':
-          description: No content to update algorithm with the given `id` and based
-            on the request.
+          description: No content to update algorithm catalogs with the given `id`
+            and based on the request.
           schema:
             $ref: '#/definitions/No_Content_Response'
         '304':
-          description: Update of the algorithm with the given `id` not necessary.
+          description: Update of the algorithm catalog with the given `id` not necessary.
           schema:
             items:
               $ref: '#/definitions/Not_Modified_Response'
@@ -2319,8 +2411,8 @@ paths:
           schema:
             $ref: '#/definitions/Unsupported_Media_Type_Response'
         '422':
-          description: Not possible to update the algorithm with the given `id` and
-            based on the request.
+          description: Not possible to update the algorithm catalog with the given
+            `id` and based on the request.
           schema:
             items:
               $ref: '#/definitions/Unprocessable_Entity_Response'
@@ -2329,9 +2421,461 @@ paths:
           description: Server not available to satisfy the request.
           schema:
             $ref: '#/definitions/Internal_Server_Error_Response'
-      summary: < Algorithm Update (Single).
+      summary: < Algorithm catalog Update (Single).
       tags:
-      - algorithm
+      - algorithm-catalog
+  /instance/algorithm/:
+    delete:
+      description: Delete the algorithm instance with the given `id` and filtered
+        by the query in the request body.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Query_Request'
+      responses:
+        '205':
+          description: < Algorithm instance with the given `id` correctly deleted.
+          schema:
+            items:
+              $ref: '#/definitions/Reset_Content_Response'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '404':
+          description: < Algorithm instance with the given `id` and based on the request
+            query not found.
+          schema:
+            $ref: '#/definitions/Not_Found_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to delete the algorithm instance with the given
+            `id` and based on the request query.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Algorithm instance Delete (Single).
+      tags:
+      - algorithm-instance
+    get:
+      description: Get the algorithm instance with the given `id` and filtered by
+        the query in the request body.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Query_Request'
+      responses:
+        '200':
+          description: < Algorithm instance with the given `id` and filtered by the
+            query in the request body.
+          schema:
+            items:
+              $ref: '#/definitions/Algorithm_Instance'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '404':
+          description: < Algorithm instance based on the request _query_ not found.
+          schema:
+            $ref: '#/definitions/Not_Found_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to get algorithm instances with the request _query_.
+          schema:
+            $ref: '#/definitions/Unprocessable_Entity_Response'
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Algorithm instance Read (Single).
+      tags:
+      - algorithm-instance
+    post:
+      description: Create a new algorithm instance with the given `id`.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/Algorithm_Instance'
+          type: array
+      responses:
+        '201':
+          description: < Algorithm instance with the given `id` correctly created.
+          schema:
+            items:
+              $ref: '#/definitions/Created_Response'
+            type: array
+        '204':
+          description: No content to create the algorithm instance with the given
+            `id` and based on the request.
+          schema:
+            $ref: '#/definitions/No_Content_Response'
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to create the algorithm instance with the given
+            `id` and based on the request.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Algorithm instance Create (Single).
+      tags:
+      - algorithm-instance
+    put:
+      description: Update the algorithm instance with the given `id`.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/Algorithm_Instance'
+          type: array
+      responses:
+        '200':
+          description: < Algorithm instance with the given `id` correctly updated.
+          schema:
+            items:
+              $ref: '#/definitions/Ok_Response'
+            type: array
+        '204':
+          description: No content to update algorithm instances with the given `id`
+            and based on the request.
+          schema:
+            $ref: '#/definitions/No_Content_Response'
+        '304':
+          description: Update of the algorithm instance with the given `id` not necessary.
+          schema:
+            items:
+              $ref: '#/definitions/Not_Modified_Response'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to update the algorithm instance with the given
+            `id` and based on the request.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Algorithm instance Update (Single).
+      tags:
+      - algorithm-instance
+  /instance/algorithm/{id}:
+    delete:
+      description: Delete the algorithm instance with the given `id` and filtered
+        by the query in the request body.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Query_Request'
+      responses:
+        '205':
+          description: < Algorithm instance with the given `id` correctly deleted.
+          schema:
+            items:
+              $ref: '#/definitions/Reset_Content_Response'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '404':
+          description: < Algorithm instance with the given `id` and based on the request
+            query not found.
+          schema:
+            $ref: '#/definitions/Not_Found_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to delete the algorithm instance with the given
+            `id` and based on the request query.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Algorithm instance Delete (Single).
+      tags:
+      - algorithm-instance
+    get:
+      description: Get the algorithm instance with the given `id` and filtered by
+        the query in the request body.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Query_Request'
+      responses:
+        '200':
+          description: < Algorithm instance with the given `id` and filtered by the
+            query in the request body.
+          schema:
+            items:
+              $ref: '#/definitions/Algorithm_Instance'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '404':
+          description: < Algorithm instance based on the request _query_ not found.
+          schema:
+            $ref: '#/definitions/Not_Found_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to get algorithm instances with the request _query_.
+          schema:
+            $ref: '#/definitions/Unprocessable_Entity_Response'
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Algorithm instance Read (Single).
+      tags:
+      - algorithm-instance
+    post:
+      description: Create a new algorithm instance with the given `id`.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/Algorithm_Instance'
+          type: array
+      responses:
+        '201':
+          description: < Algorithm instance with the given `id` correctly created.
+          schema:
+            items:
+              $ref: '#/definitions/Created_Response'
+            type: array
+        '204':
+          description: No content to create the algorithm instance with the given
+            `id` and based on the request.
+          schema:
+            $ref: '#/definitions/No_Content_Response'
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to create the algorithm instance with the given
+            `id` and based on the request.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Algorithm instance Create (Single).
+      tags:
+      - algorithm-instance
+    put:
+      description: Update the algorithm instance with the given `id`.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/Algorithm_Instance'
+          type: array
+      responses:
+        '200':
+          description: < Algorithm instance with the given `id` correctly updated.
+          schema:
+            items:
+              $ref: '#/definitions/Ok_Response'
+            type: array
+        '204':
+          description: No content to update algorithm instances with the given `id`
+            and based on the request.
+          schema:
+            $ref: '#/definitions/No_Content_Response'
+        '304':
+          description: Update of the algorithm instance with the given `id` not necessary.
+          schema:
+            items:
+              $ref: '#/definitions/Not_Modified_Response'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to update the algorithm instance with the given
+            `id` and based on the request.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Algorithm instance Update (Single).
+      tags:
+      - algorithm-instance
   /connection/:
     delete:
       description: Delete the connection with the given `id` and filtered by the query
@@ -6436,10 +6980,14 @@ tags:
   name: agent-instance
 - description: Represents an agent instance installed in an execution environment.
   name: agent-instance
-- description: Represents the algorithms.
-  name: algorithm
-- description: Represents the algorithms.
-  name: algorithm
+- description: Represents an algorithm in the catalog.
+  name: algorithm-catalog
+- description: Represents an algorithm in the catalog.
+  name: algorithm-catalog
+- description: Represents an algorithm instance.
+  name: algorithm-instance
+- description: Represents an algorithm instance.
+  name: algorithm-instance
 - description: Represents an connection between execution environments and network
     links.
   name: connection
