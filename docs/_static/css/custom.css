@@ -5,3 +5,7 @@ th.head>p {
 div.admonition>ul.simple {
     margin-bottom: 0px !important;
 }
+
+div.admonition>p:last-child {
+    margin-bottom: 0px !important;
+}
