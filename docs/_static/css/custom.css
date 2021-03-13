@@ -19,6 +19,7 @@ dl.footnote.brackets>dt {
 dl.footnote.brackets>dd {
     display: inline-block !important;
     width: 95%;
+    margin-left: 0px;
 }
 
 dl.footnote.brackets>dd>p {
