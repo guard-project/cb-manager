@@ -30,12 +30,12 @@ This part of the documentation will show you how to get started in using |CB|-Ma
    connection
    data
    event
-   algorithm-catalog
-   algorithm-instance
    agent-catalog
    agent-instance
    ebpf-program-catalog
    ebpf-program-instance
+   algorithm-catalog
+   algorithm-instance
    glossary
 
 
