@@ -9,3 +9,14 @@ div.admonition>ul.simple {
 div.admonition>p:last-child {
     margin-bottom: 0px !important;
 }
+
+dl.footnote.brackets>dt {
+    display: inline-block !important;
+}
+
+dl.footnote.brackets>dd {
+    display: inline-block !important;
+    color: #2980B9;
+    background-color: #e7f2fa;
+    border-top: solid 3px #6ab0de;
+}
