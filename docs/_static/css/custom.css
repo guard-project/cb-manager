@@ -12,11 +12,15 @@ div.admonition>p:last-child {
 
 dl.footnote.brackets>dt {
     display: inline-block !important;
+    width: 4%;
+    text-align: center;
 }
 
 dl.footnote.brackets>dd {
     display: inline-block !important;
-    color: #2980B9;
-    background-color: #e7f2fa;
-    border-top: solid 3px #6ab0de;
+    width: 95%;
+}
+
+dl.footnote.brackets>dd>p {
+    font-size: 14px !important;
 }
