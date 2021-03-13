@@ -6,15 +6,15 @@
 
 # -- Path setup --------------------------------------------------------------
 
+import os
+import sys
+from shutil import copyfile
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import sphinx_rtd_theme
-import os
-import sys
-
-from shutil import copyfile
 
 sys.path.insert(0, os.path.abspath('..'))
 
@@ -62,6 +62,15 @@ source_suffix = {
     '.rst': 'restructuredtext',
     '.md': 'markdown',
 }
+
+# These folders are copied to the documentation's HTML output
+html_static_path = ['_static']
+
+# These paths are either relative to html_static_path
+# or fully qualified paths (eg. https://...)
+html_css_files = [
+    'css/custom.css',
+]
 
 # -- Options for HTML output -------------------------------------------------
 

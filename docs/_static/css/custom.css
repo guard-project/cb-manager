@@ -1,0 +1,7 @@
+th.head>p {
+    margin-bottom: 0px !important;
+}
+
+div.admonition>ul.simple {
+    margin-bottom: 0px !important;
+}
