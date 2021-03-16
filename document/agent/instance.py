@@ -1,5 +1,8 @@
+from elasticsearch_dsl import Date
+from elasticsearch_dsl import InnerDoc as Inner_Doc
+from elasticsearch_dsl import Nested, Text
+
 from document.base import Base_Document
-from elasticsearch_dsl import Date, InnerDoc as Inner_Doc, Nested, Text
 
 __all__ = [
     'Agent_Instance_Document'

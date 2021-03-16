@@ -1,11 +1,14 @@
 from copy import deepcopy
-from elasticsearch import RequestError as Request_Error, NotFoundError as Not_Found_Error
+from time import sleep
+
+from elasticsearch import NotFoundError as Not_Found_Error
+from elasticsearch import RequestError as Request_Error
+
 from lib.http import HTTP_Method
 from lib.response import *
 from reader.arg import Arg_Reader
 from reader.query import Query_Reader
 from schema.query_request import Query_Request_Schema
-from time import sleep
 from utils.log import Log
 from utils.sequence import is_list, wrap
 
