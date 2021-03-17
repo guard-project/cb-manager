@@ -38,6 +38,7 @@ def heartbeat_exec_env(exec_env):
     try:
         id = exec_env.meta.id
         lcp = exec_env.lcp
+        lbl = f'{id} (LCP at {exec_env.hostname}:{lcp.port})'
         if exec_env.enabled:
             schema = 'https' if lcp.https else 'http'
             resp = post(f'{schema}://{exec_env.hostname}:{lcp.port}/status',
@@ -50,19 +51,19 @@ def heartbeat_exec_env(exec_env):
                 lcp.last_heartbeat = data.get('last_heartbeat', None)
                 lcp.username = data.get('username', None)
                 lcp.password = data.get('password', None)
-                log.success(f'LCP Connection with {id} established')
+                log.success(f'Connection established with exec-env {lbl}')
             else:
-                log.warning(f'Reset LCP connection with {id}')
-                log.notice(f'Response: {resp.content}')
                 lcp.username = lcp.password = lcp.last_heartbeat = None
+                log.warning(f'Connection reset with exec-env {lbl}')
+                log.notice(f'Response: {resp.content}')
             if not lcp.https:
                 lcp.https = False
             exec_env.save()
         else:
-            log.notice(f'Exec-env {id} (LCP at {exec_env.hostname}:{lcp.port}) not enabled')
+            log.notice(f'Exec-env {lbl} not enabled')
     except ConnectTimeout as exception:
-        log.error(f'Connection timeout with exec-env {id} (LCP at {exec_env.hostname}:{lcp.port})')
+        log.error(f'Connection timeout with exec-env {lbl}')
     except ConnectionError as exception:
-        log.error(f'Connection refused with exec-env {id} (LCP at {exec_env.hostname}:{lcp.port})')
+        log.error(f'Connection refused with exec-env {lbl}')
     except Exception as exception:
-        log.error(f'Exception: {exception}')
+        log.exception(f'Exception during connection with exec-env {lbl}', exception)
