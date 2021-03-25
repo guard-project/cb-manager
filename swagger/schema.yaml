@@ -710,6 +710,15 @@ definitions:
     required:
     - message
     type: object
+  Pipeline:
+    properties:
+      id:
+        description: Id of the pipeline.
+        example: BXrHRn5RPU55Qh9JwMZn
+        type: string
+    required:
+    - id
+    type: object
   Query_Request:
     properties:
       force:
@@ -6968,6 +6977,458 @@ paths:
       summary: < Network link type Update (Single).
       tags:
       - network-link-type
+  /pipeline/:
+    delete:
+      description: Delete the pipeline with the given `id` and filtered by the query
+        in the request body.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Query_Request'
+      responses:
+        '205':
+          description: < Pipeline with the given `id` correctly deleted.
+          schema:
+            items:
+              $ref: '#/definitions/Reset_Content_Response'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '404':
+          description: < Pipeline with the given `id` and based on the request query
+            not found.
+          schema:
+            $ref: '#/definitions/Not_Found_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to delete the pipeline with the given `id` and
+            based on the request query.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Pipeline Delete (Single).
+      tags:
+      - pipeline
+    get:
+      description: Get the pipeline with the given `id` and filtered by the query
+        in the request body.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Query_Request'
+      responses:
+        '200':
+          description: < Pipeline with the given `id` and filtered by the query in
+            the request body.
+          schema:
+            items:
+              $ref: '#/definitions/Pipeline'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '404':
+          description: < Pipeline based on the request _query_ not found.
+          schema:
+            $ref: '#/definitions/Not_Found_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to get pipeline with the request _query_.
+          schema:
+            $ref: '#/definitions/Unprocessable_Entity_Response'
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Pipeline Read (Single).
+      tags:
+      - pipeline
+    post:
+      description: Create a new pipeline with the given `id`.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/Pipeline'
+          type: array
+      responses:
+        '201':
+          description: < Pipeline with the given `id` correctly created.
+          schema:
+            items:
+              $ref: '#/definitions/Created_Response'
+            type: array
+        '204':
+          description: No content to create the pipeline with the given `id` and based
+            on the request.
+          schema:
+            $ref: '#/definitions/No_Content_Response'
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to create the pipeline with the given `id` and
+            based on the request.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Pipeline Create (Single).
+      tags:
+      - pipeline
+    put:
+      description: Update the pipeline with the given `id`.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/Pipeline'
+          type: array
+      responses:
+        '200':
+          description: < Pipeline with the given `id` correctly updated.
+          schema:
+            items:
+              $ref: '#/definitions/Ok_Response'
+            type: array
+        '204':
+          description: No content to update pipeline with the given `id` and based
+            on the request.
+          schema:
+            $ref: '#/definitions/No_Content_Response'
+        '304':
+          description: Update of the pipeline with the given `id` not necessary.
+          schema:
+            items:
+              $ref: '#/definitions/Not_Modified_Response'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to update the pipeline with the given `id` and
+            based on the request.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Pipeline Update (Single).
+      tags:
+      - pipeline
+  /pipeline/{id}:
+    delete:
+      description: Delete the pipeline with the given `id` and filtered by the query
+        in the request body.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Query_Request'
+      responses:
+        '205':
+          description: < Pipeline with the given `id` correctly deleted.
+          schema:
+            items:
+              $ref: '#/definitions/Reset_Content_Response'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '404':
+          description: < Pipeline with the given `id` and based on the request query
+            not found.
+          schema:
+            $ref: '#/definitions/Not_Found_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to delete the pipeline with the given `id` and
+            based on the request query.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Pipeline Delete (Single).
+      tags:
+      - pipeline
+    get:
+      description: Get the pipeline with the given `id` and filtered by the query
+        in the request body.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/Query_Request'
+      responses:
+        '200':
+          description: < Pipeline with the given `id` and filtered by the query in
+            the request body.
+          schema:
+            items:
+              $ref: '#/definitions/Pipeline'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '404':
+          description: < Pipeline based on the request _query_ not found.
+          schema:
+            $ref: '#/definitions/Not_Found_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to get pipeline with the request _query_.
+          schema:
+            $ref: '#/definitions/Unprocessable_Entity_Response'
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Pipeline Read (Single).
+      tags:
+      - pipeline
+    post:
+      description: Create a new pipeline with the given `id`.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/Pipeline'
+          type: array
+      responses:
+        '201':
+          description: < Pipeline with the given `id` correctly created.
+          schema:
+            items:
+              $ref: '#/definitions/Created_Response'
+            type: array
+        '204':
+          description: No content to create the pipeline with the given `id` and based
+            on the request.
+          schema:
+            $ref: '#/definitions/No_Content_Response'
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to create the pipeline with the given `id` and
+            based on the request.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Pipeline Create (Single).
+      tags:
+      - pipeline
+    put:
+      description: Update the pipeline with the given `id`.
+      parameters:
+      - in: path
+        name: id
+        required: true
+        type: String
+      - in: body
+        name: payload
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/Pipeline'
+          type: array
+      responses:
+        '200':
+          description: < Pipeline with the given `id` correctly updated.
+          schema:
+            items:
+              $ref: '#/definitions/Ok_Response'
+            type: array
+        '204':
+          description: No content to update pipeline with the given `id` and based
+            on the request.
+          schema:
+            $ref: '#/definitions/No_Content_Response'
+        '304':
+          description: Update of the pipeline with the given `id` not necessary.
+          schema:
+            items:
+              $ref: '#/definitions/Not_Modified_Response'
+            type: array
+        '400':
+          description: Request not valid.
+          schema:
+            $ref: '#/definitions/Bad_Request_Response'
+        '401':
+          description: Authentication failed.
+          schema:
+            $ref: '#/definitions/Unauthorized_Response'
+        '406':
+          description: Request validation failed.
+          schema:
+            $ref: '#/definitions/Not_Acceptable_Response'
+        '415':
+          description: Media type not supported.
+          schema:
+            $ref: '#/definitions/Unsupported_Media_Type_Response'
+        '422':
+          description: Not possible to update the pipeline with the given `id` and
+            based on the request.
+          schema:
+            items:
+              $ref: '#/definitions/Unprocessable_Entity_Response'
+            type: array
+        '500':
+          description: Server not available to satisfy the request.
+          schema:
+            $ref: '#/definitions/Internal_Server_Error_Response'
+      summary: < Pipeline Update (Single).
+      tags:
+      - pipeline
 produces:
 - application/json
 swagger: '2.0'
@@ -7027,3 +7488,7 @@ tags:
   name: network-link-type
 - description: Represents a network link type.
   name: network-link-type
+- description: Represents the stored pipelines.
+  name: pipeline
+- description: Represents the stored pipelines.
+  name: pipeline

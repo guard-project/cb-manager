@@ -7,6 +7,7 @@ from resource.ebpf_program import *
 from resource.event import *
 from resource.exec_env import *
 from resource.network_link import *
+from resource.pipeline import *
 
 from utils.log import Log
 from utils.sequence import wrap
@@ -29,7 +30,8 @@ db = [
     Exec_Env_Resource, Exec_Env_Selected_Resource,
     Exec_Env_Type_Resource, Exec_Env_Type_Selected_Resource,
     Network_Link_Resource, Network_Link_Selected_Resource,
-    Network_Link_Type_Resource, Network_Link_Type_Selected_Resource
+    Network_Link_Type_Resource, Network_Link_Type_Selected_Resource,
+    Pipeline_Resource, Pipeline_Selected_Resource
 ]
 
 tags = []

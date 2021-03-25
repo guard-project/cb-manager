@@ -26,3 +26,4 @@
 
 - Added option to force the use of HTTPS instead of HTTP.
 - Added support to enable/disable HTTP Authentication.
+- Added pipeline management with CRUD operations.
