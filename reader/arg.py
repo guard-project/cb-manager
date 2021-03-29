@@ -29,7 +29,7 @@ class Arg_Reader:
         add('--hb-timeout', '-b', type=str, help='Timeout (with unit, e.g.: 10s) for heartbeat with LCP', default=cls.cr.hb_timeout)
         add('--hb-period', '-r', type=str, help='Period (with unit, e.g.: 1min) for the heartbeat with the LCP', default=cls.cr.hb_period)
 
-        add('--apm-enabled', '-n', help='Elastic APM hostname/IP:port', action='store_true')
+        add('--apm-enabled', '-n', help='Enable Elastic APM integration', action='store_true')
         add('--apm-server', '-m', type=str, help='Elastic APM hostname/IP:port', default=cls.cr.elastic_apm_server)
 
         add('--es-endpoint', '-e', type=str, help='Elasticsearch server hostname/IP:port', default=cls.cr.es_endpoint)
