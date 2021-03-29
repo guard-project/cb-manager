@@ -1,15 +1,12 @@
-from lib.http import HTTP_Method
 from pathlib import Path
 from types import FunctionType as Function_Type
+
+from lib.http import HTTP_Method
 from utils.sequence import wrap
 from utils.string import format
 
-__all__ = [
-    'docstring'
-]
 
-
-def docstring(ext='docstring', methods=[HTTP_Method.GET, HTTP_Method.POST, HTTP_Method.PUT, HTTP_Method.DELETE]):
+def docstring(ext='docstring', methods=(HTTP_Method.GET, HTTP_Method.POST, HTTP_Method.PUT, HTTP_Method.DELETE)):
     """Generate automatic docstring for the class with a decorator.
 
     :returns: decorator
@@ -40,8 +37,7 @@ def docstring(ext='docstring', methods=[HTTP_Method.GET, HTTP_Method.POST, HTTP_
             with path.open('r') as file:
                 mth.__doc__ = format(file.read(), self=self)
             if self.schema.__doc__ is not None:
-                setattr(self, 'tag', dict(name=self.doc.Index.name,
-                                          description=self.schema.__doc__.strip(' \n')))
+                self.tag = dict(name=self.doc.Index.name, description=self.schema.__doc__.strip(' \n'))
         return self
 
     return decorator

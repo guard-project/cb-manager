@@ -1,15 +1,5 @@
 from toolz import valmap
 
-__all__ = [
-    'expand',
-    'format',
-    'is_dict',
-    'is_list',
-    'iterate',
-    'subset',
-    'wrap'
-]
-
 
 def expand(elements, **kwrds):
     return dict(**elements, **kwrds)
@@ -41,7 +31,7 @@ def is_list(obj):
 
 
 def iterate(source, *keys):
-    """Iterate a nested dict based on list of keys
+    """Iterate a nested dict based on list of keys.
 
     :param source: nested dict
     :param keys: list of keys

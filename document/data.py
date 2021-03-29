@@ -1,9 +1,6 @@
-from document.base import Base_Document
 from elasticsearch_dsl import Date, Text
 
-__all__ = [
-    'Data_Document'
-]
+from document.base import Base_Document
 
 
 class Data_Document(Base_Document):
@@ -17,4 +14,5 @@ class Data_Document(Base_Document):
 
     class Index:
         """Elasticsearch configuration."""
+
         name = 'data'

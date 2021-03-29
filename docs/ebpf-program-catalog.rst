@@ -154,7 +154,7 @@ To create a new |eBPF| program in the catalog use the following |REST| call:
 
     :param id: optional |eBPF| program id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -281,7 +281,7 @@ To update an |eBPF| program in the catalog, use:
 
     :param id: optional |eBPF| program id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -361,7 +361,7 @@ To delete |eBPF| programs from the catalog, use:
 
     :param id: optional |eBPF| program id from the catalog.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json

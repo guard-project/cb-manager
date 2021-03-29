@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from threading import Thread, Timer
 
 from requests import post
@@ -6,14 +5,9 @@ from requests.exceptions import ConnectionError, ConnectTimeout
 
 from document.exec_env import Exec_Env_Document
 from lib.http import HTTP_Status
+from lib.token import create_token
 from reader.arg import Arg_Reader
-from utils.datetime import datetime_from_str, datetime_to_str
-from utils.hash import generate_password, hash
 from utils.log import Log
-
-__all__ = [
-    'heartbeat'
-]
 
 
 def heartbeat():
@@ -43,17 +37,16 @@ def heartbeat_exec_env(exec_env):
             schema = 'https' if lcp.https else 'http'
             resp = post(f'{schema}://{exec_env.hostname}:{lcp.port}/status',
                         timeout=Arg_Reader.db.hb_timeout,
-                        json=dict(id=id, username=lcp.username, password=lcp.password))
+                        headers={'Authorization': create_token()},
+                        json=dict(id=id))
             if resp.status_code == HTTP_Status.OK:
                 data = resp.json()
                 id = data.pop('id', None)
                 lcp.started = data.get('started', None)
                 lcp.last_heartbeat = data.get('last_heartbeat', None)
-                lcp.username = data.get('username', None)
-                lcp.password = data.get('password', None)
                 log.success(f'Connection established with exec-env {lbl}')
             else:
-                lcp.username = lcp.password = lcp.last_heartbeat = None
+                lcp.last_heartbeat = None
                 log.warning(f'Connection reset with exec-env {lbl}')
                 log.notice(f'Response: {resp.content}')
             if not lcp.https:
@@ -61,9 +54,9 @@ def heartbeat_exec_env(exec_env):
             exec_env.save()
         else:
             log.notice(f'Exec-env {lbl} not enabled')
-    except ConnectTimeout as exception:
+    except ConnectTimeout:
         log.error(f'Connection timeout with exec-env {lbl}')
-    except ConnectionError as exception:
+    except ConnectionError:
         log.error(f'Connection refused with exec-env {lbl}')
     except Exception as exception:
         log.exception(f'Exception during connection with exec-env {lbl}', exception)

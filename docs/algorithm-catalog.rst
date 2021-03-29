@@ -82,7 +82,7 @@ To create a new algorithm in the catalog use the following |REST| call:
 
     :param id: optional algorithm id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -181,7 +181,7 @@ To get the list of the algorithms available in the catalog:
 
     :param id: optional algorithm id from the catalog.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -223,7 +223,7 @@ To update an algorithm in the catalog, use:
 
     :param id: optional algorithm id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -306,7 +306,7 @@ To delete algorithms from the catalog, use:
 
     :param id: optional algorithm id from the catalog.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json

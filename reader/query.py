@@ -1,12 +1,9 @@
-from elasticsearch_dsl import Q, Search
 from elasticsearch import RequestError as Request_Error
+from elasticsearch_dsl import Q, Search
 from falcon.errors import HTTPBadRequest as HTTP_Bad_Request
+
 from utils.log import Log
 from utils.sequence import is_dict, is_list
-
-__all__ = [
-    'Query_Reader'
-]
 
 
 class Query_Reader:
@@ -26,9 +23,8 @@ class Query_Reader:
             raise http_bad_req
         except Exception as exception:
             Log.get('query-reader').error(f'Exception: {exception}')
-            raise HTTP_Bad_Request(
-                title='Not valid JSON',
-                description='The request body is not a valid JSON or it is not encoded as UTF-8.')
+            raise HTTP_Bad_Request(title='Not valid JSON',
+                                   description='The request body is not a valid JSON or it is not encoded as UTF-8.')
         return self.s
 
     def __select(self, query):
@@ -43,8 +39,7 @@ class Query_Reader:
                         if q is None:
                             q = self.__where(dict(where={sub_op: sub_clause}))
                         else:
-                            q = q & self.__where(
-                                dict(where={sub_op: sub_clause}))
+                            q = q & self.__where(dict(where={sub_op: sub_clause}))
                 elif is_list(clause):
                     for sub_clause in clause:
                         if q is None:
@@ -57,8 +52,7 @@ class Query_Reader:
                         if q is None:
                             q = self.__where(dict(where={sub_op: sub_clause}))
                         else:
-                            q = q | self.__where(
-                                dict(where={sub_op: sub_clause}))
+                            q = q | self.__where(dict(where={sub_op: sub_clause}))
                 elif is_list(clause):
                     for sub_clause in clause:
                         if q is None:
@@ -101,7 +95,7 @@ class Query_Reader:
                 sort_list.append(prop if mode == 'asc' else f'-{prop}')
             else:
                 raise HTTP_Bad_Request(title='Request not valid',
-                                       description=f'order with not valid/missing data')
+                                       description='order with not valid/missing data')
         self.s = self.s.sort(*sort_list)
 
     def __limit(self, query):

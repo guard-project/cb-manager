@@ -27,3 +27,7 @@
 - Added option to force the use of HTTPS instead of HTTP.
 - Added support to enable/disable HTTP Authentication.
 - Added pipeline management with CRUD operations.
+
+## 1.0.4
+
+- Replaced HTTP Basic with JWT Authentication.

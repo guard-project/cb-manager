@@ -4,13 +4,10 @@ from elasticsearch_dsl import Nested, Text
 
 from document.base import Base_Document
 
-__all__ = [
-    'Algorithm_Instance_Document'
-]
-
 
 class Algorithm_Instance_Parameter_Inner_Doc(Inner_Doc):
     """Parameter of the algorithm instance."""
+
     id = Text(required=True)
     timestamp = Date(required=True)
     # value
@@ -18,6 +15,7 @@ class Algorithm_Instance_Parameter_Inner_Doc(Inner_Doc):
 
 class Algorithm_Instance_Document(Base_Document):
     """Represents an algorithm instance."""
+
     # id already defined by Elasticsearch
     algorithm_catalog_id = Text(required=True)
     parameters = Nested(Algorithm_Instance_Parameter_Inner_Doc)
@@ -25,6 +23,7 @@ class Algorithm_Instance_Document(Base_Document):
 
     class Index:
         """Elasticsearch configuration."""
+
         name = 'algorithm-instance'
 
     def edit_parameter(self, parameter):

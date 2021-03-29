@@ -9,9 +9,6 @@ Glossary
     API
         Application Program Interface
 
-    BA
-        Basic Authentication
-
     BPF
         Berkeley Packet Filter
 

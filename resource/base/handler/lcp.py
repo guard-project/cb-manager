@@ -1,10 +1,6 @@
 from lib.response import Not_Found_Response
 from utils.log import Log
 
-__all__ = [
-    'LCP'
-]
-
 
 class LCP(object):
     @staticmethod

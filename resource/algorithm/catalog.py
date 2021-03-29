@@ -3,12 +3,6 @@ from resource.base import Base_Resource
 from docstring import docstring
 from document.algorithm.catalog import Algorithm_Catalog_Document
 from schema.algorithm.catalog import Algorithm_Catalog_Schema
-from schema.response import *
-
-__all__ = [
-    'Algorithm_Catalog_Resource',
-    'Algorithm_Catalog_Selected_Resource'
-]
 
 
 @docstring(ext='yaml')

@@ -128,7 +128,7 @@ To create a new agent instance use the following |REST| call:
 
     :param id: optional agent instance id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -273,7 +273,7 @@ To update an agent instance, use:
 
     :param id: optional agent instance id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -355,7 +355,7 @@ To delete agent instances, use:
 
     :param id: optional agent instance id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json

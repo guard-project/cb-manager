@@ -4,19 +4,17 @@ from elasticsearch_dsl import Nested, Text
 
 from document.base import Base_Document
 
-__all__ = [
-    'Agent_Instance_Document'
-]
-
 
 class Agent_Instance_Action_Inner_Doc(Inner_Doc):
     """Action of the agent instance installed in an execution environment."""
+
     id = Text(required=True)
     timestamp = Date(required=True)
 
 
 class Agent_Instance_Parameter_Inner_Doc(Inner_Doc):
     """Parameter of the agent instance installed in an execution environment."""
+
     id = Text(required=True)
     timestamp = Date(required=True)
     # value
@@ -24,6 +22,7 @@ class Agent_Instance_Parameter_Inner_Doc(Inner_Doc):
 
 class Agent_Instance_Resource_Inner_Doc(Inner_Doc):
     """Resource of the agent instance installed in an execution environment."""
+
     id = Text(required=True)
     timestamp = Date(required=True)
     path = Text(required=True)
@@ -32,6 +31,7 @@ class Agent_Instance_Resource_Inner_Doc(Inner_Doc):
 
 class Agent_Instance_Document(Base_Document):
     """Represents an agent instance installed in an execution environment."""
+
     # id already defined by Elasticsearch
     agent_catalog_id = Text(required=True)
     exec_env_id = Text(required=True)
@@ -43,6 +43,7 @@ class Agent_Instance_Document(Base_Document):
 
     class Index:
         """Elasticsearch configuration."""
+
         name = 'agent-instance'
 
     def edit_action(self, action):

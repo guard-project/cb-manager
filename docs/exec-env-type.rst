@@ -54,7 +54,7 @@ To create a new execution environment type use the following |REST| call:
 
     :param id: optional execution environment type id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -155,7 +155,7 @@ To get the list of execution environment types:
 
     :param id: optional execution environment type id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -192,7 +192,7 @@ To update an execution environment type, use:
 
     :param id: optional execution environment type id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -269,7 +269,7 @@ To delete an execution environment type, use:
 
     :param id: optional execution environment type id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json

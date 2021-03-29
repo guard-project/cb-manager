@@ -3,17 +3,13 @@ from resource.base.handler.lcp import LCP as Base_LCP
 from requests import delete as delete_req
 from requests import post as post_req
 from requests import put as put_req
-from requests.auth import HTTPBasicAuth as HTTP_Basic_Auth
 
 from document.ebpf_program.catalog import eBPF_Program_Catalog_Document
 from document.exec_env import Exec_Env_Document
 from lib.response import Unprocessable_Entity_Response
+from lib.token import create_token
 from utils.log import Log
 from utils.sequence import wrap
-
-__all__ = [
-    'LCP'
-]
 
 
 # FIXME parameters add to instance
@@ -65,9 +61,8 @@ class LCP(Base_LCP):
 
     def __apply(self, instance, exec_env, caller, data):
         h, p = exec_env.hostname, exec_env.lcp.port
-        u, ps = exec_env.lcp.username, exec_env.lcp.password
         schema = 'https' if exec_env.lcp.https else 'http'
-        resp_caller = caller(f'{schema}://{h}:{p}/code', auth=HTTP_Basic_Auth(u, ps),
+        resp_caller = caller(f'{schema}://{h}:{p}/code', headers={'Authorization': create_token()},
                              json=data(self.catalog))
         if resp_caller.content:
             try:

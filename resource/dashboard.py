@@ -1,11 +1,7 @@
-from falcon import HTTP_200
 from pathlib import Path
 from resource.base import Base_Minimal_Resource
 
-
-__all__ = [
-    'Dashboard_Resource'
-]
+from falcon import HTTP_200
 
 
 class Dashboard_Resource(Base_Minimal_Resource):

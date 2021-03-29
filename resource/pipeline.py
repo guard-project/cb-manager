@@ -3,12 +3,6 @@ from resource.base import Base_Resource
 from docstring import docstring
 from document.pipeline import Pipeline_Document
 from schema.pipeline import Pipeline_Schema
-from schema.response import *
-
-__all__ = [
-    'Pipeline_Resource',
-    'Pipeline_Selected_Resource'
-]
 
 
 @docstring(ext='yaml')

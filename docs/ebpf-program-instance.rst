@@ -57,7 +57,7 @@ To create a new |eBPF| program instance use the following |REST| call:
 
     :param id: optional |eBPF| program instance id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -179,7 +179,7 @@ To update an |eBPF| program instance, use:
 
     :param id: optional |eBPF| program instance id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -259,7 +259,7 @@ To delete |eBPF| program instances, use:
 
     :param id: optional |eBPF| program instance id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json

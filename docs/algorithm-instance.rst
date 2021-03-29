@@ -87,7 +87,7 @@ To create a new algorithm instance use the following |REST| call:
 
     :param id: optional algorithm instance id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -215,7 +215,7 @@ To update an algorithm instance, use:
 
     :param id: optional algorithm instance id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -292,7 +292,7 @@ To delete algorithm instances, use:
 
     :param id: optional algorithm instance id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json

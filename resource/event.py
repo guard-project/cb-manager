@@ -1,13 +1,8 @@
-from document.event import Event_Document
 from resource.base import Base_Resource
-from schema.event import Event_Schema
-from schema.response import *
-from docstring import docstring
 
-__all__ = [
-    'Event_Resource',
-    'Event_Selected_Resource'
-]
+from docstring import docstring
+from document.event import Event_Document
+from schema.event import Event_Schema
 
 
 @docstring(ext='yaml')

@@ -42,10 +42,6 @@ LCP Schema
 +--------------------+---------+----------+----------+--------------+---------+
 | ``last_heartbeat`` | Date    | False    | True     | True         |         |
 +--------------------+---------+----------+----------+--------------+---------+
-| ``username``       | String  | False    | True     | True         |         |
-+--------------------+---------+----------+----------+--------------+---------+
-| ``password``       | String  | False    | True     | True         |         |
-+--------------------+---------+----------+----------+--------------+---------+
 
 .. warning::
 
@@ -90,7 +86,7 @@ To create a new Execution Environment use the following |REST| call:
 
     :param id: optional execution environments id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -190,7 +186,7 @@ To get the list of execution environment:
 
     :param id: optional execution environment id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -227,7 +223,7 @@ To update an execution environment, use:
 
     :param id: optional execution environment id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -305,7 +301,7 @@ To delete an execution environment, use:
 
     :param id: optional execution environment id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json

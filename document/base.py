@@ -1,9 +1,5 @@
 from elasticsearch_dsl import Document
 
-__all__ = [
-    'Base_Document'
-]
-
 
 class Base_Document(Document):
     class Status_Operation():

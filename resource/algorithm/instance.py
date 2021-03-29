@@ -4,12 +4,6 @@ from resource.base import Base_Resource
 from docstring import docstring
 from document.algorithm.instance import Algorithm_Instance_Document
 from schema.algorithm.instance import Algorithm_Instance_Schema
-from schema.response import *
-
-__all__ = [
-    'Algorithm_Instance_Resource',
-    'Algorithm_Instance_Selected_Resource'
-]
 
 
 @docstring(ext='yaml')

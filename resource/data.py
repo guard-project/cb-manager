@@ -1,13 +1,8 @@
-from document.data import Data_Document
 from resource.base import Base_Resource
-from schema.data import Data_Schema
-from schema.response import *
-from docstring import docstring
 
-__all__ = [
-    'Data_Resource',
-    'Data_Selected_Resource'
-]
+from docstring import docstring
+from document.data import Data_Document
+from schema.data import Data_Schema
 
 
 @docstring(ext='yaml')

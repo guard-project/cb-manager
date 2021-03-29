@@ -11,6 +11,7 @@ falcon-require-https
 marshmallow
 msgpack
 pint
+pyjwt[crypto]
 pyyaml>=5.0
 requests
 swagger-ui-py

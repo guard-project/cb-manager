@@ -5,12 +5,12 @@ path = os.path.abspath(__file__)
 dir_path = os.path.dirname(path)
 os.chdir(dir_path)
 
-import waitress
+import waitress  # noqa: E402
 
-from about import project, title, version
-from api import api
-from lib.elasticsearch import connection as es_conn
-from reader.arg import Arg_Reader
+from about import project, title, version  # noqa: E402
+from api import api  # noqa: E402
+from lib.elasticsearch import connection as es_conn  # noqa: E402
+from reader.arg import Arg_Reader  # noqa: E402
 
 db = Arg_Reader.read()
 

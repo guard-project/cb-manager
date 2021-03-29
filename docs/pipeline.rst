@@ -46,7 +46,7 @@ To create a new pipeline use the following |REST| call:
 
     :param id: optional pipeline id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -128,7 +128,7 @@ To get the list of pipelines:
 
     :param id: optional pipeline id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -165,7 +165,7 @@ To update an pipeline, use:
 
     :param id: optional pipeline id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
@@ -239,7 +239,7 @@ To delete pipelines, use:
 
     :param id: optional pipeline id.
 
-    :reqheader Authorization: HTTP Basic Authentication with username and password.
+    :reqheader Authorization: JWT Authentication.
     :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json

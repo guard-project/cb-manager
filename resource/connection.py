@@ -1,13 +1,8 @@
-from document.connection import Connection_Document
 from resource.base import Base_Resource
-from schema.connection import Connection_Schema
-from schema.response import *
-from docstring import docstring
 
-__all__ = [
-    'Connection_Resource',
-    'Connection_Selected_Resource'
-]
+from docstring import docstring
+from document.connection import Connection_Document
+from schema.connection import Connection_Schema
 
 
 @docstring(ext='yaml')

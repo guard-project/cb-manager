@@ -46,7 +46,6 @@ APIs to interact with the ``Context Broker``'s database. Through a **REST** Inte
 :-------: | -----------
 *ACL*     | Access Control List
 *API*     | Application Program Interface
-*BA*      | Basic Authentication
 *BPF*     | Berkeley Packet Filter
 *CB*      | Context Broker
 *CRUD*    | Create - Read - Update - Delete
@@ -241,16 +240,22 @@ See the [Swagger Schema](api/swagger.yaml, api/swagger.json) and the relative [d
 
 The configurations are stored in the [config.ini](config.ini) file.
 
-Section        | Setting  | Default value | Note
--------------- | -------- | ------------- | ----
-context-broker | host     | 0.0.0.0       | IP address to accept requests.
-context-broker | port     | 5000          | TCP port to accept requests.
-auth           | max-ttl  | 10min         | Maximum TTL of the authorization with the CB-Manager.
-polycube       | host     | localhost     | IP address to contact the polycube installation.
-polycube       | port     | 9000          | Port address to contact the polycube installation.
-polycube       | timeout  | 20s           | Timeout for the connection to polycube.
-dev            | username | lcp           | Username for HTTP authentication (for developer use).
-dev            | password |               | Password for HTTP authentication (for developer use).
+Section        | Setting       | Default value         | Note
+---------------|---------------|-----------------------|------------------------------
+context-broker | host          | 0.0.0.0               | IP address to accept requests.
+context-broker | port          | 5000                  | TCP port to accept requests.
+context-broker | https         | false                 | Accept only HTTPS requests.
+auth           | enabled       | true                  | Enable JWT authentication.
+auth           | header-prefix | GUARD                 | Header prefix for JWT authentication.
+auth           | secret-key    | guard-secret-key      | Secret key for JWT authentication.
+heartbeat      | timeout       | 10s                   | Timeout for heartbeat procedure with LCPs.
+heartbeat      | period        | 1min                  | Period to execute the heartbeat procedure with LCPs.
+elasticsearch  | endpoint      | localhost:9200        | Endpoint connection to Elasticsearch instance.
+elasticsearch  | timeout       | 20s                   | Timeout for connection to Elasticsearch instance.
+elasticsearch  | retry-period  | 1min                  | Time to wait to retry the connection to Elasticsearch instance.
+elastic-apm    | enabled       | false                 | Enable Elastic APM integration.
+elastic-apm    | server        | http://localhost:8200 | Elastic APM server.
+log            | level         | DEBUG                 | Log level.
 
 ## Usage
 

@@ -1,21 +1,14 @@
 from copy import deepcopy
 from time import sleep
 
-from elasticsearch import NotFoundError as Not_Found_Error
-from elasticsearch import RequestError as Request_Error
-
 from lib.http import HTTP_Method
-from lib.response import *
+from lib.response import (Content_Response, Created_Response, No_Content_Response, Not_Found_Response,
+                          Not_Modified_Response, Ok_Response, Reset_Content_Response, Unprocessable_Entity_Response)
 from reader.arg import Arg_Reader
 from reader.query import Query_Reader
 from schema.query_request import Query_Request_Schema
 from utils.log import Log
 from utils.sequence import is_list, wrap
-
-__all__ = [
-    'Base_Minimal_Resource',
-    'Base_Resource'
-]
 
 
 class Base_Minimal_Resource(object):
@@ -94,8 +87,7 @@ class Base_Resource(Base_Minimal_Resource):
                             for rdl in resp_data_lcp:
                                 if rdl['error']:
                                     msg = f'Not possible to create a {self.name} with the id={req_data_id}'
-                                    resp_data = Unprocessable_Entity_Response(
-                                        msg)
+                                    resp_data = Unprocessable_Entity_Response(msg)
                                     break
                             resp_data.update(lcp_response=resp_data_lcp)
                         force = req_data.get('force', False)
@@ -137,13 +129,11 @@ class Base_Resource(Base_Minimal_Resource):
                             hndl = self.get_lcp_handler(HTTP_Method.PUT)
                             modified = hndl(instance=obj, req=req_data_lcp,
                                             resp=resp_data_lcp)
-                            resp_data = Ok_Response(
-                                f'{self.name.capitalize()} with the id={req_data_id} correctly updated')
+                            resp_data = Ok_Response(f'{self.name.capitalize()} with the id={req_data_id} correctly updated')
                             if len(resp_data_lcp) > 0:
                                 for rdl in resp_data_lcp:
                                     if rdl['error']:
-                                        resp_data = Unprocessable_Entity_Response(
-                                            f'Not possible to update a {self.name} with the id={req_data_id}')
+                                        resp_data = Unprocessable_Entity_Response(f'Not possible to update a {self.name} with the id={req_data_id}')
                                         break
                                 resp_data.update(lcp_response=resp_data_lcp)
                             force = req_data.get('force', False)
@@ -153,20 +143,16 @@ class Base_Resource(Base_Minimal_Resource):
                                     modified = True
                                     if force:
                                         msg = f'Some errors occur but the {self.name} with the id={req_data_id} forcedly updated'
-                                        resp_data = Unprocessable_Entity_Response(
-                                            msg)
+                                        resp_data = Unprocessable_Entity_Response(msg)
                             if not resp_data.error and not modified:
-                                resp_data = Not_Modified_Response(
-                                    f'{self.name.capitalize()} with the id={req_data_id} no need to update')
+                                resp_data = Not_Modified_Response(f'{self.name.capitalize()} with the id={req_data_id} no need to update')
                             resp_data.add(resp)
                     except Exception as e:
                         msg = f'Not possible to update a {self.name} with the id={req_data_id}'
-                        Unprocessable_Entity_Response(msg,
-                                                      exception=e).add(resp)
+                        Unprocessable_Entity_Response(msg, exception=e).add(resp)
             else:
                 msg = f'No content to update {self.name} based on the {{request}}'
-                No_Content_Response(msg, exception=e,
-                                    request=req_data).apply(resp)
+                No_Content_Response(msg, request=req_data).apply(resp)
         else:
             resp_data.apply(resp)
 
@@ -193,8 +179,7 @@ class Base_Resource(Base_Minimal_Resource):
                                 for rdl in resp_data_lcp:
                                     if rdl['error']:
                                         msg = f'Not possible to delete the {self.name} with the id={hit.meta.id}'
-                                        resp_data = Unprocessable_Entity_Response(
-                                            msg)
+                                        resp_data = Unprocessable_Entity_Response(msg)
                                         break
                                 resp_data.update(lcp_response=resp_data_lcp)
                             force = req_data.get('force', False)
@@ -202,8 +187,7 @@ class Base_Resource(Base_Minimal_Resource):
                                 obj.delete()
                                 if force:
                                     msg = f'Some errors occur but the {self.name} with the id={hit.meta.id} forcedly deleted'
-                                    resp_data = Unprocessable_Entity_Response(
-                                        msg)
+                                    resp_data = Unprocessable_Entity_Response(msg)
                             resp_data.add(resp)
                         except Exception as e:
                             msg = f'Not possible to delete the {self.name} with the id={hit.meta.id}'
@@ -223,8 +207,7 @@ class Base_Resource(Base_Minimal_Resource):
     def rm_ignore_fields(self, data):
         for ign_f in self.ignore_fields:
             if data.pop(ign_f, None) is not None:
-                self.log.info(
-                    f'Field {ign_f} in the request ignored when update {self.names}')
+                self.log.info(f'Field {ign_f} in the request ignored when update {self.names}')
 
     @ classmethod
     def get_lcp_handler(cls, method):
