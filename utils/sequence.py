@@ -6,7 +6,7 @@ def expand(elements, **kwrds):
 
 
 def extract(elements, **kwargs):
-    output = dict()
+    output = {}
     for key, val in kwargs.items():
         output.update({key: elements.get(val, None)})
     return output

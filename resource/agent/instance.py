@@ -13,7 +13,7 @@ class Agent_Instance_Resource(Base_Resource):
     names = 'agent instances'
     routes = '/instance/agent/'
     schema = Agent_Instance_Schema
-    lcp_handler = dict(post=LCP.handler, put=LCP.handler)
+    lcp_handler = {'post': LCP.handler, 'put': LCP.handler}
     ignore_fields = ['operations']
 
 

@@ -37,7 +37,7 @@ def docstring(ext='docstring', methods=(HTTP_Method.GET, HTTP_Method.POST, HTTP_
             with path.open('r') as file:
                 mth.__doc__ = format(file.read(), self=self)
             if self.schema.__doc__ is not None:
-                self.tag = dict(name=self.doc.Index.name, description=self.schema.__doc__.strip(' \n'))
+                self.tag = {'name': self.doc.Index.name, 'description': self.schema.__doc__.strip(' \n')}
         return self
 
     return decorator

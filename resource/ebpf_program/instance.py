@@ -13,7 +13,7 @@ class eBPF_Program_Instance_Resource(Base_Resource):
     names = 'eBPF programs'
     routes = '/instance/ebpf-program/'
     schema = eBPF_Program_Instance_Schema
-    lcp_handler = dict(post=LCP.post, put=LCP.put, delete=LCP.delete)
+    lcp_handler = {'post': LCP.post, 'put': LCP.put, 'delete': LCP.delete}
     ignore_fields = ['parameters']
 
 

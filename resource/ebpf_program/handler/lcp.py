@@ -25,45 +25,34 @@ class LCP(Base_LCP):
     @classmethod
     def post(cls, instance, req, resp):
         def __data(catalog):
-            return dict(id=catalog.meta.id,
-                        interface=req.get('interface', None),
-                        **catalog.config.to_dict())
-        cls.__handler(instance=instance, req=req, resp=resp,
-                      caller=post_req, data=__data)
+            return dict(id=catalog.meta.id, interface=req.get('interface', None), **catalog.config.to_dict())
+        cls.__handler(instance=instance, req=req, resp=resp, caller=post_req, data=__data)
 
     @classmethod
     def put(cls, instance, req, resp):
         def __data(catalog):
-            return dict(id=catalog.meta.id,
-                        interface=req.get('interface', None),
-                        **catalog.config.to_dict())
-        cls.__handler(instance=instance, req=req, resp=resp,
-                      caller=put_req, data=__data)
+            return dict(id=catalog.meta.id, interface=req.get('interface', None), **catalog.config.to_dict())
+        cls.__handler(instance=instance, req=req, resp=resp, caller=put_req, data=__data)
 
     @ classmethod
     def delete(cls, instance, req, resp):
         def __data(catalog):
-            return dict(id=catalog.meta.id)
-        cls.__handler(instance=instance, req=req, resp=resp,
-                      caller=delete_req, data=__data)
+            return {'id': catalog.meta.id}
+        cls.__handler(instance=instance, req=req, resp=resp, caller=delete_req, data=__data)
 
     @ classmethod
     def __handler(cls, instance, req, resp, caller, data):
         ebpf_program_catalog = cls.from_doc(document=eBPF_Program_Catalog_Document, id=instance.ebpf_program_catalog_id,
                                             label='eBPF Program Catalog', resp=resp)
-        exec_env = cls.from_doc(document=Exec_Env_Document, id=instance.exec_env_id,
-                                label='Execution Environment', resp=resp)
+        exec_env = cls.from_doc(document=Exec_Env_Document, id=instance.exec_env_id, label='Execution Environment', resp=resp)
         if all([ebpf_program_catalog, exec_env]):
-            LCP(catalog=ebpf_program_catalog, req=req, resp=resp).__apply(instance=instance,
-                                                                          exec_env=exec_env,
-                                                                          caller=caller,
-                                                                          data=data)
+            LCP(catalog=ebpf_program_catalog, req=req, resp=resp).__apply(instance=instance, exec_env=exec_env,
+                                                                          caller=caller, data=data)
 
     def __apply(self, instance, exec_env, caller, data):
         h, p = exec_env.hostname, exec_env.lcp.port
         schema = 'https' if exec_env.lcp.https else 'http'
-        resp_caller = caller(f'{schema}://{h}:{p}/code', headers={'Authorization': create_token()},
-                             json=data(self.catalog))
+        resp_caller = caller(f'{schema}://{h}:{p}/code', headers={'Authorization': create_token()}, json=data(self.catalog))
         if resp_caller.content:
             try:
                 self.resp.extend(wrap(resp_caller.json()))

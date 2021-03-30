@@ -33,8 +33,10 @@ class Arg_Reader:
         add('--apm-server', '-m', type=str, help='Elastic APM hostname/IP:port', default=cls.cr.elastic_apm_server)
 
         add('--es-endpoint', '-e', type=str, help='Elasticsearch server hostname/IP:port', default=cls.cr.es_endpoint)
-        add('--es-timeout', '-s', type=str, help='Timeout (with unit, e.g.: 10s) for the connection to Elasticsearch', default=cls.cr.es_timeout)
-        add('--es-retry_period', '-y', type=str, help='Period (with unit, e.g.: 1min) to retry the connection to Elasticsearch', default=cls.cr.es_retry_period)
+        add('--es-timeout', '-s', type=str, help='Timeout (with unit, e.g.: 10s) for the connection to Elasticsearch',
+            default=cls.cr.es_timeout)
+        add('--es-retry_period', '-y', type=str, help='Period (with unit, e.g.: 1min) to retry the connection to Elasticsearch',
+            default=cls.cr.es_retry_period)
 
         add('--log-level', '-l', choices=Log.get_levels(), help='Log level', default=cls.cr.log_level)
 

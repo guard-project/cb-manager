@@ -17,8 +17,7 @@ class Query_Reader:
             self.__order(query)
             self.__limit(query)
         except Request_Error as req_err:
-            raise HTTP_Bad_Request(title=req_err.error,
-                                   description=req_err.info)
+            raise HTTP_Bad_Request(title=req_err.error, description=req_err.info)
         except HTTP_Bad_Request as http_bad_req:
             raise http_bad_req
         except Exception as exception:
@@ -37,28 +36,28 @@ class Query_Reader:
                 if is_dict(clause):
                     for sub_op, sub_clause in clause.items():
                         if q is None:
-                            q = self.__where(dict(where={sub_op: sub_clause}))
+                            q = self.__where({'where': {sub_op: sub_clause}})
                         else:
-                            q = q & self.__where(dict(where={sub_op: sub_clause}))
+                            q = q & self.__where({'where': {sub_op: sub_clause}})
                 elif is_list(clause):
                     for sub_clause in clause:
                         if q is None:
-                            q = self.__where(dict(where=sub_clause))
+                            q = self.__where({'where': sub_clause})
                         else:
-                            q = q & self.__where(dict(where=sub_clause))
+                            q = q & self.__where({'where': sub_clause})
             elif op == 'or':
                 if is_dict(clause):
                     for sub_op, sub_clause in clause.items():
                         if q is None:
-                            q = self.__where(dict(where={sub_op: sub_clause}))
+                            q = self.__where({'where': {sub_op: sub_clause}})
                         else:
-                            q = q | self.__where(dict(where={sub_op: sub_clause}))
+                            q = q | self.__where({'where': {sub_op: sub_clause}})
                 elif is_list(clause):
                     for sub_clause in clause:
                         if q is None:
-                            q = self.__where(dict(where=sub_clause))
+                            q = self.__where({'where': sub_clause})
                         else:
-                            q = q | self.__where(dict(where=sub_clause))
+                            q = q | self.__where({'where': sub_clause})
             elif op == 'not':
                 q = ~self.__where(clause)
             else:
@@ -68,17 +67,15 @@ class Query_Reader:
                     if op == 'equals':
                         q = Q('match_phrase', **{prop: expr})
                     elif op == 'reg_exp':
-                        q = Q('regexp', **{prop: dict(value=expr)})
+                        q = Q('regexp', **{prop: {'value': expr}})
                     elif op == 'wildcard':
-                        q = Q('wildcard', **{prop: dict(value=expr)})
+                        q = Q('wildcard', **{prop: {'value': expr}})
                     elif op in ['lt', 'lte', 'gt', 'gte']:
                         q = Q('range', **{prop: {op: expr}})
                     else:
-                        raise HTTP_Bad_Request(title='Operation unknown',
-                                               description=f'{op} unknown')
+                        raise HTTP_Bad_Request(title='Operation unknown', description=f'{op} unknown')
                 else:
-                    raise HTTP_Bad_Request(title='Request not valid',
-                                           description=f'{op} clause with not valid/missing data')
+                    raise HTTP_Bad_Request(title='Request not valid', description=f'{op} clause with not valid/missing data')
         if id is not None:
             if q is None:
                 q = Q('term', _id=id)

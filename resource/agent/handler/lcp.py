@@ -23,7 +23,7 @@ class LCP(Base_LCP):
         self.actions = []
         self.parameters = []
         self.resources = []
-        self.catalogs = dict(actions={}, parameters={}, resources={})
+        self.catalogs = {'actions': {}, 'parameters': {}, 'resources': {}}
         operations = wrap(self.req.get('operations', []))
         for req_op in operations:
             req_lcp_op = {}

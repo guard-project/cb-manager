@@ -53,4 +53,5 @@ class Query_Request_Schema(Base_Schema):
     order = Nested(Query_Request_Order_Schema, many=True, description='Order the filtered items.')
     limit = Nested(Query_Request_Limit_Schema, description='Limit the number of items to return.')
     force = Boolean(default=False, example=True,
-                    description='Force the execution of the request even there are some errors (example: delete a inconstent entries.')  # FIXME indentation
+                    description="""Force the execution of the request even there are some errors
+                                   (example: delete a inconstent entries).""")

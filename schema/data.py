@@ -18,7 +18,8 @@ class Data_Schema(Base_Schema):
                             description="Id of the agent instance in the execution environment that collected the data",
                             validate=In.apply(Agent_Instance_Document.get_ids), error_messages=In.error_messages)
     ebpf_program_instance_id = Str(readonly=True, example='packet-capture@apache',
-                                   description="Id of the eBPF program instance in the execution environment that collected the data",  # FIXME indentation
+                                   description="""Id of the eBPF program instance in the execution environment
+                                                  that collected the data""",
                                    validate=In.apply(eBPF_Program_Instance_Document.get_ids), error_messages=In.error_messages)
     timestamp_event = Date_Time(format=FORMAT, readonly=True, example='2019/02/14 15:23:30',
                                 description='Timestamp of the event related to the collected data')
