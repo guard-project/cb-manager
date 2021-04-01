@@ -3,8 +3,6 @@ from configparser import ConfigParser as Config_Parser
 from os import path
 from pathlib import Path
 
-from utils.log import Log
-
 
 class Config_Reader:
     path = Path(__file__).parent / '../config.ini'
@@ -33,9 +31,7 @@ class Config_Reader:
         self.elastic_apm_enabled = self.cr.getboolean('elastic-apm', 'enabled', fallback=False)
         self.elastic_apm_server = self.cr.get('elastic-apm', 'server', fallback='http://localhost:8200')
 
-        self.log_level = self.cr.get('log', 'level', fallback='INFO')
-
-        Log.init(default=self.log_level, levels=self.cr.items('log') if self.cr.has_section('log') else [])
+        self.log_config = self.cr.get('log', 'config', fallback='log.yaml')
 
     def write(self, db):
         # FIXME is it necessary?

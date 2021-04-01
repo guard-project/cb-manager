@@ -390,8 +390,8 @@ definitions:
         example: filebeat@apache
         type: string
       ebpf_program_instance_id:
-        description: Id of the eBPF program instance in the execution environment
-          that collected the data
+        description: "Id of the eBPF program instance in the execution environment\n\
+          \                                                  that collected the data"
         example: packet-capture@apache
         type: string
       id:
@@ -537,8 +537,8 @@ definitions:
   Query_Request:
     properties:
       force:
-        description: 'Force the execution of the request even there are some errors
-          (example: delete a inconstent entries.'
+        description: "Force the execution of the request even there are some errors\n\
+          \                                   (example: delete a inconstent entries)."
         example: true
         type: boolean
       limit:
@@ -810,7 +810,7 @@ definitions:
     type: object
 info:
   title: Context Broker Manager
-  version: 1.0.3
+  version: 1.0.4
 paths:
   /catalog/agent/:
     delete:

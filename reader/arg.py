@@ -2,7 +2,6 @@ from argparse import ArgumentParser as Argument_Parser
 
 from about import description, title, version
 from reader.config import Config_Reader
-from utils.log import Log
 from utils.time import get_seconds
 
 
@@ -38,7 +37,7 @@ class Arg_Reader:
         add('--es-retry_period', '-y', type=str, help='Period (with unit, e.g.: 1min) to retry the connection to Elasticsearch',
             default=cls.cr.es_retry_period)
 
-        add('--log-level', '-l', choices=Log.get_levels(), help='Log level', default=cls.cr.log_level)
+        add('--log-config', '-l', help='Path of the log configuration file (e.g. log.yaml)', default=cls.cr.log_config)
 
         add('--write-config', '-w', help='Write options to config.ini', action='store_true')
         add('--version', '-v', help='Show version', action='store_const', const=version)

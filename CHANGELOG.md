@@ -31,3 +31,4 @@
 ## 1.0.4
 
 - Replaced HTTP Basic with JWT Authentication.
+- Enhanced Log configuration.

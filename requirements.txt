@@ -1,13 +1,14 @@
 apispec
-colorama
-coloredlogs
+bunch
 dicttoxml
 elasticsearch-dsl>=7.0.0
+emoji
 falcon
 falcon-apispec
 falcon-auth
 falcon-elastic-apm
 falcon-require-https
+loguru
 marshmallow
 msgpack
 pint
@@ -17,6 +18,5 @@ requests
 rich
 swagger-ui-py
 toolz
-verboselogs
 waitress
 xmltodict

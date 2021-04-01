@@ -255,7 +255,7 @@ elasticsearch  | timeout       | 20s                   | Timeout for connection 
 elasticsearch  | retry-period  | 1min                  | Time to wait to retry the connection to Elasticsearch instance.
 elastic-apm    | enabled       | false                 | Enable Elastic APM integration.
 elastic-apm    | server        | http://localhost:8200 | Elastic APM server.
-log            | level         | DEBUG                 | Log level.
+log            | config        | log.yaml              | Path of the log configuration file.
 
 ## Usage
 
