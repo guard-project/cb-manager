@@ -58,6 +58,6 @@ class Agent_Instance_Schema(Base_Schema):
                       description='Id of the execution environment where the agent instance is installed.',
                       validate=In.apply(Exec_Env_Document.get_ids), error_messages=In.error_messages)
     status = Str(enum=AGENT_STATUS, required=True, readonly=True, example=AGENT_STATUS[0], description='Status of the agent.')
-    operations = Nested(Agent_Instance_Operation_Schema, unknown='INCLUDE', description='List of agent instance operations.')
+    operations = Nested(Agent_Instance_Operation_Schema, many=True, unknown='INCLUDE', description='List of agent instance operations.')
     description = Str(example='Collect system metrics from execution environments.',
                       description='Short description of the agent installed in the execution environment.')

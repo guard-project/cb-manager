@@ -61,7 +61,9 @@ definitions:
       args:
         description: Action command argument
         example: -v
-        type: string
+        items:
+          type: string
+        type: array
       cmd:
         description: Action command.
         example: service filebeat start
@@ -109,7 +111,9 @@ definitions:
       values:
         description: Possible values if the parameter type is choice.
         example: mysql
-        type: string
+        items:
+          type: string
+        type: array
     required:
     - config
     - id
@@ -118,9 +122,9 @@ definitions:
   Agent_Catalog_Parameter_Config:
     properties:
       path:
+        description: Path of the parameter value in the file
+        example: enabled
         items:
-          description: Path of the parameter value in the file
-          example: enabled
           type: string
         type: array
       schema:
@@ -137,6 +141,7 @@ definitions:
         example: /usr/share/filebeat/filebeat.yml
         type: string
     required:
+    - path
     - schema
     - source
     type: object
@@ -163,7 +168,9 @@ definitions:
       path:
         description: File path.
         example: /usr/share/filebeat/filebeat.yml
-        type: string
+        items:
+          type: string
+        type: array
     required:
     - path
     type: object
@@ -186,9 +193,10 @@ definitions:
         example: filebeat@apache
         type: string
       operations:
-        allOf:
-        - $ref: '#/definitions/Agent_Instance_Operation'
         description: List of agent instance operations.
+        items:
+          $ref: '#/definitions/Agent_Instance_Operation'
+        type: array
       status:
         description: Status of the agent.
         enum: *id001
@@ -308,7 +316,9 @@ definitions:
       values:
         description: Possible values if the parameter type is choice.
         example: mysql
-        type: string
+        items:
+          type: string
+        type: array
     required:
     - id
     - type
@@ -324,22 +334,17 @@ definitions:
           environment.
         example: Collect system metrics from execution environments.
         type: string
-      exec_env_id:
-        description: Id of the execution environment where the algorithm instance
-          is installed.
-        example: apache
-        type: string
       id:
         description: Id of the algorithm instance.
         example: ddos-predictor-1
         type: string
       operations:
-        allOf:
-        - $ref: '#/definitions/Algorithm_Instance_Operation'
         description: List of algorithm instance operations.
+        items:
+          $ref: '#/definitions/Algorithm_Instance_Operation'
+        type: array
     required:
     - algorithm_catalog_id
-    - exec_env_id
     - id
     type: object
   Algorithm_Instance_Operation:
@@ -551,9 +556,9 @@ definitions:
           $ref: '#/definitions/Query_Request_Order'
         type: array
       select:
+        description: Fields to return.
+        example: id
         items:
-          description: Fields to return.
-          example: id
           type: string
         type: array
       where:
@@ -761,7 +766,9 @@ definitions:
       values:
         description: Possible values if the parameter type is choice.
         example: 'yes'
-        type: string
+        items:
+          type: string
+        type: array
     required:
     - id
     - type

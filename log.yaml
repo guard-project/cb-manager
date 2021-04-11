@@ -8,6 +8,7 @@ sinks:
       # cspell:enable
       backtrace: false
       diagnose: false
+      enqueue: true
   - klass: "log/cb-manager.log"
     clear: true
     args:
@@ -20,6 +21,7 @@ sinks:
       compression: "zip"
       backtrace: false
       diagnose: false
+      enqueue: true
   - klass: "StreamHandler"
     enabled: false
     args:
@@ -29,7 +31,7 @@ sinks:
       # cspell:enable
       host: "0.0.0.0"
       port: 8765
-
+      enqueue: true
 logger:
   __default__: "DEBUG"
 

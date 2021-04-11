@@ -3,6 +3,7 @@ from marshmallow.fields import Boolean, Integer, List, Nested, Str
 
 from schema.base import Base_Schema
 from schema.validate import Unique_List
+from utils.schema import List_or_One
 
 ORDER_MODES = ['asc', 'desc']
 
@@ -47,8 +48,8 @@ class Query_Request_Clause_Schema(Base_Schema):
 class Query_Request_Schema(Base_Schema):
     """Query request to filter the items."""
 
-    select = List(Str(example='id', description='Fields to return.'),
-                  validate=Unique_List.apply(), error_messages=Unique_List.error_messages)
+    select = List_or_One(Str, example='id', description='Fields to return.',
+                         validate=Unique_List.apply(), error_messages=Unique_List.error_messages)
     where = Nested(Query_Request_Clause_Schema, description='Filter the items based on different conditions.')
     order = Nested(Query_Request_Order_Schema, many=True, description='Order the filtered items.')
     limit = Nested(Query_Request_Limit_Schema, description='Limit the number of items to return.')
