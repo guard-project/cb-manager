@@ -27,8 +27,6 @@ class Formatter:
 
     @classmethod
     def apply(cls, record):
-        # s = cls.info(record['name'])
-        # record['called'] = Bunch(filename=path.basename(s.filename), function=s.function, lineno=s.lineno, icon=emoji(':computer:'))
         record['called'] = Bunch(filename=record['file'].name, function=record['function'], lineno=record['line'], icon=emoji(':computer:'))
         record['elapsed'] = Bunch(time=record['elapsed'], icon=emoji(':alarm_clock:'))
         record['message'] = emoji(record['message'])
