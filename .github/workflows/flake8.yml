@@ -2,9 +2,7 @@ name: Flake8
 
 on:
   workflow_dispatch: # manual trigger
-
-  schedule:
-    - push
+  push:
 
 jobs:
   flake8:
