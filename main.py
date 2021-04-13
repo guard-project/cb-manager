@@ -25,7 +25,7 @@ if db.version is not None:
     print(db.version)
 else:
     ident = f'{project} - {title} v:{version}'
-    console = Console()
+    console= Console()
     console.print(Panel.fit(ident))
     Log.init(config=db.log_config)
     es_conn(endpoint=db.es_endpoint, timeout=db.es_timeout, retry_period=db.es_retry_period)

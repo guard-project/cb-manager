@@ -1,8 +1,9 @@
 name: Flake8
 
 on:
-  workflow_dispatch: # manual trigger
+  pull_request:
   push:
+  workflow_dispatch: # manual trigger
 
 jobs:
   flake8:
