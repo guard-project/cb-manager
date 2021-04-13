@@ -23,6 +23,7 @@ This part of the documentation will show you how to get started in using |CB|-Ma
 
    installation
    configuration
+   authentication
    running
    exec-env
    exec-env-type
