@@ -1,5 +1,5 @@
 from marshmallow import Schema, validate
-from marshmallow.fields import Bool, List, Nested, Raw, Str
+from marshmallow.fields import Bool, Nested, Raw, Str
 
 from document.agent.catalog import Agent_Catalog_Document
 from schema.base import Base_Schema

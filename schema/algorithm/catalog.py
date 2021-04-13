@@ -26,7 +26,7 @@ class Algorithm_Catalog_Schema(Base_Schema):
 
     doc = Algorithm_Catalog_Document
     id = Str(required=True, example='ddos-prediction', description='Id of the algorithm in the catalog.')
-    parameters = Nested(Algorithm_Catalog_Parameter_Schema,unknown='INCLUDE', many=True,
+    parameters = Nested(Algorithm_Catalog_Parameter_Schema, unknown='INCLUDE', many=True,
                         description='Parameter properties.', validate=Unique_List.apply('id'),
                         error_messages=Unique_List.error_messages)
     description = Str(example='Predict DDoS attacks.', description='Short description of the algorithm.')

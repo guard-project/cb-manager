@@ -1,5 +1,5 @@
 from marshmallow import validate
-from marshmallow.fields import Boolean, Integer, List, Nested, Str
+from marshmallow.fields import Boolean, Integer, Nested, Str
 
 from schema.base import Base_Schema
 from schema.validate import Unique_List

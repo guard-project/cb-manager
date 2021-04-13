@@ -3,7 +3,6 @@ from marshmallow.fields import Nested, Raw, Str
 
 from document.algorithm.catalog import Algorithm_Catalog_Document
 from document.algorithm.instance import Algorithm_Instance_Document
-from document.exec_env import Exec_Env_Document
 from schema.base import Base_Schema
 from schema.validate import In, Unique_List
 
