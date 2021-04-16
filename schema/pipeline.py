@@ -10,8 +10,9 @@ class Pipeline_Schema(Base_Schema):
 
     doc = Pipeline_Document
     id = Str(required=True, example='BXrHRn5RPU55Qh9JwMZn', description='Id of the pipeline.')
-    updated_at = Date_Time(description='', description='Date of last update of the pipeline in Unix timestamp format.', example=1617278285)
-    created_at = Date_Time(required=True, readonly=True, description='Date of creation of the pipeline in Unix timestamp format.', example=1617278285)
+    updated_at = Date_Time(description='Date of last update of the pipeline in Unix timestamp format.', example=1617278285)
+    created_at = Date_Time(required=True, readonly=True, example=1617278285,
+                           description='Date of creation of the pipeline in Unix timestamp format.')
     name = Str(description='Used by the UI to create a new pipeline.', example='test pipeline guard-vdpi ud')
     status = Str(required=True, description='Pipeline status.', example='started')
-    user = Str(description='', description='User/Entity owner/manager/responsible of the pipeline.', example='Minds & Sparks')
+    user = Str(description='User/Entity owner/manager/responsible of the pipeline.', example='Minds & Sparks')
