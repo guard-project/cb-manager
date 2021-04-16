@@ -32,3 +32,4 @@
 
 - Replaced HTTP Basic with JWT Authentication.
 - Enhanced Log configuration.
+- Preliminary common structure for pipeline.
