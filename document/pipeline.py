@@ -1,4 +1,4 @@
-from elasticsearch_dsl.field import Date, Text
+from elasticsearch_dsl.field import Text
 
 from document.base import Base_Document
 
