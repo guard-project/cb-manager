@@ -532,12 +532,36 @@ definitions:
     type: object
   Pipeline:
     properties:
+      created_at:
+        description: Date of creation of the pipeline in Unix timestamp format.
+        example: 1617278285
+        format: date-time
+        type: string
       id:
         description: Id of the pipeline.
         example: BXrHRn5RPU55Qh9JwMZn
         type: string
+      name:
+        description: Used by the UI to create a new pipeline.
+        example: test pipeline guard-vdpi ud
+        type: string
+      status:
+        description: Pipeline status.
+        example: started
+        type: string
+      updated_at:
+        description: Date of last update of the pipeline in Unix timestamp format.
+        example: 1617278285
+        format: date-time
+        type: string
+      user:
+        description: User/Entity owner/manager/responsible of the pipeline.
+        example: Minds & Sparks
+        type: string
     required:
+    - created_at
     - id
+    - status
     type: object
   Query_Request:
     properties:

@@ -7,8 +7,8 @@ class Pipeline_Document(Base_Document):
     """Represents the stored pipelines."""
 
     # id already defined by Elasticsearch
-    updated_at = Date()
-    created_at = Date(required=True)
+    # updated_at = Date()  #FIXME long format not compatible with date
+    # created_at = Date(required=True)  #FIXME long format not compatible with date
     name = Text()
     status = Text(required=True)
     user = Text()

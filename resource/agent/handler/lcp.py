@@ -114,7 +114,7 @@ class LCP(Base_LCP):
             try:
                 return x.format(**data)
             except Exception as e:
-                self.log.exception(f'Not possible to format {x}', e)
+                self.log.warn(f'Not possible to format {x}')
                 return x
 
     def __transform_action(self, action, data):

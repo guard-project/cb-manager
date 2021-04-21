@@ -59,6 +59,8 @@ class Agent_Instance_Document(Base_Document):
         value = parameter.get('value', {})
         new_value = value.get('new', None)
         if new_value is not None:
+            value['new'] = new_value = str(value['new'])  # FIXME improve
+            value['old'] = str(value.get('old', None))
             for p in self.parameters:
                 if p.id == id:
                     if p.value.new != new_value or p.timestamp != ts:
@@ -67,6 +69,8 @@ class Agent_Instance_Document(Base_Document):
                         return so.UPDATED
                     return so.NOT_MODIFIED
             parameter.pop('type', None)
+            parameter.pop('data', None)
+            parameter['value'] = value
             self.parameters.append(Agent_Instance_Parameter_Inner_Doc(**parameter))
             return so.UPDATED
         return so.NOT_MODIFIED
