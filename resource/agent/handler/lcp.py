@@ -113,7 +113,7 @@ class LCP(Base_LCP):
         else:
             try:
                 return x.format(**data)
-            except Exception as e:
+            except Exception:
                 self.log.warn(f'Not possible to format {x}')
                 return x
 
