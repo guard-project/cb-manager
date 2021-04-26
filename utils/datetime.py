@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from marshmallow import fields
+
 FORMAT = '%Y-%m-%dT%H:%M:%S'
 
 
@@ -23,3 +25,15 @@ def datetime_to_str(date_time=None, format=FORMAT):
     if date_time is None:
         date_time = datetime.utcnow()
     return date_time.strftime(format)
+
+
+class DateTime(fields.DateTime):
+    """
+    Class extends marshmallow standart DateTime with "timestamp" format.
+    """
+
+    SERIALIZATION_FUNCS = fields.DateTime.SERIALIZATION_FUNCS.copy()
+    DESERIALIZATION_FUNCS = fields.DateTime.DESERIALIZATION_FUNCS.copy()
+
+    SERIALIZATION_FUNCS['timestamp'] = lambda x: x.timestamp()
+    DESERIALIZATION_FUNCS['timestamp'] = datetime.fromtimestamp
