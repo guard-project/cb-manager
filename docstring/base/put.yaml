@@ -1,7 +1,6 @@
 Update {self.names}.
 ---
-summary: <
-  {self.name!c} Update (Multiple).
+summary: {self.name!c} Update (Multiple).
 description: Update {self.names}.
 parameters:
   - name: payload

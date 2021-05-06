@@ -1,7 +1,6 @@
 Update the {self.name} with the given `id`.
 ---
-summary: <
-  {self.name!c} Update (Single).
+summary: {self.name!c} Update (Single).
 description: Update the {self.name} with the given `id`.
 parameters:
   - name: id
@@ -17,8 +16,7 @@ parameters:
 tags: [{self.doc.Index.name}]
 responses:
   200:
-    description: <
-      {self.name!c} with the given `id` correctly updated.
+    description: {self.name!c} with the given `id` correctly updated.
     schema:
       type: array
       items: Ok_Response_Schema

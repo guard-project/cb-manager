@@ -1,9 +1,6 @@
 Delete {self.names} filtered by the query in the request body.
-
 ---
-
-summary: <
-  {self.name!c} Delete (Multiple).
+summary: {self.name!c} Delete (Multiple).
 description: Delete {self.names} filtered by the query in the request body.
 parameters:
   - name: payload
@@ -24,8 +21,7 @@ responses:
     description: Authentication failed.
     schema: Unauthorized_Response_Schema
   404:
-    description: <
-      {self.names!c} based on the request query not found.
+    description: {self.names!c} based on the request query not found.
     schema: Not_Found_Response_Schema
   406:
     description: Request validation failed.

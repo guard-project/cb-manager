@@ -113,6 +113,7 @@
         "restructuredtext.confPath": "docs/conf.py",
         "restructuredtext.experimental": true,
         "workbench.colorTheme": "Iris",
-        "editor.fontFamily": "Fira Code Retina"
+        "editor.fontFamily": "Fira Code Retina",
+        "restructuredtext.languageServer.disabled": true
     }
 }

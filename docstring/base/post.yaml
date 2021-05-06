@@ -1,7 +1,6 @@
 Create new {self.names}.
 ---
-summary: <
-  {self.name!c} Creation (Multiple)
+summary: {self.name!c} Creation (Multiple)
 description: Create new {self.names}.
 parameters:
   - name: payload
@@ -13,8 +12,7 @@ parameters:
 tags: [{self.doc.Index.name}]
 responses:
   201:
-    description: <
-      {self.name!c} correctly created.
+    description: {self.name!c} correctly created.
     schema:
       type: array
       items: Created_Response_Schema

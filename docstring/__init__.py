@@ -29,10 +29,8 @@ def docstring(ext='docstring', methods=(HTTP_Method.GET, HTTP_Method.POST, HTTP_
             mode = 'base'
         for method in wrap(methods):
             base_mth = getattr(self, f'on_base_{method}')
+            setattr(self, f'on_{method}', copy_func(base_mth, f'on_{method}'))
             mth = getattr(self, f'on_{method}', None)
-            if not callable(mth):
-                setattr(self, f'on_{method}', copy_func(base_mth, f'on_{method}'))
-                mth = getattr(self, f'on_{method}', None)
             path = Path(__file__).parent / f'../docstring/{mode}/{method}.{ext}'
             with path.open('r') as file:
                 mth.__doc__ = format(file.read(), self=self)

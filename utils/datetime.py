@@ -28,9 +28,7 @@ def datetime_to_str(date_time=None, format=FORMAT):
 
 
 class DateTime(fields.DateTime):
-    """
-    Class extends marshmallow standart DateTime with "timestamp" format.
-    """
+    """Class extends marshmallow standart DateTime with "timestamp" format."""
 
     SERIALIZATION_FUNCS = fields.DateTime.SERIALIZATION_FUNCS.copy()
     DESERIALIZATION_FUNCS = fields.DateTime.DESERIALIZATION_FUNCS.copy()

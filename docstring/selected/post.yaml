@@ -1,7 +1,6 @@
 Create a new {self.name} with the given `id`.
 ---
-summary: <
-  {self.name!c} Create (Single).
+summary: {self.name!c} Create (Single).
 description: Create a new {self.name} with the given `id`.
 parameters:
   - name: id
@@ -17,8 +16,7 @@ parameters:
 tags: [{self.doc.Index.name}]
 responses:
   201:
-    description: <
-      {self.name!c} with the given `id` correctly created.
+    description: {self.name!c} with the given `id` correctly created.
     schema:
       type: array
       items: Created_Response_Schema

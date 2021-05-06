@@ -1,7 +1,6 @@
 Get the {self.name} with the given `id` and filtered by the query in the request body.
 ---
-summary: <
-  {self.name!c} Read (Single).
+summary: {self.name!c} Read (Single).
 description: Get the {self.name} with the given `id` and filtered by the query in the request body.
 parameters:
   - name: id
@@ -15,8 +14,7 @@ parameters:
 tags: [{self.doc.Index.name}]
 responses:
   200:
-    description: <
-      {self.name!c} with the given `id` and filtered by the query in the request body.
+    description: {self.name!c} with the given `id` and filtered by the query in the request body.
     schema:
       type: array
       items: {self.schema.__name__}
@@ -27,8 +25,7 @@ responses:
     description: Authentication failed.
     schema: Unauthorized_Response_Schema
   404:
-    description: <
-      {self.name!c} based on the request _query_ not found.
+    description: {self.name!c} based on the request _query_ not found.
     schema: Not_Found_Response_Schema
   406:
     description: Request validation failed.
