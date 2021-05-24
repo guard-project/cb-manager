@@ -13,6 +13,7 @@ class Algorithm_Catalog_Parameter_Inner_Doc(Inner_Doc):
     type = Text(required=True)
     list = Boolean()
     values = Text()  # when type = choice
+    encoding_scheme = Text()
     description = Text()
     example = Text()
 

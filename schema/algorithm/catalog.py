@@ -29,4 +29,5 @@ class Algorithm_Catalog_Schema(Base_Schema):
     parameters = Nested(Algorithm_Catalog_Parameter_Schema, unknown='INCLUDE', many=True,
                         description='Parameter properties.', validate=Unique_List.apply('id'),
                         error_messages=Unique_List.error_messages)
+    encoding_scheme = Str(default='base64', example='base64', description='Encoding scheme used to store the binary data')
     description = Str(example='Predict DDoS attacks.', description='Short description of the algorithm.')
