@@ -81,3 +81,5 @@ class Agent_Catalog_Schema(Base_Schema):
                        validate=Unique_List.apply('id'), error_messages=Unique_List.error_messages)
     description = Str(example='Collect system metrics from execution environments.',
                       description='Short description of the agent.')
+    deployment_source = List_or_One(Str, example='https://www.example.com/k8s-artefact.yaml',
+                                    description='Link to the deployment sources')

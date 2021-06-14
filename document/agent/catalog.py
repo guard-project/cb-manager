@@ -66,6 +66,7 @@ class Agent_Catalog_Document(Base_Document):
     parameters = Nested(Agent_Catalog_Parameter_Inner_Doc)
     resources = Nested(Agent_Catalog_Resource_Inner_Doc)
     description = Text()
+    deployment_source = Text()
 
     class Index:
         """Elasticsearch configuration."""
