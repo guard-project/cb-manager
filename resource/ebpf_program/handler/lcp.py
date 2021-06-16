@@ -52,7 +52,8 @@ class LCP(Base_LCP):
     def __apply(self, instance, exec_env, caller, data):
         h, p = exec_env.hostname, exec_env.lcp.port
         schema = 'https' if exec_env.lcp.https else 'http'
-        resp_caller = caller(f'{schema}://{h}:{p}/code', headers={'Authorization': create_token()}, json=data(self.catalog))
+        ep_lcp = '/' + exec_env.lcp.endpoint if exec_env.lcp.endpoint else ''
+        resp_caller = caller(f'{schema}://{h}:{p}{ep_lcp}/code', headers={'Authorization': create_token()}, json=data(self.catalog))
         if resp_caller.content:
             try:
                 self.resp.extend(wrap(resp_caller.json()))

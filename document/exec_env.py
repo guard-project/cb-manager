@@ -10,6 +10,7 @@ class LCP_Document_Inner_Doc(Inner_Doc):
 
     port = Integer(required=True)
     https = Boolean(required=True)
+    endpoint = Text()
     started = Date()
     last_heartbeat = Date()
 

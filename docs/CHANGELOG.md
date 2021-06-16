@@ -35,3 +35,4 @@
 - Preliminary common structure for pipeline.
 - Added encoding_scheme in catalog/algorithm.
 - Added deployment_source in catalog/agent.
+- Added endpoint for LCP communication.

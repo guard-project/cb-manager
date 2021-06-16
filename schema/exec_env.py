@@ -12,7 +12,9 @@ class LCP_Schema(Schema):
     """Configuration of the LCP running in the execution environment."""
 
     port = Integer(required=True, example=5000, description='TCP port number of LCP in the execution environment.')
-    started = Date_Time(readonly=True, example='2019/02/14 15:23:30', description='Timestamp when the LCP is started')
+    https = Boolean(required=True, default=False, example=True, description='Communication with the LCP using HTTPS.')
+    endpoint = Str(example='lcp', description='URL Endpoint to connect with the LCP.')
+    started = Date_Time(readonly=True, example='2019/02/14 15:23:30', description='Timestamp when the LCP is started.')
     last_heartbeat = Date_Time(reaonly=True, example='2019/02/14 15:23:33',
                                description='Timestamp of the expiration of the API access configuration.')
 

@@ -50,7 +50,8 @@ class LCP(Base_LCP):
     def __apply(self, instance, exec_env):
         if self.num > 0:
             schema = 'https' if exec_env.lcp.https else 'http'
-            resp_lcp = post_req(f'{schema}://{exec_env.hostname}:{exec_env.lcp.port}/config',
+            endpoint_lcp = '/' + exec_env.lcp.endpoint if exec_env.lcp.endpoint else ''
+            resp_lcp = post_req(f'{schema}://{exec_env.hostname}:{exec_env.lcp.port}{endpoint_lcp}/config',
                                 headers={'Authorization': create_token()}, json=self.req_lcp)
             if resp_lcp.content:
                 try:
