@@ -35,7 +35,8 @@ def heartbeat_exec_env(exec_env):
         lbl = f'{id} (LCP at {exec_env.hostname}:{lcp.port})'
         if exec_env.enabled:
             schema = 'https' if lcp.https else 'http'
-            resp = post(f'{schema}://{exec_env.hostname}:{lcp.port}/status', timeout=Arg_Reader.db.hb_timeout,
+            endpoint_lcp = '/' + exec_env.lcp.endpoint if exec_env.lcp.endpoint else ''
+            resp = post(f'{schema}://{exec_env.hostname}:{lcp.port}{endpoint_lcp}/status', timeout=Arg_Reader.db.hb_timeout,
                         headers={'Authorization': create_token()}, json={'id': id})
             if resp.status_code == HTTP_Status.OK:
                 data = resp.json()
