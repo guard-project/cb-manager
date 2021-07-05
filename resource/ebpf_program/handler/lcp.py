@@ -24,20 +24,20 @@ class LCP(Base_LCP):
 
     @classmethod
     def post(cls, instance, req, resp):
-        def __data(catalog):
-            return dict(id=catalog.meta.id, interface=req.get('interface', None), **catalog.config.to_dict())
+        def __data(instance, catalog):
+            return dict(id=instance.meta.id, interface=req.get('interface', None), **catalog.config.to_dict())
         cls.__handler(instance=instance, req=req, resp=resp, caller=post_req, data=__data)
 
     @classmethod
     def put(cls, instance, req, resp):
-        def __data(catalog):
-            return dict(id=catalog.meta.id, interface=req.get('interface', None), **catalog.config.to_dict())
+        def __data(instance, catalog):
+            return dict(id=instance.meta.id, interface=req.get('interface', None), **catalog.config.to_dict())
         cls.__handler(instance=instance, req=req, resp=resp, caller=put_req, data=__data)
 
     @ classmethod
     def delete(cls, instance, req, resp):
-        def __data(catalog):
-            return {'id': catalog.meta.id}
+        def __data(instance, _):
+            return {'id': instance.meta.id}
         cls.__handler(instance=instance, req=req, resp=resp, caller=delete_req, data=__data)
 
     @ classmethod
@@ -53,7 +53,8 @@ class LCP(Base_LCP):
         h, p = exec_env.hostname, exec_env.lcp.port
         schema = 'https' if exec_env.lcp.https else 'http'
         ep_lcp = '/' + exec_env.lcp.endpoint if exec_env.lcp.endpoint else ''
-        resp_caller = caller(f'{schema}://{h}:{p}{ep_lcp}/code', headers={'Authorization': create_token()}, json=data(self.catalog))
+        resp_caller = caller(f'{schema}://{h}:{p}{ep_lcp}/code',
+                             headers={'Authorization': create_token()}, json=data(instance, self.catalog))
         if resp_caller.content:
             try:
                 self.resp.extend(wrap(resp_caller.json()))
