@@ -8,6 +8,12 @@ definitions:
         items:
           $ref: '#/definitions/Agent_Catalog_Action'
         type: array
+      deployment_source:
+        description: Link to the deployment sources
+        example: https://www.example.com/k8s-artefact.yaml
+        items:
+          type: string
+        type: array
       description:
         description: Short description of the agent.
         example: Collect system metrics from execution environments.
@@ -271,6 +277,10 @@ definitions:
       description:
         description: Short description of the algorithm.
         example: Predict DDoS attacks.
+        type: string
+      encoding_scheme:
+        description: Encoding scheme used to store the binary data
+        example: base64
         type: string
       id:
         description: Id of the algorithm in the catalog.
@@ -555,6 +565,14 @@ definitions:
     type: object
   LCP:
     properties:
+      endpoint:
+        description: URL Endpoint to connect with the LCP.
+        example: lcp
+        type: string
+      https:
+        description: Communication with the LCP using HTTPS.
+        example: true
+        type: boolean
       last_heartbeat:
         description: Timestamp of the expiration of the API access configuration.
         example: 2019/02/14 15:23:33
@@ -565,11 +583,12 @@ definitions:
         example: 5000
         type: integer
       started:
-        description: Timestamp when the LCP is started
+        description: Timestamp when the LCP is started.
         example: 2019/02/14 15:23:30
         format: date-time
         type: string
     required:
+    - https
     - port
     type: object
   Network_Link:
