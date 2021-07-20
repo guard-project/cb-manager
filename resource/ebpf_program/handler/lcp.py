@@ -31,7 +31,10 @@ class LCP(Base_LCP):
     @classmethod
     def put(cls, instance, req, resp):
         def __data(instance, catalog):
-            return dict(id=instance.meta.id, interface=req.get('interface', None), **catalog.config.to_dict())
+            catalog_data = catalog.config.to_dict()
+            code = req.get('code', catalog_data.get('code', None))
+            metrics = req.get('metrics', catalog_data.get('metrics', None))
+            return dict(id=instance.meta.id, interface=req.get('interface', None), code=code, metrics=metrics)
         cls.__handler(instance=instance, req=req, resp=resp, caller=put_req, data=__data)
 
     @ classmethod
