@@ -1,19 +1,19 @@
-from resource.base import Base_Resource
+from resource.base import BaseResource
 
 from docstring import docstring
-from document.agent.catalog import Agent_Catalog_Document
-from schema.agent.catalog import Agent_Catalog_Schema
+from document.agent.catalog import AgentCatalogDocument
+from schema.agent.catalog import AgentCatalogSchema
 
 
 @docstring(ext='yaml')
-class Agent_Catalog_Resource(Base_Resource):
-    doc = Agent_Catalog_Document
+class AgentCatalogResource(BaseResource):
+    doc = AgentCatalogDocument
     name = 'agent catalog'
     names = 'agent catalogs'
     routes = '/catalog/agent/'
-    schema = Agent_Catalog_Schema
+    schema = AgentCatalogSchema
 
 
 @docstring(ext='yaml')
-class Agent_Catalog_Selected_Resource(Agent_Catalog_Resource):
+class AgentCatalogSelectedResource(AgentCatalogResource):
     routes = '/catalog/agent/{id}'

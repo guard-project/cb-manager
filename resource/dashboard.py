@@ -1,16 +1,16 @@
 from pathlib import Path
-from resource.base import Base_Minimal_Resource
+from resource.base import BaseMinimalResource
 
 from falcon import HTTP_200
 
 
-class Dashboard_Resource(Base_Minimal_Resource):
+class DashboardResource(BaseMinimalResource):
     routes = [
         '/dashboard',
         '/dashboard/{part}/{resource}',
     ]
 
-    def on_get(self, req, resp, resource='index.html', part=''):
+    def on_get(self, _, resp, resource='index.html', part=''):
         resp.status = HTTP_200
         if resource.endswith('.html'):
             resp.content_type = 'text/html'

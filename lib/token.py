@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import jwt
 
-from reader.arg import Arg_Reader
+from reader.arg import ArgReader
 
 
 def create_token():
@@ -13,5 +13,5 @@ def create_token():
         'exp': exp.timestamp(),
         'nbf': now.timestamp()
     }
-    token = jwt.encode(payload, Arg_Reader.db.auth_secret_key)
-    return f'{Arg_Reader.db.auth_header_prefix} {token}'
+    token = jwt.encode(payload, ArgReader.db.auth_secret_key)
+    return f'{ArgReader.db.auth_header_prefix} {token}'

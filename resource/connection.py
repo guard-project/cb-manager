@@ -1,19 +1,19 @@
-from resource.base import Base_Resource
+from resource.base import BaseResource
 
 from docstring import docstring
-from document.connection import Connection_Document
-from schema.connection import Connection_Schema
+from document.connection import ConnectionDocument
+from schema.connection import ConnectionSchema
 
 
 @docstring(ext='yaml')
-class Connection_Resource(Base_Resource):
-    doc = Connection_Document
+class ConnectionResource(BaseResource):
+    doc = ConnectionDocument
     name = 'connection'
     names = 'connections'
     routes = '/connection/'
-    schema = Connection_Schema
+    schema = ConnectionSchema
 
 
 @docstring(ext='yaml')
-class Connection_Selected_Resource(Connection_Resource):
+class ConnectionSelectedResource(ConnectionResource):
     routes = '/connection/{id}'

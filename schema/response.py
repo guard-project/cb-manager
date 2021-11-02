@@ -1,142 +1,155 @@
 from marshmallow import Schema, validate
 from marshmallow.fields import Bool, Constant, Integer, Nested, Raw, Str
 
-from lib.response import (Bad_Request_Response, Conflict_Response, Content_Response, Created_Response,
-                          Internal_Server_Error_Response, No_Content_Response, Not_Acceptable_Response,
-                          Not_Found_Response, Not_Modified_Response, Ok_Response, Reset_Content_Response,
-                          Unauthorized_Response, Unprocessable_Entity_Response, Unsupported_Media_Type_Response)
+from lib.response import (BadRequestResponse, ConflictResponse,
+                          ContentResponse, CreatedResponse,
+                          InternalServerErrorResponse, NoContentResponse,
+                          NotAcceptableResponse, NotFoundResponse,
+                          NotModifiedResponse, OkResponse,
+                          ResetContentResponse, UnauthorizedResponse,
+                          UnprocEntityResponse, UnsuppMediaTypeResponse)
 
 RESPONSE_STATUS = [
-    Bad_Request_Response.status(),
-    Conflict_Response.status(),
-    Content_Response.status(),
-    Created_Response.status(),
-    No_Content_Response.status(),
-    Not_Acceptable_Response.status(),
-    Not_Found_Response.status(),
-    Not_Modified_Response.status(),
-    Ok_Response.status(),
-    Reset_Content_Response.status(),
-    Unauthorized_Response.status(),
-    Unprocessable_Entity_Response.status(),
-    Unsupported_Media_Type_Response.status()
+    BadRequestResponse.status(),
+    ConflictResponse.status(),
+    ContentResponse.status(),
+    CreatedResponse.status(),
+    NoContentResponse.status(),
+    NotAcceptableResponse.status(),
+    NotFoundResponse.status(),
+    NotModifiedResponse.status(),
+    OkResponse.status(),
+    ResetContentResponse.status(),
+    UnauthorizedResponse.status(),
+    UnprocEntityResponse.status(),
+    UnsuppMediaTypeResponse.status()
 ]
 
 RESPONSE_CODES = [
-    Bad_Request_Response.code,
-    Conflict_Response.code,
-    Content_Response.code,
-    Created_Response.code,
-    No_Content_Response.code,
-    Not_Acceptable_Response.code,
-    Not_Found_Response.code,
-    Not_Modified_Response.code,
-    Ok_Response.code,
-    Reset_Content_Response.code,
-    Unauthorized_Response.code,
-    Unprocessable_Entity_Response.code,
-    Unsupported_Media_Type_Response.code
+    BadRequestResponse.code,
+    ConflictResponse.code,
+    ContentResponse.code,
+    CreatedResponse.code,
+    NoContentResponse.code,
+    NotAcceptableResponse.code,
+    NotFoundResponse.code,
+    NotModifiedResponse.code,
+    OkResponse.code,
+    ResetContentResponse.code,
+    UnauthorizedResponse.code,
+    UnprocEntityResponse.code,
+    UnsuppMediaTypeResponse.code
 ]
 
 
-class Exception_Response_Schema(Schema):
-    reason = Raw(required=True, example='Connection timeout', description='Exception reason.')
-    filename = Str(required=True, example='lib/connection.py', description='Filename where the exception is raised.')
-    line = Integer(required=True, example=80, description='Line where the exception is raised.')
+class ExceptionResponseSchema(Schema):
+    reason = Raw(required=True, example='Connection timeout',
+                 description='Exception reason.')
+    filename = Str(required=True, example='lib/connection.py',
+                   description='Filename where the exception is raised.')
+    line = Integer(required=True, example=80,
+                   description='Line where the exception is raised.')
 
 
-class Base_Response_Schema(Schema):
+class BaseResponseSchema(Schema):
     """Response for the item creation."""
 
-    status = Str(required=True, enum=RESPONSE_STATUS, example=RESPONSE_STATUS[0],
-                 description='HTTP Status Code phrase.', validate=validate.OneOf(RESPONSE_STATUS))
-    error = Bool(default=False, example=False, description='Indicate the presence of an error')
-    message = Str(required=True, example='Request not valid: two ids provided.',
-                  description='Human readable message that describes the status of the operation.')
-    exception = Nested(Exception_Response_Schema, description='Message of the occurred exception.')
-    code = Integer(required=True, enum=RESPONSE_CODES, example=RESPONSE_CODES[0],
-                   description='HTTP Status Code.', validate=validate.OneOf(RESPONSE_CODES))
+    status = Str(required=True, enum=RESPONSE_STATUS,
+                 example=RESPONSE_STATUS[0],
+                 description='HTTP Status Code phrase.',
+                 validate=validate.OneOf(RESPONSE_STATUS))
+    error = Bool(default=False, example=False,
+                 description='Indicate the presence of an error')
+    message = Str(required=True,
+                  example='Request not valid: two ids provided.',
+                  description='Human readable message that describes the status of the operation.')  # noqa:E501
+    exception = Nested(ExceptionResponseSchema,
+                       description='Message of the occurred exception.')
+    code = Integer(required=True, enum=RESPONSE_CODES,
+                   example=RESPONSE_CODES[0],
+                   description='HTTP Status Code.',
+                   validate=validate.OneOf(RESPONSE_CODES))
 
 
-class Bad_Request_Response_Schema(Base_Response_Schema):
-    status = Constant(constant=Bad_Request_Response.status())
-    error = Constant(constant=Bad_Request_Response.error)
-    code = Constant(constant=Bad_Request_Response.code)
+class BadRequestResponseSchema(BaseResponseSchema):
+    status = Constant(constant=BadRequestResponse.status())
+    error = Constant(constant=BadRequestResponse.error)
+    code = Constant(constant=BadRequestResponse.code)
 
 
-class Conflict_Response_Schema(Base_Response_Schema):
-    status = Constant(constant=Conflict_Response.status())
-    error = Constant(constant=Conflict_Response.error)
-    code = Constant(constant=Conflict_Response.code)
+class ConflictResponseSchema(BaseResponseSchema):
+    status = Constant(constant=ConflictResponse.status())
+    error = Constant(constant=ConflictResponse.error)
+    code = Constant(constant=ConflictResponse.code)
 
 
-class Created_Response_Schema(Base_Response_Schema):
-    status = Constant(Created_Response.status())
-    error = Constant(Created_Response.error)
-    code = Constant(Created_Response.code)
+class CreatedResponseSchema(BaseResponseSchema):
+    status = Constant(CreatedResponse.status())
+    error = Constant(CreatedResponse.error)
+    code = Constant(CreatedResponse.code)
 
 
-class Internal_Server_Error_Response_Schema(Base_Response_Schema):
-    status = Constant(Internal_Server_Error_Response.status())
-    error = Constant(Internal_Server_Error_Response.error)
-    code = Constant(Internal_Server_Error_Response.code)
+class InternalServerErrorResponseSchema(BaseResponseSchema):
+    status = Constant(InternalServerErrorResponse.status())
+    error = Constant(InternalServerErrorResponse.error)
+    code = Constant(InternalServerErrorResponse.code)
 
 
-class No_Content_Response_Schema(Base_Response_Schema):
-    status = Constant(No_Content_Response.status())
-    error = Constant(No_Content_Response.error)
-    code = Constant(No_Content_Response.code)
+class NoContentResponseSchema(BaseResponseSchema):
+    status = Constant(NoContentResponse.status())
+    error = Constant(NoContentResponse.error)
+    code = Constant(NoContentResponse.code)
 
 
-class Not_Acceptable_Response_Schema(Base_Response_Schema):
-    status = Constant(Not_Acceptable_Response.status())
-    error = Constant(Not_Acceptable_Response.error)
-    code = Constant(Not_Acceptable_Response.code)
+class NotAcceptableResponseSchema(BaseResponseSchema):
+    status = Constant(NotAcceptableResponse.status())
+    error = Constant(NotAcceptableResponse.error)
+    code = Constant(NotAcceptableResponse.code)
 
 
-class Not_Found_Response_Schema(Base_Response_Schema):
-    status = Constant(Not_Found_Response.status())
-    error = Constant(Not_Found_Response.error)
-    code = Constant(Not_Found_Response.code)
+class NotFoundResponseSchema(BaseResponseSchema):
+    status = Constant(NotFoundResponse.status())
+    error = Constant(NotFoundResponse.error)
+    code = Constant(NotFoundResponse.code)
 
 
-class Not_Modified_Response_Schema(Base_Response_Schema):
-    status = Constant(Not_Modified_Response.status())
-    error = Constant(Not_Modified_Response.error)
-    code = Constant(Not_Modified_Response.code)
+class NotModifiedResponseSchema(BaseResponseSchema):
+    status = Constant(NotModifiedResponse.status())
+    error = Constant(NotModifiedResponse.error)
+    code = Constant(NotModifiedResponse.code)
 
 
-class Ok_Response_Schema(Base_Response_Schema):
-    status = Constant(Ok_Response.status())
-    error = Constant(Ok_Response.error)
-    code = Constant(Ok_Response.code)
+class OkResponseSchema(BaseResponseSchema):
+    status = Constant(OkResponse.status())
+    error = Constant(OkResponse.error)
+    code = Constant(OkResponse.code)
 
 
-class Content_Response_Schema(Ok_Response_Schema):
-    status = Constant(Content_Response.status())
-    error = Constant(Content_Response.error)
-    code = Constant(Content_Response.code)
+class ContentResponseSchema(OkResponseSchema):
+    status = Constant(ContentResponse.status())
+    error = Constant(ContentResponse.error)
+    code = Constant(ContentResponse.code)
 
 
-class Reset_Content_Response_Schema(Base_Response_Schema):
-    status = Constant(Reset_Content_Response.status())
-    error = Constant(Reset_Content_Response.error)
-    code = Constant(Reset_Content_Response.code)
+class ResetContentResponseSchema(BaseResponseSchema):
+    status = Constant(ResetContentResponse.status())
+    error = Constant(ResetContentResponse.error)
+    code = Constant(ResetContentResponse.code)
 
 
-class Unauthorized_Response_Schema(Base_Response_Schema):
-    status = Constant(Unauthorized_Response.status())
-    error = Constant(Unauthorized_Response.error)
-    code = Constant(Unauthorized_Response.code)
+class UnauthorizedResponseSchema(BaseResponseSchema):
+    status = Constant(UnauthorizedResponse.status())
+    error = Constant(UnauthorizedResponse.error)
+    code = Constant(UnauthorizedResponse.code)
 
 
-class Unprocessable_Entity_Response_Schema(Base_Response_Schema):
-    status = Constant(Unprocessable_Entity_Response.status())
-    error = Constant(Unprocessable_Entity_Response.error)
-    code = Constant(Unprocessable_Entity_Response.code)
+class UnprocessableEntityResponseSchema(BaseResponseSchema):
+    status = Constant(UnprocEntityResponse.status())
+    error = Constant(UnprocEntityResponse.error)
+    code = Constant(UnprocEntityResponse.code)
 
 
-class Unsupported_Media_Type_Response_Schema(Base_Response_Schema):
-    status = Constant(Unsupported_Media_Type_Response.status())
-    error = Constant(Unsupported_Media_Type_Response.error)
-    code = Constant(Unsupported_Media_Type_Response.code)
+class UnsupportedMediaTypeResponseSchema(BaseResponseSchema):
+    status = Constant(UnsuppMediaTypeResponse.status())
+    error = Constant(UnsuppMediaTypeResponse.error)
+    code = Constant(UnsuppMediaTypeResponse.code)

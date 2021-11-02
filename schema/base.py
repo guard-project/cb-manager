@@ -1,13 +1,20 @@
 from marshmallow import Schema, validates_schema
 from marshmallow.exceptions import ValidationError as Validation_Error
 
-from lib.http import HTTP_Method
-from lib.response import Not_Acceptable_Response, Ok_Response
-from schema.validate import Unique_List
+from lib.http import HTTPMethod
+from lib.response import NotAcceptableResponse, OkResponse
+from schema.validate import UniqueList
 from utils.sequence import is_dict, is_list
 
+MSG_ID_ONE_RECORD_MANAGED = 'When the id is present in the request uri only one record can be managed.'  # noqa F401
+MSG_PRESENT_REQ_URI = 'Present in the request uri.'
+MSG_SAME_ID_MULT_TIMES = 'Same id present multiple times in the request.'
+MSG_ID_FOUND = 'Id already found.'
+MSG_ID_NOT_FOUND = 'Id not found.'
+MSG_READONLY_FIELD = 'Readonly field.'
 
-class Base_Schema(Schema):
+
+class BaseSchema(Schema):
     doc = None
 
     def __init__(self, *args, method=None, check_unique_id=False, **kwargs):
@@ -15,20 +22,18 @@ class Base_Schema(Schema):
         self.method = method
         self.check_unique_id = check_unique_id
 
-    def validate(self, data, response_type=Ok_Response, id=None):
+    def validate(self, data, response_type=OkResponse, item_id=None):
         try:
-            if id is not None:
+            if item_id is not None:
                 if is_list(data):
-                    msg = 'When the id is present in the request uri only one record can be managed.'
-                    raise Validation_Error({'id': msg})
-                elif id in data:
-                    msg = 'Present in the request uri.'
-                    raise Validation_Error({'id': msg})
+                    raise Validation_Error({'id': MSG_ID_ONE_RECORD_MANAGED})
+                elif item_id in data:
+                    raise Validation_Error({'id': MSG_PRESENT_REQ_URI})
                 else:
-                    data.update(id=id)
-            if self.check_unique_id and is_list(data) and not Unique_List.apply('id')(data):
-                msg = 'Same id present multiple times in the request.'
-                raise Validation_Error({'id': msg})
+                    data.update(id=item_id)
+            if (self.check_unique_id and is_list(data) and
+                    not UniqueList.apply('id')(data)):
+                raise Validation_Error({'id': MSG_SAME_ID_MULT_TIMES})
             self.load(data)
             return response_type(data), True
         except Validation_Error as val_err:
@@ -40,25 +45,24 @@ class Base_Schema(Schema):
                         __norm(block[field])
                 return block
 
-            msg = __norm(val_err.normalized_messages())
-            return Not_Acceptable_Response(msg), False
+            _msg = __norm(val_err.normalized_messages())
+            return NotAcceptableResponse(_msg), False
 
     @validates_schema(skip_on_field_errors=False)
     def __validate_id(self, data, **kwargs):
         if self.doc is not None:
-            id = data.get('id', None)
+            data_id = data.get('id', None)
             ids = self.doc.get_ids()
-            if self.method == HTTP_Method.POST and id in ids:
-                msg = 'Id already found.'
-                raise Validation_Error({'id': msg})
-            elif self.method in [HTTP_Method.PUT, HTTP_Method.DELETE] and id not in ids:
-                msg = 'Id not found.'
-                raise Validation_Error({'id': msg})
+            if self.method == HTTPMethod.POST and data_id in ids:
+                raise Validation_Error({'id': MSG_ID_FOUND})
+            elif (self.method in [HTTPMethod.PUT, HTTPMethod.DELETE]
+                    and data_id not in ids):
+                raise Validation_Error({'id': MSG_ID_NOT_FOUND})
 
     @validates_schema(skip_on_field_errors=False)
     def __validate_readonly(self, data, **kwargs):
-        if self.method == HTTP_Method.PUT:
+        if self.method == HTTPMethod.PUT:
             for field, props in self.declared_fields.items():
-                if props.metadata.get('readonly', False) and data.get(field, None) is not None:
-                    msg = 'Readonly field.'
-                    raise Validation_Error({field: msg})
+                if (props.metadata.get('readonly', False) and
+                        data.get(field, None) is not None):
+                    raise Validation_Error({field: MSG_READONLY_FIELD})

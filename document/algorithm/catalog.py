@@ -1,15 +1,14 @@
-from elasticsearch_dsl import Boolean
-from elasticsearch_dsl import InnerDoc as Inner_Doc
-from elasticsearch_dsl import Nested, Text
+from elasticsearch_dsl import Boolean, InnerDoc, Nested, Text
 
-from document.base import Base_Document
+from document.base import BaseDocument
 
 
-class Algorithm_Catalog_Parameter_Inner_Doc(Inner_Doc):
+class AlgorithmCatalogParameterInnerDoc(InnerDoc):
     """Algorithm parameter."""
 
     id = Text(required=True)
-    # possible values: integer, number, time-duration, string, choice, boolean, binary
+    # possible values: integer, number, time-duration,
+    #                  string, choice, boolean, binary
     type = Text(required=True)
     list = Boolean()
     values = Text()  # when type = choice
@@ -18,11 +17,11 @@ class Algorithm_Catalog_Parameter_Inner_Doc(Inner_Doc):
     example = Text()
 
 
-class Algorithm_Catalog_Document(Base_Document):
+class AlgorithmCatalogDocument(BaseDocument):
     """Represents an algorithm in the catalog."""
 
     # id already defined by Elasticsearch
-    parameters = Nested(Algorithm_Catalog_Parameter_Inner_Doc)
+    parameters = Nested(AlgorithmCatalogParameterInnerDoc)
     description = Text()
 
     class Index:

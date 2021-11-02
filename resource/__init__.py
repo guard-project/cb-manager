@@ -1,43 +1,50 @@
-from resource.agent.catalog import Agent_Catalog_Resource, Agent_Catalog_Selected_Resource
-from resource.agent.instance import Agent_Instance_Resource, Agent_Instance_Selected_Resource
-from resource.algorithm.catalog import Algorithm_Catalog_Resource, Algorithm_Catalog_Selected_Resource
-from resource.algorithm.instance import Algorithm_Instance_Resource, Algorithm_Instance_Selected_Resource
-from resource.connection import Connection_Resource, Connection_Selected_Resource
-from resource.dashboard import Dashboard_Resource
-from resource.data import Data_Resource, Data_Selected_Resource
-from resource.ebpf_program.catalog import eBPF_Program_Catalog_Resource, eBPF_Program_Catalog_Selected_Resource
-from resource.ebpf_program.instance import eBPF_Program_Instance_Resource, eBPF_Program_Instance_Selected_Resource
-from resource.event import Event_Resource, Event_Selected_Resource
-from resource.exec_env import (Exec_Env_Resource, Exec_Env_Selected_Resource, Exec_Env_Type_Resource,
-                               Exec_Env_Type_Selected_Resource)
-from resource.network_link import (Network_Link_Resource, Network_Link_Selected_Resource, Network_Link_Type_Resource,
-                                   Network_Link_Type_Selected_Resource)
-from resource.pipeline import Pipeline_Resource, Pipeline_Selected_Resource
+from resource.agent.catalog import (AgentCatalogResource,
+                                    AgentCatalogSelectedResource)
+from resource.agent.instance import (AgentInstanceResource,
+                                     AgentInstanceSelectedResource)
+from resource.algorithm.catalog import (AlgorithmCatalogResource,
+                                        AlgorithmCatalogSelectedResource)
+from resource.algorithm.instance import (AlgorithmInstanceResource,
+                                         AlgorithmInstanceSelectedResource)
+from resource.connection import ConnectionResource, ConnectionSelectedResource
+from resource.dashboard import DashboardResource
+from resource.data import DataResource, DataSelectedResource
+from resource.ebpf_program.catalog import (eBPFProgramCatalogResource,
+                                           eBPFProgramCatalogSelectedResource)
+from resource.ebpf_program.instance import (
+    eBPFProgramInstanceResource, eBPFProgramInstanceSelectedResource)
+from resource.event import EventResource, EventSelectedResource
+from resource.exec_env import (ExecEnvResource, ExecEnvSelectedResource,
+                               ExecEnvTypeResource,
+                               ExecEnvTypeSelectedResource)
+from resource.network_link import (NetworkLinkResource,
+                                   NetworkLinkSelectedResource,
+                                   NetworkLinkTypeResource,
+                                   NetworkLinkTypeSelectedResource)
+from resource.pipeline import PipelineResource, PipelineSelectedResource
 
 from utils.log import Log
 from utils.sequence import wrap
 
 db = [
-    Agent_Catalog_Resource, Agent_Catalog_Selected_Resource,
-    Agent_Instance_Resource, Agent_Instance_Selected_Resource,
-    Algorithm_Catalog_Resource, Algorithm_Catalog_Selected_Resource,
-    Algorithm_Instance_Resource, Algorithm_Instance_Selected_Resource,
-    Connection_Resource, Connection_Selected_Resource,
-    Dashboard_Resource,
-    Data_Resource, Data_Selected_Resource,
-    eBPF_Program_Catalog_Resource, eBPF_Program_Catalog_Selected_Resource,
-    eBPF_Program_Instance_Resource, eBPF_Program_Instance_Selected_Resource,
-    Event_Resource, Event_Selected_Resource,
-    Exec_Env_Resource, Exec_Env_Selected_Resource,
-    Exec_Env_Type_Resource, Exec_Env_Type_Selected_Resource,
-    Network_Link_Resource, Network_Link_Selected_Resource,
-    Network_Link_Type_Resource, Network_Link_Type_Selected_Resource,
-    Pipeline_Resource, Pipeline_Selected_Resource
+    AgentCatalogResource, AgentCatalogSelectedResource,
+    AgentInstanceResource, AgentInstanceSelectedResource,
+    AlgorithmCatalogResource, AlgorithmCatalogSelectedResource,
+    AlgorithmInstanceResource, AlgorithmInstanceSelectedResource,
+    ConnectionResource, ConnectionSelectedResource,
+    DashboardResource,
+    DataResource, DataSelectedResource,
+    eBPFProgramCatalogResource, eBPFProgramCatalogSelectedResource,
+    eBPFProgramInstanceResource, eBPFProgramInstanceSelectedResource,
+    EventResource, EventSelectedResource,
+    ExecEnvResource, ExecEnvSelectedResource,
+    ExecEnvTypeResource, ExecEnvTypeSelectedResource,
+    NetworkLinkResource, NetworkLinkSelectedResource,
+    NetworkLinkTypeResource, NetworkLinkTypeSelectedResource,
+    PipelineResource, PipelineSelectedResource
 ]
 
-tags = []
-for Resource in db:
-    tags.append(Resource.tag)
+tags = [Resource.tag for Resource in db]
 
 
 def routes(api, spec):

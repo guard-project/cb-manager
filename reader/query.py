@@ -1,87 +1,112 @@
-from elasticsearch import RequestError as Request_Error
+# Copyright (c) 2020-2022 GUARD
+# author: Alex Carrega <alessandro.carrega@cnit.it>
+
+from bunch import Bunch
+from elasticsearch import RequestError
 from elasticsearch_dsl import Q, Search
-from falcon.errors import HTTPBadRequest as HTTP_Bad_Request
+from falcon.errors import HTTPBadRequest
 
 from utils.log import Log
 from utils.sequence import is_dict, is_list
 
+MSG_NOT_VALID_JSON = {
+    'title': 'Not valid JSON',
+    'description': 'The request body is not a valid JSON or it is not encoded as UTF-8.'  # noqa: E501
+}
+MSG_UNKNOWN = '{} unknown'
+MSG_REQ_NOT_VALID = {
+    'title': 'Request not valid',
+    'description': 'Order with not valid/missing data'
+}
+MSG_CLAUSE_NOT_VALID = Bunch(
+    title='Request not valid',
+    description='{} clause with not valid/missing data'
+)
 
-class Query_Reader:
+
+class QueryReader:
     def __init__(self, index):
-        self.s = Search(index=index)
+        self.search = Search(index=index)
 
-    def parse(self, query, id=None):
+    def parse(self, query, item_id=None):
         try:
             self.__select(query)
-            self.s.query = self.__where(query, id=id)
+            self.search.query = self.__where(query, _id=item_id)
             self.__order(query)
             self.__limit(query)
-        except Request_Error as req_err:
-            raise HTTP_Bad_Request(title=req_err.error, description=req_err.info)
-        except HTTP_Bad_Request as http_bad_req:
+        except RequestError as req_err:
+            raise HTTPBadRequest(title=req_err.error, description=req_err.info)
+        except HTTPBadRequest as http_bad_req:
             raise http_bad_req
         except Exception as exception:
             Log.get('query-reader').error(f'Exception: {exception}')
-            raise HTTP_Bad_Request(title='Not valid JSON',
-                                   description='The request body is not a valid JSON or it is not encoded as UTF-8.')
-        return self.s
+            raise HTTPBadRequest(**MSG_NOT_VALID_JSON)  # noqa: E501
+        return self.search
 
     def __select(self, query):
-        self.s = self.s.source(query.get('select', None))
+        self.search = self.search.source(query.get('select', None))
 
-    def __where(self, query, id=None):
-        q = None
-        for op, clause in query.get('where', {}).items():
-            if op == 'and':
+    def __where(self, query, _id=None):
+        query_obj = None
+        for operator, clause in query.get('where', {}).items():
+            if operator == 'and':
                 if is_dict(clause):
                     for sub_op, sub_clause in clause.items():
-                        if q is None:
-                            q = self.__where({'where': {sub_op: sub_clause}})
+                        if query_obj is None:
+                            query_obj = self.__where(
+                                {'where': {sub_op: sub_clause}})
                         else:
-                            q = q & self.__where({'where': {sub_op: sub_clause}})
+                            query_obj = query_obj & self.__where(
+                                {'where': {sub_op: sub_clause}})
                 elif is_list(clause):
                     for sub_clause in clause:
-                        if q is None:
-                            q = self.__where({'where': sub_clause})
+                        if query_obj is None:
+                            query_obj = self.__where({'where': sub_clause})
                         else:
-                            q = q & self.__where({'where': sub_clause})
-            elif op == 'or':
+                            query_obj = query_obj & self.__where(
+                                {'where': sub_clause})
+            elif operator == 'or':
                 if is_dict(clause):
                     for sub_op, sub_clause in clause.items():
-                        if q is None:
-                            q = self.__where({'where': {sub_op: sub_clause}})
+                        if query_obj is None:
+                            query_obj = self.__where(
+                                {'where': {sub_op: sub_clause}})
                         else:
-                            q = q | self.__where({'where': {sub_op: sub_clause}})
+                            query_obj = query_obj | self.__where(
+                                {'where': {sub_op: sub_clause}})
                 elif is_list(clause):
                     for sub_clause in clause:
-                        if q is None:
-                            q = self.__where({'where': sub_clause})
+                        if query_obj is None:
+                            query_obj = self.__where({'where': sub_clause})
                         else:
-                            q = q | self.__where({'where': sub_clause})
-            elif op == 'not':
-                q = ~self.__where(clause)
+                            query_obj = query_obj | self.__where(
+                                {'where': sub_clause})
+            elif operator == 'not':
+                query_obj = ~self.__where(clause)
             else:
                 prop = self.__fix_target(clause.get('target', None))
                 expr = clause.get('expr', None)
-                if prop is not None and expr is not None:
-                    if op == 'equals':
-                        q = Q('match_phrase', **{prop: expr})
-                    elif op == 'reg_exp':
-                        q = Q('regexp', **{prop: {'value': expr}})
-                    elif op == 'wildcard':
-                        q = Q('wildcard', **{prop: {'value': expr}})
-                    elif op in ['lt', 'lte', 'gt', 'gte']:
-                        q = Q('range', **{prop: {op: expr}})
-                    else:
-                        raise HTTP_Bad_Request(title='Operation unknown', description=f'{op} unknown')
+                if prop is None or expr is None:
+                    raise HTTPBadRequest(title=MSG_CLAUSE_NOT_VALID.title,
+                                         description=MSG_CLAUSE_NOT_VALID
+                                         .description.format(operator))
+                if operator == 'equals':
+                    query_obj = Q('match_phrase', **{prop: expr})
+                elif operator == 'reg_exp':
+                    query_obj = Q('regexp', **{prop: {'value': expr}})
+                elif operator == 'wildcard':
+                    query_obj = Q('wildcard', **{prop: {'value': expr}})
+                elif operator in ['lt', 'lte', 'gt', 'gte']:
+                    query_obj = Q('range', **{prop: {operator: expr}})
                 else:
-                    raise HTTP_Bad_Request(title='Request not valid', description=f'{op} clause with not valid/missing data')
-        if id is not None:
-            if q is None:
-                q = Q('term', _id=id)
+                    raise HTTPBadRequest(title=MSG_UNKNOWN.format('Operation'),
+                                         description=MSG_UNKNOWN.format(operator))  # noqa: E501
+        if _id is not None:
+            if query_obj is None:
+                query_obj = Q('term', _id=_id)
             else:
-                q = q & Q('term', _id=id)
-        return q if q is not None else Q()
+                query_obj = query_obj & Q('term', _id=_id)
+        return query_obj if query_obj is not None else Q()
 
     def __order(self, query):
         sort_list = []
@@ -91,15 +116,14 @@ class Query_Reader:
             if prop is not None and mode is not None:
                 sort_list.append(prop if mode == 'asc' else f'-{prop}')
             else:
-                raise HTTP_Bad_Request(title='Request not valid',
-                                       description='order with not valid/missing data')
-        self.s = self.s.sort(*sort_list)
+                raise HTTPBadRequest(**MSG_REQ_NOT_VALID)  # noqa: E501
+        self.search = self.search.sort(*sort_list)
 
     def __limit(self, query):
         limit = query.get('limit', {})
         start = limit.get('from', 0)
-        end = limit.get('to', self.s.count() - 1)
-        self.s = self.s[start:(end + 1)]
+        end = limit.get('to', self.search.count() - 1)
+        self.search = self.search[start:(end + 1)]
 
     @staticmethod
     def __fix_target(prop):

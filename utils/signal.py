@@ -3,10 +3,13 @@ from signal import SIGTERM
 from psutil import Process, wait_procs
 
 
-def send_tree(pid, sig=SIGTERM, include_parent=True, timeout=None, on_terminate=None):
-    """Kill a process tree (including grandchildren) with signal "sig" and return a (gone, still_alive) tuple.
+def send_tree(pid, sig=SIGTERM, include_parent=True,
+              timeout=None, on_terminate=None):
+    """Kill a process tree (including grandchildren)
+        with signal "sig" and return a (gone, still_alive) tuple.
 
-    "on_terminate", if specified, is a callback function which is called as soon as a child terminates.
+       "on_terminate", if specified, is a callback function which
+       is called as soon as a child terminates.
     """
     parent = Process(pid)
     children = parent.children(recursive=True)

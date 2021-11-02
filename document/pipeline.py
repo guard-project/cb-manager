@@ -1,14 +1,15 @@
 from elasticsearch_dsl.field import Text
 
-from document.base import Base_Document
+from document.base import BaseDocument
 
 
-class Pipeline_Document(Base_Document):
+class PipelineDocument(BaseDocument):
     """Represents the stored pipelines."""
 
     # id already defined by Elasticsearch
-    # updated_at = Date()  #FIXME long format not compatible with date
-    # created_at = Date(required=True)  #FIXME long format not compatible with date
+    # FIXME long format not compatible with date
+    # updated_at = Date()
+    # created_at = Date(required=True)
     name = Text()
     status = Text(required=True)
     user = Text()

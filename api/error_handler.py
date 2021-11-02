@@ -1,13 +1,18 @@
-from falcon.errors import HTTPBadRequest as HTTP_Bad_Request
-from falcon.errors import HTTPInternalServerError as HTTP_Internal_Server_Error
-from falcon.errors import HTTPUnsupportedMediaType as HTTP_Unsupported_Media_Type
+from typing import Callable
 
-from lib.response import Bad_Request_Response, Internal_Server_Error_Response, Unsupported_Media_Type_Response
+from falcon.errors import (HTTPBadRequest, HTTPInternalServerError,
+                           HTTPUnsupportedMediaType)
+
+from lib.response import (BadRequestResponse, InternalServerErrorResponse,
+                          UnsuppMediaTypeResponse)
 
 
-class Base_Handler(object):
+class BaseHandler(object):
+    error: Exception
+    response: Callable
+
     @classmethod
-    def handler(cls, req, resp, ex, params):
+    def handler(cls, _, resp, ex: Exception, __) -> None:
         cls.response(exception=ex).apply(resp)
         resp.complete = True
 
@@ -16,16 +21,16 @@ class Base_Handler(object):
         return cls.error, cls.handler
 
 
-class Bad_Request_Handler(Base_Handler):
-    error = HTTP_Bad_Request
-    response = Bad_Request_Response
+class BadRequestHandler(BaseHandler):
+    error = HTTPBadRequest
+    response = BadRequestResponse
 
 
-class Internal_Server_Error_Handler(Base_Handler):
-    error = HTTP_Internal_Server_Error
-    response = Internal_Server_Error_Response
+class InternalServerErrorHandler(BaseHandler):
+    error = HTTPInternalServerError
+    response = InternalServerErrorResponse
 
 
-class Unsupported_Media_Type_Handler(Base_Handler):
-    error = HTTP_Unsupported_Media_Type
-    response = Unsupported_Media_Type_Response
+class UnsupportedMediaTypeHandler(BaseHandler):
+    error = HTTPUnsupportedMediaType
+    response = UnsuppMediaTypeResponse

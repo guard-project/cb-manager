@@ -1,11 +1,9 @@
-from elasticsearch_dsl import Boolean
-from elasticsearch_dsl import InnerDoc as Inner_Doc
-from elasticsearch_dsl import Nested, Text
+from elasticsearch_dsl import Boolean, InnerDoc, Nested, Text
 
-from document.base import Base_Document
+from document.base import BaseDocument
 
 
-class Agent_Catalog_Action_Config_Inner_Doc(Inner_Doc):
+class AgentCatalogActionConfigInnerDoc(InnerDoc):
     """Agent action configuration."""
 
     cmd = Text(required=True)
@@ -13,16 +11,16 @@ class Agent_Catalog_Action_Config_Inner_Doc(Inner_Doc):
     daemon = Boolean()
 
 
-class Agent_Catalog_Action_Inner_Doc(Inner_Doc):
+class AgentCatalogActionInnerDoc(InnerDoc):
     """Agent action."""
 
-    config = Nested(Agent_Catalog_Action_Config_Inner_Doc, required=True)
+    config = Nested(AgentCatalogActionConfigInnerDoc, required=True)
     status = Text()
     description = Text()
     example = Text()
 
 
-class Agent_Catalog_Parameter_Config_Inner_Doc(Inner_Doc):
+class AgentCatalogParameterConfigInnerDoc(InnerDoc):
     """Agent parameter configuration."""
 
     schema = Text(required=True)
@@ -30,41 +28,42 @@ class Agent_Catalog_Parameter_Config_Inner_Doc(Inner_Doc):
     path = Text(required=True)
 
 
-class Agent_Catalog_Parameter_Inner_Doc(Inner_Doc):
+class AgentCatalogParameterInnerDoc(InnerDoc):
     """Agent parameter."""
 
     id = Text(required=True)
-    # possible values: integer, number, time-duration, string, choice, boolean, binary
+    # possible values: integer, number, time-duration,
+    #                  string, choice, boolean, binary
     type = Text(required=True)
-    config = Nested(Agent_Catalog_Parameter_Config_Inner_Doc, required=True)
+    config = Nested(AgentCatalogParameterConfigInnerDoc, required=True)
     list = Boolean()
     values = Text()  # when type = choice
     description = Text()
     example = Text()
 
 
-class Agent_Catalog_Resource_Config_Inner_Doc(Inner_Doc):
+class AgentCatalogResourceConfigInnerDoc(InnerDoc):
     """Agent resource configuration."""
 
     path = Text(required=True)
 
 
-class Agent_Catalog_Resource_Inner_Doc(Inner_Doc):
+class AgentCatalogResourceInnerDoc(InnerDoc):
     """Agent resource."""
 
     id = Text(required=True)
-    config = Nested(Agent_Catalog_Resource_Config_Inner_Doc, required=True)
+    config = Nested(AgentCatalogResourceConfigInnerDoc, required=True)
     description = Text()
     example = Text()
 
 
-class Agent_Catalog_Document(Base_Document):
+class AgentCatalogDocument(BaseDocument):
     """Represents an agent in the catalog."""
 
     # id already defined by Elasticsearch
-    actions = Nested(Agent_Catalog_Action_Inner_Doc)
-    parameters = Nested(Agent_Catalog_Parameter_Inner_Doc)
-    resources = Nested(Agent_Catalog_Resource_Inner_Doc)
+    actions = Nested(AgentCatalogActionInnerDoc)
+    parameters = Nested(AgentCatalogParameterInnerDoc)
+    resources = Nested(AgentCatalogResourceInnerDoc)
     description = Text()
     deployment_source = Text()
 

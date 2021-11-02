@@ -1,19 +1,19 @@
-from resource.base import Base_Resource
+from resource.base import BaseResource
 
 from docstring import docstring
-from document.pipeline import Pipeline_Document
-from schema.pipeline import Pipeline_Schema
+from document.pipeline import PipelineDocument
+from schema.pipeline import PipelineSchema
 
 
 @docstring(ext='yaml')
-class Pipeline_Resource(Base_Resource):
-    doc = Pipeline_Document
+class PipelineResource(BaseResource):
+    doc = PipelineDocument
     name = 'pipeline'
     names = name
     routes = '/pipeline/'
-    schema = Pipeline_Schema
+    schema = PipelineSchema
 
 
 @docstring(ext='yaml')
-class Pipeline_Selected_Resource(Pipeline_Resource):
+class PipelineSelectedResource(PipelineResource):
     routes = '/pipeline/{id}'

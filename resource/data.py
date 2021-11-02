@@ -1,19 +1,19 @@
-from resource.base import Base_Resource
+from resource.base import BaseResource
 
 from docstring import docstring
-from document.data import Data_Document
-from schema.data import Data_Schema
+from document.data import DataDocument
+from schema.data import DataSchema
 
 
 @docstring(ext='yaml')
-class Data_Resource(Base_Resource):
-    doc = Data_Document
+class DataResource(BaseResource):
+    doc = DataDocument
     name = 'data'
     names = name
     routes = '/data/'
-    schema = Data_Schema
+    schema = DataSchema
 
 
 @docstring(ext='yaml')
-class Data_Selected_Resource(Data_Resource):
+class DataSelectedResource(DataResource):
     routes = '/data/{id}'

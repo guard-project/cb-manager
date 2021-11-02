@@ -11,10 +11,14 @@ from utils.string import is_str
 
 class Spec:
     def __init__(self, api, title, version):
-        self.obj = API_Spec(title=title, version=version, openapi_version='2.0',
-                            produces=['application/json'], consumes=['application/json'],
+        schema_name_resolver = self.__schema_name_resolver
+        self.obj = API_Spec(title=title, version=version,
+                            openapi_version='2.0',
+                            produces=['application/json'],
+                            consumes=['application/json'],
                             tags=rc_tags,
-                            plugins=[Falcon_Plugin(api), Marshmallow_Plugin(schema_name_resolver=self.__schema_name_resolver)])
+                            plugins=[Falcon_Plugin(api),
+                                     Marshmallow_Plugin(schema_name_resolver)])
 
     def get(self):
         return self.obj
@@ -27,7 +31,7 @@ class Spec:
         with path.open('w') as file:
             file.write(dumps(self.obj.to_dict(), indent=2))
 
-    @staticmethod
+    @ staticmethod
     def __schema_name_resolver(schema):
         if is_str(schema):
             ref = schema

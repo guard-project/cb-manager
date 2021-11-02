@@ -1,46 +1,50 @@
 from threading import Thread, Timer
 
 from requests import post
-from requests.exceptions import ConnectionError, ConnectTimeout
+from requests.exceptions import ConnectionRequestError, ConnectTimeout
 
-from document.exec_env import Exec_Env_Document
+from document.exec_env import ExecEnvDocument
 from lib.http import HTTP_Status
 from lib.token import create_token
-from reader.arg import Arg_Reader
+from reader.arg import ArgReader
 from utils.log import Log
 
 
 def heartbeat():
     """Heartbeat procedure with the LCPs."""
-    s = Exec_Env_Document.search()
-    res = s[0:s.count()].execute()
+    search = ExecEnvDocument.search()
+    res = search[0:search.count()].execute()
     threads = []
     for exec_env in res:
         if exec_env.lcp:
-            t = Thread(target=heartbeat_exec_env, args=(exec_env,))
-            threads.append(t)
-            t.start()
-    for t in threads:
-        t.join()
-    t = Timer(Arg_Reader.db.hb_period, heartbeat)
-    t.daemon = True
-    t.start()
+            thread = Thread(target=heartbeat_exec_env, args=(exec_env,))
+            threads.append(thread)
+            thread.start()
+    for thread in threads:
+        thread.join()
+    thread = Timer(ArgReader.db.hb_period, heartbeat)
+    thread.daemon = True
+    thread.start()
 
 
 def heartbeat_exec_env(exec_env):
     log = Log.get('heartbeat')
     try:
-        id = exec_env.meta.id
+        exec_env_id = exec_env.meta.id
         lcp = exec_env.lcp
-        lbl = f'{id} (LCP at {exec_env.hostname}:{lcp.port})'
+        lbl = f'{exec_env_id} (LCP at {exec_env.hostname}:{lcp.port})'
         if exec_env.enabled:
             schema = 'https' if lcp.https else 'http'
-            endpoint_lcp = '/' + exec_env.lcp.endpoint if exec_env.lcp.endpoint else ''
-            resp = post(f'{schema}://{exec_env.hostname}:{lcp.port}{endpoint_lcp}/status', timeout=Arg_Reader.db.hb_timeout,
-                        headers={'Authorization': create_token()}, json={'id': id})
+            endpoint_lcp = exec_env.lcp.endpoint
+            endpoint_lcp = '/' + endpoint_lcp if endpoint_lcp else ''
+            req_uri = f'{schema}://{exec_env.hostname}:{lcp.port}{endpoint_lcp}/status'  # noqa F401
+            resp = post(req_uri,
+                        timeout=ArgReader.db.hb_timeout,
+                        headers={'Authorization': create_token()},
+                        json={'id': exec_env_id})
             if resp.status_code == HTTP_Status.OK:
                 data = resp.json()
-                id = data.pop('id', None)
+                exec_env_id = data.pop('id', None)
                 lcp.started = data.get('started', None)
                 lcp.last_heartbeat = data.get('last_heartbeat', None)
                 log.success(f'Connection established with exec-env {lbl}')
@@ -55,7 +59,8 @@ def heartbeat_exec_env(exec_env):
             log.notice(f'Exec-env {lbl} not enabled')
     except ConnectTimeout:
         log.error(f'Connection timeout with exec-env {lbl}')
-    except ConnectionError:
+    except ConnectionRequestError:
         log.error(f'Connection refused with exec-env {lbl}')
     except Exception as exception:
-        log.exception(f'Exception during connection with exec-env {lbl}', exception)
+        log.exception(
+            f'Exception during connection with exec-env {lbl}', exception)

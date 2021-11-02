@@ -11,7 +11,7 @@ class In(object):
             return lambda field: field in data()
 
 
-class Unique_List(object):
+class UniqueList(object):
     error_messages = {'validator_failed': 'Repeated values.'}
 
     @staticmethod

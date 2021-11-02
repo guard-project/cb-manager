@@ -1,44 +1,49 @@
-from elasticsearch_dsl import Date
-from elasticsearch_dsl import InnerDoc as Inner_Doc
-from elasticsearch_dsl import Nested, Text
+from elasticsearch_dsl import Date, InnerDoc, Nested, Text
 
-from document.base import Base_Document
+from document.base import BaseDocument
 
 
-class Agent_Instance_Action_Inner_Doc(Inner_Doc):
+class AgentInstanceActionInnerDoc(InnerDoc):
     """Action of the agent instance installed in an execution environment."""
 
     id = Text(required=True)
     timestamp = Date(required=True)
 
 
-class Agent_Instance_Parameter_Inner_Doc(Inner_Doc):
-    """Parameter of the agent instance installed in an execution environment."""
+class AgentInstanceParameterValueInnerDoc(InnerDoc):
+    """Parameter value of the agent instance installed
+       in an execution environment."""
+    new = Text(required=True)
+    old = Text(required=True)
+
+
+class AgentInstanceParameterInnerDoc(InnerDoc):
+    """Parameter of the agent instance installed
+       in an execution environment."""
 
     id = Text(required=True)
     timestamp = Date(required=True)
-    # value
+    value = Nested(AgentInstanceParameterValueInnerDoc)
 
 
-class Agent_Instance_Resource_Inner_Doc(Inner_Doc):
+class AgentInstanceResourceInnerDoc(InnerDoc):
     """Resource of the agent instance installed in an execution environment."""
 
     id = Text(required=True)
     timestamp = Date(required=True)
-    path = Text(required=True)
     content = Text(required=True)
 
 
-class Agent_Instance_Document(Base_Document):
+class AgentInstanceDocument(BaseDocument):
     """Represents an agent instance installed in an execution environment."""
 
     # id already defined by Elasticsearch
     agent_catalog_id = Text(required=True)
     exec_env_id = Text(required=True)
     status = Text(required=True)
-    actions = Nested(Agent_Instance_Action_Inner_Doc)
-    parameters = Nested(Agent_Instance_Parameter_Inner_Doc)
-    resources = Nested(Agent_Instance_Resource_Inner_Doc)
+    actions = Nested(AgentInstanceActionInnerDoc)
+    parameters = Nested(AgentInstanceParameterInnerDoc)
+    resources = Nested(AgentInstanceResourceInnerDoc)
     description = Text()
 
     class Index:
@@ -47,49 +52,51 @@ class Agent_Instance_Document(Base_Document):
         name = 'agent-instance'
 
     def edit_action(self, action):
-        so = self.Status_Operation
+        status_op = self.StatusOperation
+        # FIXME avoid to pop field but insert in ES explicitly
         action.pop('type', None)
-        self.actions.append(Agent_Instance_Action_Inner_Doc(**action))
-        return so.UPDATED
+        self.actions.append(AgentInstanceActionInnerDoc(**action))
+        return status_op.UPDATED
 
     def edit_parameter(self, parameter):
-        so = self.Status_Operation
-        id = parameter.get('id', None)
-        ts = parameter.get('timestamp', None)
+        status_op = self.StatusOperation
+        param_id = parameter.get('id', None)
+        timestamp = parameter.get('timestamp', None)
         value = parameter.get('value', {})
-        new_value = value.get('new', None)
-        if new_value is not None:
-            value['new'] = new_value = str(value['new'])  # FIXME improve
-            value['old'] = str(value.get('old', None))
-            for p in self.parameters:
-                if p.id == id:
-                    if p.value.new != new_value or p.timestamp != ts:
-                        p.value = value
-                        p.timestamp = ts
-                        return so.UPDATED
-                    return so.NOT_MODIFIED
-            parameter.pop('type', None)
-            parameter.pop('data', None)
-            parameter['value'] = value
-            self.parameters.append(Agent_Instance_Parameter_Inner_Doc(**parameter))
-            return so.UPDATED
-        return so.NOT_MODIFIED
+        val_new = value.get('new', None)
+        val_old = value.get('old', None)
+        if val_new is not None:
+            val_new = str(val_new)
+            val_old = str(val_old)
+            for param in self.parameters:
+                if param.id == param_id:
+                    if param.value.new != val_new:
+                        param.value.old = val_old
+                        param.value.new = val_new
+                        param.timestamp = timestamp
+                        return status_op.UPDATED
+                    return status_op.NOT_MODIFIED
+            param_doc = AgentInstanceParameterInnerDoc
+            value_doc = AgentInstanceParameterValueInnerDoc
+            self.parameters.append(param_doc(id=param_id, timestamp=timestamp,
+                                   value=value_doc(new=val_new, old=val_old)))
+            return status_op.UPDATED
+        return status_op.NOT_MODIFIED
 
     def edit_resource(self, resource):
-        so = self.Status_Operation
-        id = resource.get('id', None)
-        ts = resource.get('timestamp', None)
+        status_op = self.StatusOperation
+        res_id = resource.get('id', None)
+        timestamp = resource.get('timestamp', None)
         data = resource.get('data', {})
-        path = data.get('path', None)
         cnt = data.get('content', None)
-        for r in self.resources:
-            if r.id == id:
-                if r.id != id or r.path != path or r.content != cnt or r.timestamp != ts:
-                    r.path = path
-                    r.content = cnt
-                    r.timestamp = ts
-                    return so.UPDATED
-                return so.NOT_MODIFIED
-        resource.pop('type', None)
-        self.resources.append(Agent_Instance_Resource_Inner_Doc(**resource))
-        return so.UPDATED
+        for res in self.resources:
+            if res.id == res_id:
+                if res.content != cnt:
+                    res.content = cnt
+                    res.timestamp = timestamp
+                    return status_op.UPDATED
+                return status_op.NOT_MODIFIED
+        _res_doc = AgentInstanceResourceInnerDoc
+        self.resources.append(_res_doc(id=res_id, timestamp=timestamp,
+                                       content=cnt))
+        return status_op.UPDATED

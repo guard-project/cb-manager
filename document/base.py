@@ -1,8 +1,8 @@
 from elasticsearch_dsl import Document
 
 
-class Base_Document(Document):
-    class Status_Operation():
+class BaseDocument(Document):
+    class StatusOperation():
         NOT_MODIFIED = 'noop'
         CREATED = 'created'
         UPDATED = 'updated'
@@ -10,5 +10,5 @@ class Base_Document(Document):
 
     @classmethod
     def get_ids(cls):
-        s = cls.search()
-        return [doc.meta.id for doc in s[0:s.count()].execute()]
+        search = cls.search()
+        return [doc.meta.id for doc in search[0:search.count()].execute()]

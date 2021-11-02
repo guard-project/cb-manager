@@ -1,19 +1,19 @@
-from resource.base import Base_Resource
+from resource.base import BaseResource
 
 from docstring import docstring
-from document.algorithm.catalog import Algorithm_Catalog_Document
-from schema.algorithm.catalog import Algorithm_Catalog_Schema
+from document.algorithm.catalog import AlgorithmCatalogDocument
+from schema.algorithm.catalog import AlgorithmCatalogSchema
 
 
 @docstring(ext='yaml')
-class Algorithm_Catalog_Resource(Base_Resource):
-    doc = Algorithm_Catalog_Document
+class AlgorithmCatalogResource(BaseResource):
+    doc = AlgorithmCatalogDocument
     name = 'algorithm catalog'
     names = 'algorithm catalogs'
     routes = '/catalog/algorithm/'
-    schema = Algorithm_Catalog_Schema
+    schema = AlgorithmCatalogSchema
 
 
 @docstring(ext='yaml')
-class Algorithm_Catalog_Selected_Resource(Algorithm_Catalog_Resource):
+class AlgorithmCatalogSelectedResource(AlgorithmCatalogResource):
     routes = '/catalog/algorithm/{id}'

@@ -1,33 +1,33 @@
-from resource.base import Base_Resource
+from resource.base import BaseResource
 
 from docstring import docstring
-from document.network_link import Network_Link_Document, Network_Link_Type_Document
-from schema.network_link import Network_Link_Schema, Network_Link_Type_Schema
+from document.network_link import NetworkLinkDocument, NetworkLinkTypeDocument
+from schema.network_link import NetworkLinkSchema, NetworkLinkTypeSchema
 
 
 @docstring(ext='yaml')
-class Network_Link_Resource(Base_Resource):
-    doc = Network_Link_Document
+class NetworkLinkResource(BaseResource):
+    doc = NetworkLinkDocument
     name = 'network link'
     names = 'network links'
     routes = '/network-link/'
-    schema = Network_Link_Schema
+    schema = NetworkLinkSchema
 
 
 @docstring(ext='yaml')
-class Network_Link_Selected_Resource(Network_Link_Resource):
+class NetworkLinkSelectedResource(NetworkLinkResource):
     routes = '/network-link/{id}'
 
 
 @docstring(ext='yaml')
-class Network_Link_Type_Resource(Base_Resource):
-    doc = Network_Link_Type_Document
+class NetworkLinkTypeResource(BaseResource):
+    doc = NetworkLinkTypeDocument
     name = 'network link type'
     names = 'network link types'
     routes = '/type/network-link/'
-    schema = Network_Link_Type_Schema
+    schema = NetworkLinkTypeSchema
 
 
 @docstring(ext='yaml')
-class Network_Link_Type_Selected_Resource(Network_Link_Type_Resource):
+class NetworkLinkTypeSelectedResource(NetworkLinkTypeResource):
     routes = '/type/network-link/{id}'

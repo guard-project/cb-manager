@@ -1,9 +1,9 @@
 from elasticsearch_dsl import Text
 
-from document.base import Base_Document
+from document.base import BaseDocument
 
 
-class Network_Link_Document(Base_Document):
+class NetworkLinkDocument(BaseDocument):
     """Represents a network link."""
 
     # id already defined by Elasticsearch
@@ -16,7 +16,7 @@ class Network_Link_Document(Base_Document):
         name = 'network-link'
 
 
-class Network_Link_Type_Document(Base_Document):
+class NetworkLinkTypeDocument(BaseDocument):
     """Represents a network link type."""
 
     # id already defined by Elasticsearch

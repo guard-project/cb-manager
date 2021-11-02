@@ -1,10 +1,11 @@
 from elasticsearch_dsl import Text
 
-from document.base import Base_Document
+from document.base import BaseDocument
 
 
-class Connection_Document(Base_Document):
-    """Represents an connection between execution environments and network links."""
+class ConnectionDocument(BaseDocument):
+    """Represents an connection between execution
+       environments and network links."""
 
     # id already defined by Elasticsearch
     exec_env_id = Text(required=True)

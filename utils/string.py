@@ -1,15 +1,14 @@
-from string import Formatter as String_Formatter
+from string import Formatter as StringFormatter
 
 
-class Formatter(String_Formatter):
+class Formatter(StringFormatter):
     def convert_field(self, value, conversion):
-        if 'c' == conversion:
+        if conversion == 'c':
             return value.capitalize()
-        else:
-            return super().convert_field(value, conversion)
+        return super().convert_field(value, conversion)
 
 
-format = Formatter().format
+formatter = Formatter().format
 
 
 def is_str(obj):

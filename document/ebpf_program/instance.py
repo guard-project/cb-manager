@@ -1,25 +1,24 @@
-from elasticsearch_dsl import Date
-from elasticsearch_dsl import InnerDoc as Inner_Doc
-from elasticsearch_dsl import Nested, Text
+from elasticsearch_dsl import Date, InnerDoc, Nested, Text
 
-from document.base import Base_Document
+from document.base import BaseDocument
 
 
-class eBPF_Program_Instance_Parameter_Inner_Doc(Inner_Doc):
-    """Parameter of the eBPF Program instance installed in an execution environment."""
+class eBPFProgramInstanceParameterInnerDoc(InnerDoc):
+    """Parameter of the eBPF Program instance installed
+       in an execution environment."""
 
     id = Text(required=True)
     # value = Raw() # FIXME Raw?
     timestamp = Date(required=True)
 
 
-class eBPF_Program_Instance_Document(Base_Document):
+class eBPFProgramInstanceDocument(BaseDocument):
     """Represents an eBPF program installed in an execution environment."""
 
     # id already defined by Elasticsearch
     ebpf_program_catalog_id = Text(required=True)
     exec_env_id = Text(required=True)
-    parameters = Nested(eBPF_Program_Instance_Parameter_Inner_Doc)
+    parameters = Nested(eBPFProgramInstanceParameterInnerDoc)
     description = Text()
 
     class Index:
@@ -28,16 +27,17 @@ class eBPF_Program_Instance_Document(Base_Document):
         name = 'ebpf-program-instance'
 
     def edit_parameter(self, parameter):
-        so = self.Status_Operation
-        id = parameter.get('id', None)
-        for p in self.parameters:
+        status_op = self.StatusOperation
+        param_id = parameter.get('id', None)
+        for param in self.parameters:
             val = parameter.get('value', None)
-            ts = parameter.get('timestamp', None)
-            if p.id == id:
-                if p.value != val or p.timestamp != ts:
-                    p.value = val
-                    p.timestamp = ts
-                    return so.UPDATED
-                return so.NOT_MODIFIED
-        self.parameters.append(eBPF_Program_Instance_Parameter_Inner_Doc(**parameter))
-        return so.UPDATED
+            timestamp = parameter.get('timestamp', None)
+            if param.id == param_id:
+                if param.value != val:
+                    param.value = val
+                    param.timestamp = timestamp
+                    return status_op.UPDATED
+                return status_op.NOT_MODIFIED
+        self.parameters.append(
+            eBPFProgramInstanceParameterInnerDoc(**parameter))
+        return status_op.UPDATED

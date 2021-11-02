@@ -1,29 +1,51 @@
+# Copyright (c) 2020-2022 GUARD
+# author: Alex Carrega <alessandro.carrega@cnit.it>
+
 from copy import deepcopy
 from time import sleep
+from typing import Callable, Optional
 
-from lib.http import HTTP_Method
-from lib.response import (Content_Response, Created_Response, No_Content_Response, Not_Found_Response,
-                          Not_Modified_Response, Ok_Response, Reset_Content_Response, Unprocessable_Entity_Response)
-from reader.arg import Arg_Reader
-from reader.query import Query_Reader
-from schema.query_request import Query_Request_Schema
-from schema.response import (Bad_Request_Response_Schema, Internal_Server_Error_Response_Schema,  # noqa F401
-                             Not_Acceptable_Response_Schema, Not_Found_Response_Schema, Reset_Content_Response_Schema,
-                             Unauthorized_Response_Schema, Unprocessable_Entity_Response_Schema,
-                             Unsupported_Media_Type_Response_Schema)
+from lib.http import HTTPMethod
+from lib.response import (ContentResponse, CreatedResponse, NoContentResponse,
+                          NotFoundResponse, NotModifiedResponse, OkResponse,
+                          ResetContentResponse, UnprocEntityResponse)
+from reader.arg import ArgReader
+from reader.query import QueryReader
+from schema.query_request import QueryRequestSchema
+from schema.response import BadRequestResponseSchema  # noqa F401
+from schema.response import InternalServerErrorResponseSchema  # noqa F401
+from schema.response import NotAcceptableResponseSchema  # noqa F401
+from schema.response import NotFoundResponseSchema  # noqa F401
+from schema.response import ResetContentResponseSchema  # noqa F401
+from schema.response import UnauthorizedResponseSchema  # noqa F401
+from schema.response import UnprocessableEntityResponseSchema  # noqa F401
+from schema.response import UnsupportedMediaTypeResponseSchema  # noqa F401
 from utils.log import Log
 from utils.sequence import is_list, wrap
 
+MSG_INIT_INDEX_NOT_POSSIBLE = 'Initialization index {} not possible'
+MSG_WAITING_CONN = 'Waiting for {} seconds and try again'
+MSG_NOT_FOUND = '{} based on the request {{query}} not found'
+MSG_UPDATE_NOT_NEEDED = 'Update for {} with id={} not necessary'
 
-class Base_Minimal_Resource(object):
+MSG_ERROR = 'Some errors occur but the {} with the id={} forcedly {}'
+MSG_NO_CONTENT = 'No content to {} {} based the {{request}}'
+MSG_OK = '{} with the id={} correctly {}'
+MSG_NOT_POSSIBLE_ID = 'Not possible to {} {} with the id={}'
+MSG_NOT_POSSIBLE = 'Not possible to {} {} with the request {{query}}'
+
+
+class BaseMinimalResource(object):
     tag = []
     doc = None
-    schema = None
+    schema: Optional[Callable] = None
 
 
-class Base_Resource(Base_Minimal_Resource):
+class BaseResource(BaseMinimalResource):
     lcp_handler = {}
     ignore_fields = []
+    name = None
+    names = None
 
     def __init__(self):
         if self.doc is not None:
@@ -31,177 +53,217 @@ class Base_Resource(Base_Minimal_Resource):
             err_es_init = True
             while err_es_init:
                 try:
-                    self.log.info(f'Start initialization index {self.doc.Index.name}')
+                    self.log.info(
+                        f'Start initialization index {self.doc.Index.name}')
                     self.doc.init()
-                    self.log.success(f'Index {self.doc.Index.name} initialized')
+                    self.log.success(
+                        f'Index {self.doc.Index.name} initialized')
                     err_es_init = False
-                except Exception as e:
-                    self.log.exception(f'Initialization index {self.doc.Index.name} not possible', e)
-                    self.log.info(f'Waiting for {Arg_Reader.db.es_retry_period} seconds and try again')
-                    sleep(Arg_Reader.db.es_retry_period)
+                except Exception as exception:
+                    self.log.exception(MSG_INIT_INDEX_NOT_POSSIBLE.format(
+                        self.doc.Index.name), exception)
+                    self.log.info(MSG_WAITING_CONN.format(
+                        ArgReader.db.es_retry_period))
+                    sleep(ArgReader.db.es_retry_period)
         else:
             Log.get(self.__class__.__name__).warning('doc not set')
 
-    def on_base_get(self, req, resp, id=None):
+    def on_base_get(self, req, resp, _id=None):
         req_data = req.media or {}
-        qrs = Query_Request_Schema(method=HTTP_Method.GET, unknown='INCLUDE')
-        resp_data, valid = qrs.validate(data=req_data, id=id)
+        qrs = QueryRequestSchema(method=HTTPMethod.GET, unknown='INCLUDE')
+        resp_data, valid = qrs.validate(data=req_data, item_id=_id)
         if valid:
             try:
-                qr = Query_Reader(index=self.doc.Index.name)
-                s = qr.parse(query=req_data, id=id)
-                resp_data = [dict(hit.to_dict(), id=hit.meta.id) for hit in s.execute()]
-                if len(resp_data) > 0:
-                    Content_Response(resp_data).apply(resp)
+                query_reader = QueryReader(index=self.doc.Index.name)
+                search = query_reader.parse(query=req_data, item_id=_id)
+                resp_data = [dict(hit.to_dict(), id=hit.meta.id)
+                             for hit in search.execute()]
+                if resp_data:
+                    ContentResponse(resp_data).apply(resp)
                 else:
-                    msg = f'{self.name.capitalize()} based on the request {{query}} not found'
-                    Not_Found_Response(msg, query=req_data).apply(resp)
-            except Exception as e:
-                msg = f'Not possible to get {self.names} with the request {{query}}'
-                Unprocessable_Entity_Response(msg, exception=e, query=req_data).apply(resp)
+                    NotFoundResponse(MSG_NOT_FOUND.format(
+                        self.name.capitalize()),
+                        query=req_data).apply(resp)
+            except Exception as exception:
+                UnprocEntityResponse(MSG_NOT_POSSIBLE.format('get',
+                                                             self.names),
+                                     exception,
+                                     query=req_data).apply(resp)
         else:
             resp_data.apply(resp)
 
-    def on_base_post(self, req, resp, id=None):
+    def on_base_post(self, req, resp, _id=None):
         req_data = req.media or {}
-        resp_data, valid = self.schema(many=is_list(req_data), unknown='INCLUDE',
-                                       method=HTTP_Method.POST).validate(data=req_data, id=id)
+        sch_obj = self.schema(many=is_list(req_data),
+                              unknown='INCLUDE',
+                              method=HTTPMethod.POST)
+        resp_data, valid = sch_obj.validate(data=req_data, id=_id)
         if valid:
             req_data_wrap = wrap(req_data)
             if len(req_data_wrap) > 0:
                 for req_data in req_data_wrap:
                     req_data_lcp = deepcopy(req_data)
-                    req_data_id = req_data.pop('id', id)
+                    req_data_id = req_data.pop('id', _id)
                     try:
                         self.rm_ignore_fields(req_data)
                         obj = self.doc(meta={'id': req_data_id}, **req_data)
                         resp_data_lcp = []
-                        resp_data = Created_Response(f'{self.name.capitalize()} with the id={req_data_id} correctly created')
-                        hndl = self.get_lcp_handler(HTTP_Method.POST)
-                        hndl(instance=obj, req=req_data_lcp, resp=resp_data_lcp)
-                        if len(resp_data_lcp) > 0:
+                        resp_data = CreatedResponse(MSG_OK.format(
+                            self.name.capitalize(), req_data_id, 'created'))
+                        hndl = self.get_lcp_handler(HTTPMethod.POST)
+                        hndl(instance=obj, req=req_data_lcp,
+                             resp=resp_data_lcp)
+                        if resp_data_lcp:
                             for rdl in resp_data_lcp:
                                 if rdl['error']:
-                                    msg = f'Not possible to create a {self.name} with the id={req_data_id}'
-                                    resp_data = Unprocessable_Entity_Response(msg)
+                                    resp_data = UnprocEntityResponse(
+                                        MSG_NOT_POSSIBLE_ID.format('create',
+                                                                   self.name,
+                                                                   req_data_id))  # noqa: E501
                                     break
                             resp_data.update(lcp_response=resp_data_lcp)
                         force = req_data.get('force', False)
                         if not resp_data.error or force:
                             obj.save()
-                            if force:
-                                msg = f'Some errors occur but the {self.name} with the id={req_data_id} forcedly created'
-                                resp_data = Unprocessable_Entity_Response(msg)
+                        if force:
+                            resp_data = UnprocEntityResponse(
+                                MSG_ERROR.format(self.name, req_data_id,
+                                                 'created'))
                         resp_data.add(resp)
-                    except Exception as e:
-                        msg = f'Not possible to create a {self.name} with the id={req_data_id}'
-                        Unprocessable_Entity_Response(msg, exception=e).add(resp)
+                    except Exception as exception:
+                        UnprocEntityResponse(MSG_NOT_POSSIBLE_ID.format('create',  # noqa: E501
+                                                                        self.name,  # noqa: E501
+                                                                        req_data_id),  # noqa: E501
+                                             exception).add(resp)
             else:
-                msg = f'No content to create {self.names} based the {{request}}'
-                No_Content_Response(msg, request=req_data).apply(resp)
+                NoContentResponse(MSG_NO_CONTENT.format(
+                    'create', self.names), request=req_data).apply(resp)
         else:
             resp_data.apply(resp)
 
-    def on_base_put(self, req, resp, id=None):
-        so = self.doc.Status_Operation
+    def on_base_put(self, req, resp, _id=None):
+        status_op = self.doc.Status_Operation
         req_data = req.media or {}
-        resp_data, valid = self.schema(many=is_list(req_data), unknown='INCLUDE',
-                                       partial=True, method=HTTP_Method.PUT).validate(data=req_data, id=id)
+        sch_obj = self.schema(many=is_list(req_data),
+                              unknown='INCLUDE',
+                              partial=True,
+                              method=HTTPMethod.PUT)
+        rsp_dt, valid = sch_obj.validate(data=req_data, id=_id)
         if valid:
             req_data_wrap = wrap(req_data)
             if len(req_data_wrap) > 0:
                 for req_data in req_data_wrap:
                     req_data_lcp = deepcopy(req_data)
-                    req_data_id = req_data.pop('id', id)
+                    req_data_id = req_data.pop('id', _id)
                     try:
                         if len(req_data) == 0:
-                            Not_Modified_Response(f'Update for {self.name} with id={req_data_id} not necessary').add(resp)
+                            NotModifiedResponse(MSG_UPDATE_NOT_NEEDED.format(
+                                self.name, req_data_id)).add(resp)
                         else:
                             self.rm_ignore_fields(req_data)
                             obj = self.doc.get(id=req_data_id)
                             resp_data_lcp = []
-                            hndl = self.get_lcp_handler(HTTP_Method.PUT)
-                            modified = hndl(instance=obj, req=req_data_lcp, resp=resp_data_lcp)
-                            resp_data = Ok_Response(f'{self.name.capitalize()} with the id={req_data_id} correctly updated')
-                            if len(resp_data_lcp) > 0:
+                            hndl = self.get_lcp_handler(HTTPMethod.PUT)
+                            modified = hndl(instance=obj, req=req_data_lcp,
+                                            resp=resp_data_lcp)
+                            rsp_dt = OkResponse(MSG_OK.format(self.name.capitalize(),  # noqa: E501
+                                                              req_data_id,
+                                                              'updated'))
+                            if resp_data_lcp:
                                 for rdl in resp_data_lcp:
                                     if rdl['error']:
-                                        msg = f'Not possible to update a {self.name} with the id={req_data_id}'
-                                        resp_data = Unprocessable_Entity_Response(msg)
+                                        rsp_dt = UnprocEntityResponse(
+                                            MSG_NOT_POSSIBLE_ID.format('update',  # noqa: E501
+                                                                       self.name,  # noqa: E501
+                                                                       req_data_id))  # noqa: E501
                                         break
-                                resp_data.update(lcp_response=resp_data_lcp)
+                                rsp_dt.update(lcp_response=resp_data_lcp)
                             force = req_data.get('force', False)
-                            if (not resp_data.error or force) and len(req_data) > 0:
+                            if ((not rsp_dt.error or force) and
+                                    len(req_data) > 0):
                                 res = obj.update(**req_data)
-                                if res == so.UPDATED:
+                                if res == status_op.UPDATED:
                                     modified = True
                                     if force:
-                                        msg = f'Some errors occur but the {self.name} with the id={req_data_id} forcedly updated'
-                                        resp_data = Unprocessable_Entity_Response(msg)
-                            if not resp_data.error and not modified:
-                                msg = f'{self.name.capitalize()} with the id={req_data_id} no need to update'
-                                resp_data = Not_Modified_Response(msg)
-                            resp_data.add(resp)
-                    except Exception as e:
-                        msg = f'Not possible to update a {self.name} with the id={req_data_id}'
-                        Unprocessable_Entity_Response(msg, exception=e).add(resp)
+                                        rsp_dt = UnprocEntityResponse(
+                                            MSG_ERROR.format(self.name,
+                                                             req_data_id,
+                                                             'updated'))
+                            if not rsp_dt.error and not modified:
+                                rsp_dt = NotModifiedResponse(
+                                    MSG_UPDATE_NOT_NEEDED.format(self.name,
+                                                                 req_data_id))
+                            rsp_dt.add(resp)
+                    except Exception as exception:
+                        UnprocEntityResponse(MSG_UPDATE_NOT_NEEDED.format(
+                            self.name, req_data_id), exception).add(resp)
             else:
-                No_Content_Response(f'No content to update {self.name} based on the {{request}}', request=req_data).apply(resp)
+                NoContentResponse(MSG_NO_CONTENT.format(
+                    'update', self.name), request=req_data).apply(resp)
         else:
-            resp_data.apply(resp)
+            rsp_dt.apply(resp)
 
-    def on_base_delete(self, req, resp, id=None):
+    def on_base_delete(self, req, resp, _id=None):
         req_data = req.media or {}
-        qrs = Query_Request_Schema(method=HTTP_Method.DELETE)
-        resp_data, valid = qrs.validate(data=req_data, id=id)
+        qrs = QueryRequestSchema(method=HTTPMethod.DELETE)
+        resp_data, _ = qrs.validate(data=req_data, item_id=_id)
         if resp:
             try:
-                qr = Query_Reader(index=self.doc.Index.name)
-                s = qr.parse(query=req_data, id=id)
-                hits = s.execute()
+                query_reader = QueryReader(index=self.doc.Index.name)
+                search = query_reader.parse(query=req_data, item_id=_id)
+                hits = search.execute()
                 if len(hits) > 0:
                     for hit in hits:
                         try:
                             obj = self.doc.get(id=hit.meta.id)
-                            msg = f'{self.name.capitalize()} with the id={hit.meta.id} correctly deleted'
                             resp_data_lcp = []
-                            resp_data = Reset_Content_Response(msg)
-                            hndl = self.get_lcp_handler(HTTP_Method.DELETE)
+                            resp_data = ResetContentResponse(MSG_OK.format(
+                                self.name.capitalize(), hit.meta.id,
+                                'deleted'))
+                            hndl = self.get_lcp_handler(HTTPMethod.DELETE)
                             hndl(instance=obj, req=hit, resp=resp_data_lcp)
-                            if len(resp_data_lcp) > 0:
+                            if resp_data_lcp:
                                 for rdl in resp_data_lcp:
                                     if rdl['error']:
-                                        msg = f'Not possible to delete the {self.name} with the id={hit.meta.id}'
-                                        resp_data = Unprocessable_Entity_Response(msg)
+                                        resp_data = UnprocEntityResponse(
+                                            MSG_NOT_POSSIBLE_ID.format('delete',  # noqa: E501
+                                                                       self.name,  # noqa: E501
+                                                                       hit.meta.id))  # noqa: E501
                                         break
                                 resp_data.update(lcp_response=resp_data_lcp)
                             force = req_data.get('force', False)
                             if not resp_data.error or force:
                                 obj.delete()
-                                if force:
-                                    msg = f'Some errors occur but the {self.name} with the id={hit.meta.id} forcedly deleted'
-                                    resp_data = Unprocessable_Entity_Response(msg)
+                            if force:
+                                resp_data = UnprocEntityResponse(
+                                    MSG_ERROR.format(self.name, hit.meta.id,
+                                                     'deleted'))
                             resp_data.add(resp)
-                        except Exception as e:
-                            msg = f'Not possible to delete the {self.name} with the id={hit.meta.id}'
-                            Unprocessable_Entity_Response(msg, exception=e).add(resp)
+                        except Exception as exception:
+                            UnprocEntityResponse(
+                                MSG_NOT_POSSIBLE_ID.format('delete',
+                                                           self.name,
+                                                           hit.meta.id),
+                                exception).add(resp)
                 else:
-                    msg = f'{self.names.capitalize()} based on the request {{query}} not found'
-                    Not_Found_Response(msg, query=req_data).apply(resp)
-            except Exception as e:
-                msg = f'Not possible to delete {self.names} with the request {{query}}'
-                Unprocessable_Entity_Response(msg, exception=e, query=req_data).apply(resp)
+                    NotFoundResponse(MSG_NOT_FOUND.format(
+                        self.names.capitalize()), query=req_data).apply(resp)
+            except Exception as exception:
+                UnprocEntityResponse(MSG_NOT_POSSIBLE.format('delete',
+                                                             self.names),
+                                     exception, query=req_data).apply(resp)
         else:
             resp_data.apply(resp)
 
     def rm_ignore_fields(self, data):
         for ign_f in self.ignore_fields:
             if data.pop(ign_f, None) is not None:
-                self.log.info(f'Field {ign_f} in the request ignored when update {self.names}')
+                self.log.info(
+                    f'Field {ign_f} in the request ignored when update {self.names}')  # noqa: E501
 
     @ classmethod
     def get_lcp_handler(cls, method):
-        def __default(instance, req, resp):
+        def __default(_, __, resp):
             return resp
 
         return cls.lcp_handler.get(method, __default)

@@ -1,11 +1,9 @@
-from elasticsearch_dsl import Boolean, Date
-from elasticsearch_dsl import InnerDoc as Inner_Doc
-from elasticsearch_dsl import Integer, Nested, Text
+from elasticsearch_dsl import Boolean, Date, InnerDoc, Integer, Nested, Text
 
-from document.base import Base_Document
+from document.base import BaseDocument
 
 
-class LCP_Document_Inner_Doc(Inner_Doc):
+class LCPDocumentInnerDoc(InnerDoc):
     """LCP configuration data."""
 
     port = Integer(required=True)
@@ -15,13 +13,13 @@ class LCP_Document_Inner_Doc(Inner_Doc):
     last_heartbeat = Date()
 
 
-class Exec_Env_Document(Base_Document):
+class ExecEnvDocument(BaseDocument):
     """Represents an execution environment."""
 
     # id already defined by Elasticsearch
     hostname = Text(required=True)
     type_id = Text(required=True)
-    lcp = Nested(LCP_Document_Inner_Doc)
+    lcp = Nested(LCPDocumentInnerDoc)
     description = Text()
     enabled = Boolean(required=True)
 
@@ -31,7 +29,7 @@ class Exec_Env_Document(Base_Document):
         name = 'exec-env'
 
 
-class Exec_Env_Type_Document(Base_Document):
+class ExecEnvTypeDocument(BaseDocument):
     """Type of execution environment. Example: virtual machine or container."""
 
     # id already defined by Elasticsearch

@@ -1,19 +1,19 @@
-from resource.base import Base_Resource
+from resource.base import BaseResource
 
 from docstring import docstring
-from document.event import Event_Document
-from schema.event import Event_Schema
+from document.event import EventDocument
+from schema.event import EventSchema
 
 
 @docstring(ext='yaml')
-class Event_Resource(Base_Resource):
-    doc = Event_Document
+class EventResource(BaseResource):
+    doc = EventDocument
     name = 'event'
     names = name
     routes = '/event/'
-    schema = Event_Schema
+    schema = EventSchema
 
 
 @docstring(ext='yaml')
-class Event_Selected_Resource(Event_Resource):
+class EventSelectedResource(EventResource):
     routes = '/event/{id}'

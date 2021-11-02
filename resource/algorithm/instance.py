@@ -1,22 +1,22 @@
 from resource.algorithm.handler.lcp import LCP
-from resource.base import Base_Resource
+from resource.base import BaseResource
 
 from docstring import docstring
-from document.algorithm.instance import Algorithm_Instance_Document
-from schema.algorithm.instance import Algorithm_Instance_Schema
+from document.algorithm.instance import AlgorithmInstanceDocument
+from schema.algorithm.instance import AlgorithmInstanceSchema
 
 
 @docstring(ext='yaml')
-class Algorithm_Instance_Resource(Base_Resource):
-    doc = Algorithm_Instance_Document
+class AlgorithmInstanceResource(BaseResource):
+    doc = AlgorithmInstanceDocument
     name = 'algorithm instance'
     names = 'algorithm instances'
     routes = '/instance/algorithm/'
-    schema = Algorithm_Instance_Schema
+    schema = AlgorithmInstanceSchema
     lcp_handler = {'post': LCP.handler, 'put': LCP.handler}
     ignore_fields = ['operations']
 
 
 @docstring(ext='yaml')
-class Algorithm_Instance_Selected_Resource(Algorithm_Instance_Resource):
+class AlgorithmInstanceSelectedResource(AlgorithmInstanceResource):
     routes = '/instance/algorithm/{id}'

@@ -1,5 +1,7 @@
-from elasticsearch_dsl import connections
 from time import sleep
+
+from elasticsearch_dsl import connections
+
 from utils.log import Log
 
 
@@ -9,7 +11,8 @@ def connection(endpoint, timeout, retry_period):
         log.info(f'Start connection to Elasticsearch ({endpoint})')
         connections.create_connection(hosts=endpoint, timeout=timeout)
     except Exception as exception:
-        log.exception(f'Connection to Elasticsearch ({endpoint}) not possible', exception)
+        log.exception(f'Connection to Elasticsearch ({endpoint}) not possible',
+                      exception)
         log.warn(f'Try again in {retry_period} seconds')
         sleep(retry_period)
         connection(endpoint, timeout, retry_period)

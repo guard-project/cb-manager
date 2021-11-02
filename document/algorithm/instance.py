@@ -1,11 +1,9 @@
-from elasticsearch_dsl import Date
-from elasticsearch_dsl import InnerDoc as Inner_Doc
-from elasticsearch_dsl import Nested, Text
+from elasticsearch_dsl import Date, InnerDoc, Nested, Text
 
-from document.base import Base_Document
+from document.base import BaseDocument
 
 
-class Algorithm_Instance_Parameter_Inner_Doc(Inner_Doc):
+class AlgorithmInstanceParameterInnerDoc(InnerDoc):
     """Parameter of the algorithm instance."""
 
     id = Text(required=True)
@@ -13,12 +11,12 @@ class Algorithm_Instance_Parameter_Inner_Doc(Inner_Doc):
     # value
 
 
-class Algorithm_Instance_Document(Base_Document):
+class AlgorithmInstanceDocument(BaseDocument):
     """Represents an algorithm instance."""
 
     # id already defined by Elasticsearch
     algorithm_catalog_id = Text(required=True)
-    parameters = Nested(Algorithm_Instance_Parameter_Inner_Doc)
+    parameters = Nested(AlgorithmInstanceParameterInnerDoc)
     description = Text()
 
     class Index:
@@ -27,24 +25,25 @@ class Algorithm_Instance_Document(Base_Document):
         name = 'algorithm-instance'
 
     def edit_parameter(self, parameter):
-        so = self.Status_Operation
-        id = parameter.get('id', None)
-        ts = parameter.get('timestamp', None)
+        state_op = self.StatusOperation
+        param_id = parameter.get('id', None)
+        timestamp = parameter.get('timestamp', None)
         value = parameter.get('value', {})
         new_value = value.get('new', None)
         if new_value is not None:
             value['new'] = new_value = str(value['new'])  # FIXME improve
             value['old'] = str(value.get('old', None))
-            for p in self.parameters:
-                if p.id == id:
-                    if p.value.new != new_value or p.timestamp != ts:
-                        p.value = value
-                        p.timestamp = ts
-                        return so.UPDATED
-                    return so.NOT_MODIFIED
+            for param in self.parameters:
+                if param.id == param_id:
+                    if param.value.new != new_value:
+                        param.value = value
+                        param.timestamp = timestamp
+                        return state_op.UPDATED
+                    return state_op.NOT_MODIFIED
             parameter.pop('type', None)
             parameter.pop('data', None)
             parameter['value'] = value
-            self.parameters.append(Algorithm_Instance_Parameter_Inner_Doc(**parameter))
-            return so.UPDATED
-        return so.NOT_MODIFIED
+            self.parameters.append(
+                AlgorithmInstanceParameterInnerDoc(**parameter))
+            return state_op.UPDATED
+        return state_op.NOT_MODIFIED

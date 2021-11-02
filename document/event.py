@@ -1,7 +1,7 @@
-from document.base import Base_Document
+from document.base import BaseDocument
 
 
-class Event_Document(Base_Document):
+class EventDocument(BaseDocument):
     """Represents the stored events."""
 
     # id already defined by Elasticsearch

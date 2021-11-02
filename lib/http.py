@@ -3,7 +3,7 @@ from http import HTTPStatus as HTTP_Status
 from utils.log import Log
 
 
-class HTTP_Method(object):
+class HTTPMethod(object):
     """Constants representing various HTTP request methods."""
 
     GET = 'get'
@@ -26,39 +26,40 @@ code_priority_order = cpo = {
 
 
 def __lt(code_a, code_b):
-    pa = __get(code_a)
-    pb = __get(code_b)
-    return pa is not None and pb is not None and pa < pb
+    prior_a = __get(code_a)
+    prior_b = __get(code_b)
+    return prior_a is not None and prior_b is not None and prior_a < prior_b
 
 
 def __lte(code_a, code_b):
-    pa = __get(code_a)
-    pb = __get(code_b)
-    return pa is not None and pb is not None and pa <= pb
+    prior_a = __get(code_a)
+    prior_b = __get(code_b)
+    return prior_a is not None and prior_b is not None and prior_a <= prior_b
 
 
 def __gt(code_a, code_b):
-    pa = __get(code_a)
-    pb = __get(code_b)
-    return pa is not None and pb is not None and pa > pb
+    prior_a = __get(code_a)
+    prior_b = __get(code_b)
+    return prior_a is not None and prior_b is not None and prior_a > prior_b
 
 
 def __gte(code_a, code_b):
-    pa = __get(code_a)
-    pb = __get(code_b)
-    return pa is not None and pb is not None and pa >= pb
+    prior_a = __get(code_a)
+    prior_b = __get(code_b)
+    return prior_a is not None and prior_b is not None and prior_a >= prior_b
 
 
 def __eq(code_a, code_b):
-    pa = __get(code_a)
-    pb = __get(code_b)
-    return pa is not None and pb is not None and pa == pb
+    prior_a = __get(code_a)
+    prior_b = __get(code_b)
+    return prior_a is not None and prior_b is not None and prior_a == prior_b
 
 
 def __get(code):
-    po = cpo.get(code, None)
-    if po is None:
+    prior_order = cpo.get(code, None)
+    if prior_order is None:
         Log.get('http-lib').warn(f'{code} without priority order.')
+    return prior_order
 
 
 HTTP_Status.lt = __lt
