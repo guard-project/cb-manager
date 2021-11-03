@@ -1,7 +1,7 @@
 from threading import Thread, Timer
 
 from requests import post
-from requests.exceptions import ConnectionRequestError, ConnectTimeout
+from requests.exceptions import ConnectionError, ConnectTimeout
 
 from document.exec_env import ExecEnvDocument
 from lib.http import HTTP_Status
@@ -59,7 +59,7 @@ def heartbeat_exec_env(exec_env):
             log.notice(f'Exec-env {lbl} not enabled')
     except ConnectTimeout:
         log.error(f'Connection timeout with exec-env {lbl}')
-    except ConnectionRequestError:
+    except ConnectionError:
         log.error(f'Connection refused with exec-env {lbl}')
     except Exception as exception:
         log.exception(
