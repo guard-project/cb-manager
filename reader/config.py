@@ -42,8 +42,8 @@ class ConfigReader:
 
         self.elastic_apm_enabled = self.cfg_parser.getboolean(
             'elastic-apm', 'enabled', fallback=False)
-        self.elastic_apm_server = self.cfg_parser.get('elastic-apm', 'server',
-                                                      fallback='http://localhost:8200')
+        self.elastic_apm_server = self.cfg_parser.get(
+            'elastic-apm', 'server', fallback='http://localhost:8200')
 
         self.log_config = self.cfg_parser.get(
             'log', 'config', fallback='log.yaml')
