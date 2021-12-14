@@ -19,4 +19,4 @@ class AlgorithmInstanceResource(BaseResource):
 
 @docstring(ext='yaml')
 class AlgorithmInstanceSelectedResource(AlgorithmInstanceResource):
-    routes = '/instance/algorithm/{id}'
+    routes = '/instance/algorithm/{_id}'

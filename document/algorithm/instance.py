@@ -1,9 +1,9 @@
-from elasticsearch_dsl import Date, InnerDoc, Nested, Text
+from elasticsearch_dsl import Date, Nested, Text
 
-from document.base import BaseDocument
+from document.base import BaseDocument, BaseInnerDoc
 
 
-class AlgorithmInstanceParameterInnerDoc(InnerDoc):
+class AlgorithmInstanceParameterInnerDoc(BaseInnerDoc):
     """Parameter of the algorithm instance."""
 
     id = Text(required=True)

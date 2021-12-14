@@ -11,7 +11,7 @@ To run |CB|-Manager using ``python3``:
     python3 main.py
 
 
-.. autoprogram:: reader.arg:Arg_Reader.init()
+.. autoprogram:: reader.arg:ArgReader.init()
 
 
 .. |CB| replace:: :abbr:`CB (Context Broker)`

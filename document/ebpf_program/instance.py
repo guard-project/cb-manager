@@ -1,24 +1,25 @@
-from elasticsearch_dsl import Date, InnerDoc, Nested, Text
+from elasticsearch_dsl import Date, Nested, Text
 
-from document.base import BaseDocument
+from document.base import BaseDocument, BaseInnerDoc
 
 
-class eBPFProgramInstanceParameterInnerDoc(InnerDoc):
+class _eBPFProgramInstanceParameterInnerDoc(BaseInnerDoc):
     """Parameter of the eBPF Program instance installed
        in an execution environment."""
 
     id = Text(required=True)
-    # value = Raw() # FIXME Raw?
+    # FIXME Raw?
+    # value = Raw()
     timestamp = Date(required=True)
 
 
-class eBPFProgramInstanceDocument(BaseDocument):
+class _eBPFProgramInstanceDocument(BaseDocument):
     """Represents an eBPF program installed in an execution environment."""
 
     # id already defined by Elasticsearch
     ebpf_program_catalog_id = Text(required=True)
     exec_env_id = Text(required=True)
-    parameters = Nested(eBPFProgramInstanceParameterInnerDoc)
+    parameters = Nested(_eBPFProgramInstanceParameterInnerDoc)
     description = Text()
 
     class Index:
@@ -39,5 +40,5 @@ class eBPFProgramInstanceDocument(BaseDocument):
                     return status_op.UPDATED
                 return status_op.NOT_MODIFIED
         self.parameters.append(
-            eBPFProgramInstanceParameterInnerDoc(**parameter))
+            _eBPFProgramInstanceParameterInnerDoc(**parameter))
         return status_op.UPDATED

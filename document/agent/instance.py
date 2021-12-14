@@ -1,23 +1,23 @@
-from elasticsearch_dsl import Date, InnerDoc, Nested, Text
+from elasticsearch_dsl import Date, Nested, Text
 
-from document.base import BaseDocument
+from document.base import BaseDocument, BaseInnerDoc
 
 
-class AgentInstanceActionInnerDoc(InnerDoc):
+class AgentInstanceActionInnerDoc(BaseInnerDoc):
     """Action of the agent instance installed in an execution environment."""
 
     id = Text(required=True)
     timestamp = Date(required=True)
 
 
-class AgentInstanceParameterValueInnerDoc(InnerDoc):
-    """Parameter value of the agent instance installed
+class AgentInstanceParameterValueInnerDoc(BaseInnerDoc):
+    """Parameter value of the agent instanceInnerDoc installed
        in an execution environment."""
     new = Text(required=True)
     old = Text(required=True)
 
 
-class AgentInstanceParameterInnerDoc(InnerDoc):
+class AgentInstanceParameterInnerDoc(BaseInnerDoc):
     """Parameter of the agent instance installed
        in an execution environment."""
 
@@ -26,7 +26,7 @@ class AgentInstanceParameterInnerDoc(InnerDoc):
     value = Nested(AgentInstanceParameterValueInnerDoc)
 
 
-class AgentInstanceResourceInnerDoc(InnerDoc):
+class AgentInstanceResourceInnerDoc(BaseInnerDoc):
     """Resource of the agent instance installed in an execution environment."""
 
     id = Text(required=True)

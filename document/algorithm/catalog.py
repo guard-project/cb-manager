@@ -1,9 +1,9 @@
-from elasticsearch_dsl import Boolean, InnerDoc, Nested, Text
+from elasticsearch_dsl import Boolean, Nested, Text
 
-from document.base import BaseDocument
+from document.base import BaseDocument, BaseInnerDoc
 
 
-class AlgorithmCatalogParameterInnerDoc(InnerDoc):
+class AlgorithmCatalogParameterInnerDoc(BaseInnerDoc):
     """Algorithm parameter."""
 
     id = Text(required=True)

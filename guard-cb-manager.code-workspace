@@ -4,5 +4,10 @@
             "path": ".",
             "name": "GUARD CB-Manager"
         }
-    ]
+    ],
+    "settings": {
+        "cSpell.words": [
+            "conn"
+        ]
+    }
 }

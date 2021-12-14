@@ -30,11 +30,10 @@ def api(title, version):
     if ArgReader.db.auth:
         log.notice('JWT authentication enabled')
         def user_loader(token): return {'user': token}
-        secret_key = ArgReader.db.auth_secret_key,
+        secret_key = ArgReader.db.auth_secret_key
         auth_header_prefix = ArgReader.db.auth_header_prefix
-        jwt_auth_backend = JWTAuthBackend(user_loader,
-                                          secret_key,
-                                          auth_header_prefix)
+        jwt_auth_backend = JWTAuthBackend(user_loader, secret_key,
+                                          auth_header_prefix=auth_header_prefix)
         exempt_routes = ['/api/doc', '/api/doc/swagger.json']
         middlewares.append(FalconAuthMiddleware(
             jwt_auth_backend, exempt_routes))

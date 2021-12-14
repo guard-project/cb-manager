@@ -16,7 +16,7 @@ class NetworkLinkResource(BaseResource):
 
 @docstring(ext='yaml')
 class NetworkLinkSelectedResource(NetworkLinkResource):
-    routes = '/network-link/{id}'
+    routes = '/network-link/{_id}'
 
 
 @docstring(ext='yaml')
@@ -30,4 +30,4 @@ class NetworkLinkTypeResource(BaseResource):
 
 @docstring(ext='yaml')
 class NetworkLinkTypeSelectedResource(NetworkLinkTypeResource):
-    routes = '/type/network-link/{id}'
+    routes = '/type/network-link/{_id}'

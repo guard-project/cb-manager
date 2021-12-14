@@ -16,7 +16,7 @@ class ExecEnvResource(BaseResource):
 
 @docstring(ext='yaml')
 class ExecEnvSelectedResource(ExecEnvResource):
-    routes = '/exec-env/{id}'
+    routes = '/exec-env/{_id}'
 
 
 @docstring(ext='yaml')
@@ -30,4 +30,4 @@ class ExecEnvTypeResource(BaseResource):
 
 @docstring(ext='yaml')
 class ExecEnvTypeSelectedResource(ExecEnvTypeResource):
-    routes = '/exec-env-type/{id}'
+    routes = '/exec-env-type/{_id}'

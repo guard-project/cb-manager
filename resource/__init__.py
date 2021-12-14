@@ -9,10 +9,10 @@ from resource.algorithm.instance import (AlgorithmInstanceResource,
 from resource.connection import ConnectionResource, ConnectionSelectedResource
 from resource.dashboard import DashboardResource
 from resource.data import DataResource, DataSelectedResource
-from resource.ebpf_program.catalog import (eBPFProgramCatalogResource,
-                                           eBPFProgramCatalogSelectedResource)
+from resource.ebpf_program.catalog import (_eBPFProgramCatalogResource,
+                                           _eBPFProgramCatalogSelectedResource)
 from resource.ebpf_program.instance import (
-    eBPFProgramInstanceResource, eBPFProgramInstanceSelectedResource)
+    _eBPFProgramInstanceResource, _eBPFProgramInstanceSelectedResource)
 from resource.event import EventResource, EventSelectedResource
 from resource.exec_env import (ExecEnvResource, ExecEnvSelectedResource,
                                ExecEnvTypeResource,
@@ -34,8 +34,8 @@ db = [
     ConnectionResource, ConnectionSelectedResource,
     DashboardResource,
     DataResource, DataSelectedResource,
-    eBPFProgramCatalogResource, eBPFProgramCatalogSelectedResource,
-    eBPFProgramInstanceResource, eBPFProgramInstanceSelectedResource,
+    _eBPFProgramCatalogResource, _eBPFProgramCatalogSelectedResource,
+    _eBPFProgramInstanceResource, _eBPFProgramInstanceSelectedResource,
     EventResource, EventSelectedResource,
     ExecEnvResource, ExecEnvSelectedResource,
     ExecEnvTypeResource, ExecEnvTypeSelectedResource,

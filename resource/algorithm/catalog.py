@@ -16,4 +16,4 @@ class AlgorithmCatalogResource(BaseResource):
 
 @docstring(ext='yaml')
 class AlgorithmCatalogSelectedResource(AlgorithmCatalogResource):
-    routes = '/catalog/algorithm/{id}'
+    routes = '/catalog/algorithm/{_id}'

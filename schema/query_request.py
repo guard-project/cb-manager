@@ -74,4 +74,4 @@ class QueryRequestSchema(BaseSchema):
     limit = Nested(QueryRequestLimitSchema,
                    description='Limit the number of items to return.')
     force = Boolean(default=False, example=True,
-                    description='Force the execution of the request even there are some errors (example: delete a inconstent entries).')  # noqa: E501
+                    description='Force the execution of the request even there are some errors (example: delete a inconsistent entries).')  # noqa: E501

@@ -1,58 +1,58 @@
 from marshmallow import Schema, validate
 from marshmallow.fields import Bool, Nested, Raw, Str
 
-from document.ebpf_program.catalog import eBPFProgramCatalogDocument
+from document.ebpf_program.catalog import _eBPFProgramCatalogDocument
 from schema.agent.catalog import PARAMETER_TYPES
 from schema.base import BaseSchema
 from schema.validate import UniqueList
 from utils.schema import ListOrOne
 
 
-class eBPFProgramCatalogConfigMetricOpenMetricsMetadataLabelSchema(Schema):
+class _eBPFProgramCatalogConfigMetricOpenMetricsMetadataLabelSchema(Schema):
     """eBPF program Open Metrics metadata label."""
 
     name = Str(required=True, example='IP_PROTO', description='Label name.')
     value = Str(required=True, example='UDP', description='Label value.')
 
 
-class eBPFProgramCatalogConfigMetricOpenMetricsMetadataSchema(Schema):
+class _eBPFProgramCatalogConfigMetricOpenMetricsMetadataSchema(Schema):
     """eBPF program Open Metrics metadata."""
 
     type = Str(required=True, example='counter', description='Metric type.')
     help = Str(example='This metric represents the number of packets that has travelled trough this probe.',  # noqa: E501
                description='Metric help.')
-    labels = Nested(eBPFProgramCatalogConfigMetricOpenMetricsMetadataLabelSchema,  # noqa: E501
+    labels = Nested(_eBPFProgramCatalogConfigMetricOpenMetricsMetadataLabelSchema,  # noqa: E501
                     many=True, unknown='INCLUDE',
                     description='Labels of Open Metrics Metadata.',
                     validate=UniqueList.apply('name'),
                     error_messages=UniqueList.error_messages)
 
 
-class eBPFProgramCatalogConfigMetricSchema(Schema):
+class _eBPFProgramCatalogConfigMetricSchema(Schema):
     """eBPF program metric."""
 
     name = Str(required=True, example='packets_total',
                description='Metric name.')
     map_name = Str(required=True, example='PKT_COUNTER', data_key='map-name',
                    description='Mapping value in the code.')
-    open_metrics_metadata = Nested(eBPFProgramCatalogConfigMetricOpenMetricsMetadataSchema,  # noqa: E501
+    open_metrics_metadata = Nested(_eBPFProgramCatalogConfigMetricOpenMetricsMetadataSchema,  # noqa: E501
                                    data_key='open-metrics-metadata',
                                    unknown='INCLUDE',
                                    description='Open Metrics Metadata.')
 
 
-class eBPFProgramCatalogConfigSchema(Schema):
+class _eBPFProgramCatalogConfigSchema(Schema):
     """eBPF program configuration."""
 
     code = ListOrOne(Str, required=True,
                      description='Code of the eBPF program.')
-    metrics = Nested(eBPFProgramCatalogConfigMetricSchema, many=True,
+    metrics = Nested(_eBPFProgramCatalogConfigMetricSchema, many=True,
                      unknown='INCLUDE', description='eBPF program metrics.',
                      validate=UniqueList.apply('name'),
                      error_messages=UniqueList.error_messages)
 
 
-class eBPFProgramCatalogParameterSchema(Schema):
+class _eBPFProgramCatalogParameterSchema(Schema):
     """eBPF program configuration."""
 
     id = Str(required=True, example='interface', description='Parameter id.')
@@ -68,15 +68,15 @@ class eBPFProgramCatalogParameterSchema(Schema):
     example = Raw(example='eno0', description='Example of parameter value.')
 
 
-class eBPFProgramCatalogSchema(BaseSchema):
+class _eBPFProgramCatalogSchema(BaseSchema):
     """Represents an eBPF program in the catalog."""
 
-    doc = eBPFProgramCatalogDocument
+    doc = _eBPFProgramCatalogDocument
     id = Str(required=True, example='packet-capture',
              description='Id of the eBPF_Program_ in the catalog.')
-    config = Nested(eBPFProgramCatalogConfigSchema,
+    config = Nested(_eBPFProgramCatalogConfigSchema,
                     required=True, unknown='INCLUDE')
-    parameters = Nested(eBPFProgramCatalogParameterSchema, many=True,
+    parameters = Nested(_eBPFProgramCatalogParameterSchema, many=True,
                         unknown='INCLUDE', validate=UniqueList.apply('id'),
                         error_messages=UniqueList.error_messages)
     description = Str(example='Transparent service to capture packets flowing through the interface it is attached to, apply filters and obtain capture in .pcap format.',  # noqa: E501

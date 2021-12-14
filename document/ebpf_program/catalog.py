@@ -1,40 +1,41 @@
-from elasticsearch_dsl import Boolean, InnerDoc, Nested, Text
+from elasticsearch_dsl import Boolean, Nested, Text
 
-from document.base import BaseDocument
+from document.base import BaseDocument, BaseInnerDoc
 
 
-class eBPFProgramCatalogConfigMetricOpenMetricsMetadataLabelInnerDoc(InnerDoc):
+class _eBPFProgramCatalogConfigMetricOpenMetricsMetadataLabelInnerDoc(
+        BaseInnerDoc):
     """eBPF program open metrics label."""
 
     name = Text(required=True)
     value = Text(required=True)
 
 
-class eBPFProgramCatalogConfigMetricOpenMetricsMetadataInnerDoc(InnerDoc):
+class _eBPFProgramCatalogConfigMetricOpenMetricsMetadataInnerDoc(BaseInnerDoc):
     """eBPF program open metrics metadata."""
 
     type = Text(required=True)
     help = Text()
     labels = Nested(
-        eBPFProgramCatalogConfigMetricOpenMetricsMetadataLabelInnerDoc)
+        _eBPFProgramCatalogConfigMetricOpenMetricsMetadataLabelInnerDoc)
 
 
-class eBPFProgramCatalogConfigMetricInnerDoc(InnerDoc):
+class _eBPFProgramCatalogConfigMetricInnerDoc(BaseInnerDoc):
     """eBPF program metric data."""
 
     name = Text(required=True)
     map_name = Text()  # FIXME required=True (map-name the correct name)
-    open_metrics_metadata = Nested(eBPFProgramCatalogConfigMetricOpenMetricsMetadataInnerDoc)  # noqa: E501
+    open_metrics_metadata = Nested(_eBPFProgramCatalogConfigMetricOpenMetricsMetadataInnerDoc)  # noqa: E501
 
 
-class eBPFProgramCatalogConfigInnerDoc(InnerDoc):
+class _eBPFProgramCatalogConfigInnerDoc(BaseInnerDoc):
     """eBPF program parameter configuration."""
 
     code = Text(required=True)
-    metrics = Nested(eBPFProgramCatalogConfigMetricInnerDoc)
+    metrics = Nested(_eBPFProgramCatalogConfigMetricInnerDoc)
 
 
-class eBPFProgramCatalogParameterInnerDoc(InnerDoc):
+class _eBPFProgramCatalogParameterInnerDoc(BaseInnerDoc):
     """eBPF program parameter."""
 
     id = Text(required=True)
@@ -46,12 +47,12 @@ class eBPFProgramCatalogParameterInnerDoc(InnerDoc):
     example = Text()
 
 
-class eBPFProgramCatalogDocument(BaseDocument):
+class _eBPFProgramCatalogDocument(BaseDocument):
     """Represents an eBPF program in the catalog."""
 
     # id already defined by Elasticsearch
-    config = Nested(eBPFProgramCatalogConfigInnerDoc, required=True)
-    parameters = Nested(eBPFProgramCatalogParameterInnerDoc)
+    config = Nested(_eBPFProgramCatalogConfigInnerDoc, required=True)
+    parameters = Nested(_eBPFProgramCatalogParameterInnerDoc)
     description = Text()
 
     class Index:

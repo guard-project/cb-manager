@@ -16,4 +16,4 @@ class EventResource(BaseResource):
 
 @docstring(ext='yaml')
 class EventSelectedResource(EventResource):
-    routes = '/event/{id}'
+    routes = '/event/{_id}'

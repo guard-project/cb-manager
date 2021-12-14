@@ -75,8 +75,8 @@ class Log:
             'levels', {}), patcher=Formatter.apply)
 
         for level in levels:
-            cls.get('log').info(f"""Found additional log level customization:
-                                    {level['icon']:<3} {level['name']}""")
+            cls.get('log').info(
+                f"Found additional log level customization: {level['icon']:<3} {level['name']}")  # noqa: E501
 
     @classmethod
     def get(cls, name=about_name):

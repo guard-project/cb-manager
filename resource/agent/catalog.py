@@ -16,4 +16,4 @@ class AgentCatalogResource(BaseResource):
 
 @docstring(ext='yaml')
 class AgentCatalogSelectedResource(AgentCatalogResource):
-    routes = '/catalog/agent/{id}'
+    routes = '/catalog/agent/{_id}'

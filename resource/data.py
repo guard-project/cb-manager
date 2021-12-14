@@ -16,4 +16,4 @@ class DataResource(BaseResource):
 
 @docstring(ext='yaml')
 class DataSelectedResource(DataResource):
-    routes = '/data/{id}'
+    routes = '/data/{_id}'

@@ -4,7 +4,7 @@ from requests import delete as delete_req
 from requests import post as post_req
 from requests import put as put_req
 
-from document.ebpf_program.catalog import eBPFProgramCatalogDocument
+from document.ebpf_program.catalog import _eBPFProgramCatalogDocument
 from document.exec_env import ExecEnvDocument
 from lib.response import UnprocEntityResponse
 from lib.token import create_token
@@ -53,7 +53,7 @@ class LCP(BaseLCP):
 
     @ classmethod
     def __handler(cls, instance, req, resp, caller, data):
-        document = eBPFProgramCatalogDocument
+        document = _eBPFProgramCatalogDocument
         _id = instance.ebpf_program_catalog_id
         label = 'eBPF Program Catalog'
         ebpf_program_catalog = cls.from_doc(document, _id, label, resp)

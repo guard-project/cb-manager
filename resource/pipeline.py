@@ -16,4 +16,4 @@ class PipelineResource(BaseResource):
 
 @docstring(ext='yaml')
 class PipelineSelectedResource(PipelineResource):
-    routes = '/pipeline/{id}'
+    routes = '/pipeline/{_id}'

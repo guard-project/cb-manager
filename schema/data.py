@@ -3,7 +3,7 @@ from marshmallow.fields import Str
 
 from document.agent.instance import AgentInstanceDocument
 from document.data import DataDocument
-from document.ebpf_program.instance import eBPFProgramInstanceDocument
+from document.ebpf_program.instance import _eBPFProgramInstanceDocument
 from schema.base import BaseSchema
 from schema.validate import In
 from utils.datetime import FORMAT
@@ -23,7 +23,7 @@ class DataSchema(BaseSchema):
                                    example='packet-capture@apache',
                                    description='Id of the eBPF program instance in the execution environment that collected the data',  # noqa: E501
                                    validate=In.apply(
-                                       eBPFProgramInstanceDocument.get_ids),
+                                       _eBPFProgramInstanceDocument.get_ids),
                                    error_messages=In.error_messages)
     timestamp_event = Date_Time(format=FORMAT, readonly=True,
                                 example='2019/02/14 15:23:30',

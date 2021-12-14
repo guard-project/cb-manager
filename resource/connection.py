@@ -16,4 +16,4 @@ class ConnectionResource(BaseResource):
 
 @docstring(ext='yaml')
 class ConnectionSelectedResource(ConnectionResource):
-    routes = '/connection/{id}'
+    routes = '/connection/{_id}'

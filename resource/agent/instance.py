@@ -19,4 +19,4 @@ class AgentInstanceResource(BaseResource):
 
 @docstring(ext='yaml')
 class AgentInstanceSelectedResource(AgentInstanceResource):
-    routes = '/instance/agent/{id}'
+    routes = '/instance/agent/{_id}'

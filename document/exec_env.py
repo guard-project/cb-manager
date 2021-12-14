@@ -1,9 +1,9 @@
-from elasticsearch_dsl import Boolean, Date, InnerDoc, Integer, Nested, Text
+from elasticsearch_dsl import Boolean, Date, Integer, Nested, Text
 
-from document.base import BaseDocument
+from document.base import BaseDocument, BaseInnerDoc
 
 
-class LCPDocumentInnerDoc(InnerDoc):
+class LCPDocumentInnerDoc(BaseInnerDoc):
     """LCP configuration data."""
 
     port = Integer(required=True)

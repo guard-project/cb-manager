@@ -1,8 +1,6 @@
 Delete the {self.name} with the given `id` and filtered by the query in the request body.
-
 ---
-
-summary: {self.name!c} Delete (Single).
+summary: "{self.name!c} Delete (Single)."
 description: Delete the {self.name} with the given `id` and filtered by the query in the request body.
 parameters:
   - name: id
@@ -12,11 +10,11 @@ parameters:
   - name: payload
     required: true
     in: body
-    schema: Query_Request_Schema
-tags: [{self.doc.Index.name}]
+    schema: QueryRequestSchema
+tags: ["{self.doc.Index.name}"]
 responses:
   205:
-    description: {self.name!c} with the given `id` correctly deleted.
+    description: "{self.name!c} with the given `id` correctly deleted."
     schema:
       type: array
       items: Reset_Content_Response_Schema
@@ -27,7 +25,7 @@ responses:
     description: Authentication failed.
     schema: Unauthorized_Response_Schema
   404:
-    description: {self.name!c} with the given `id` and based on the request query not found.
+    description: "{self.name!c} with the given `id` and based on the request query not found."
     schema: Not_Found_Response_Schema
   406:
     description: Request validation failed.

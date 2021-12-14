@@ -1,6 +1,6 @@
 from threading import Thread, Timer
 
-from requests import post
+from requests import get, post
 from requests.exceptions import ConnectionError, ConnectTimeout
 
 from document.agent.catalog import AgentCatalogDocument
@@ -14,7 +14,7 @@ from utils.log import Log
 def heartbeat():
     """Heartbeat procedure with the LCPs."""
     search = ExecEnvDocument.search()
-    res = search[0:search.count()].execute()
+    res = search[:search.count()].execute()
     threads = []
     for exec_env in res:
         if exec_env.lcp:
@@ -55,16 +55,14 @@ def heartbeat_exec_env(exec_env):
                 log.notice(f'Response: {resp.content}')
             if not lcp.https:
                 lcp.https = False
-            resp = get(f'{schema}://{exec_env.hostname}:{lcp.port}{endpoint_lcp}/poll', timeout=Arg_Reader.db.hb_timeout,
+            resp = get(f'{schema}://{exec_env.hostname}:{lcp.port}{endpoint_lcp}/poll',  # noqa F401
+                       timeout=ArgReader.db.hb_timeout,
                        headers={'Authorization': create_token()})
             if resp.status_code == HTTP_Status.OK:
                 data = resp.json()
                 for agent_cat_data in data.get('agentType', []):
-                    agent_cat = AgentCatalogDocument.get(
-                        id=agent_cat_data.pop('id'))
-                    for field, ac_data in agent_cat_data.items():
-                        setattr(agent_cat, field, ac_data)
-                    agent_cat.save()
+                    AgentCatalogDocument.from_agent_type(
+                        agent_cat_data)
                 exec_env_data = data.get('exec_env', {})
                 exec_env.meta.id = exec_env_data.pop('id')
                 for field, lcp_data in exec_env_data.pop('lcp', {}).items():
