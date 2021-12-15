@@ -97,7 +97,7 @@ class BaseResource(BaseMinimalResource):
         sch_obj = self.schema(many=is_list(req_data),
                               unknown='INCLUDE',
                               method=HTTPMethod.POST)
-        resp_data, valid = sch_obj.validate(data=req_data, id=_id)
+        resp_data, valid = sch_obj.validate(data=req_data, item_id=_id)
         if valid:
             req_data_wrap = wrap(req_data)
             if len(req_data_wrap) > 0:
@@ -148,7 +148,7 @@ class BaseResource(BaseMinimalResource):
                               unknown='INCLUDE',
                               partial=True,
                               method=HTTPMethod.PUT)
-        rsp_dt, valid = sch_obj.validate(data=req_data, id=_id)
+        rsp_dt, valid = sch_obj.validate(data=req_data, item_id=_id)
         if valid:
             req_data_wrap = wrap(req_data)
             if len(req_data_wrap) > 0:
