@@ -263,7 +263,7 @@ class BaseResource(BaseMinimalResource):
 
     @ classmethod
     def get_lcp_handler(cls, method):
-        def __default(_, __, resp):
+        def __default(instance, req, resp):
             return resp
 
         return cls.lcp_handler.get(method, __default)
