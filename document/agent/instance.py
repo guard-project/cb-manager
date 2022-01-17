@@ -100,3 +100,14 @@ class AgentInstanceDocument(BaseDocument):
         self.resources.append(_res_doc(id=res_id, timestamp=timestamp,
                                        content=cnt))
         return status_op.UPDATED
+
+    @staticmethod
+    def from_agent_instance(agent_instance, exec_env_id):
+        _id = agent_instance.pop('id', None)
+        agent_instance.pop('type', None)
+        agent_instance.pop('hasAgentType', None)
+        agent_instance['exec_env_id'] = exec_env_id
+        obj = AgentInstanceDocument.get_or_new(id=_id)
+        for field, data in agent_instance.items():
+            setattr(obj, field, data)
+        obj.save()
