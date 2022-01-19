@@ -80,14 +80,14 @@ def heartbeat_exec_env(exec_env):
                     agent_cat_data_id = agent_cat_data.get('id', None)
                     AgentCatalogDocument.from_agent_type(
                         agent_cat_data)
-                    log.success(f'Update agent catalog: {agent_cat_data_id} from {exec_env_id}')
+                    log.success(f'Update agent catalog: {agent_cat_data_id} from {exec_env_id}')  # noqa E501
                 # Agent Instances
                 for agent_inst_data in data.get('agentInstance', []):
-                        agent_inst_data_id =  agent_inst_data['id']
-                        agent_inst_data['agent_catalog_id'] = agent_inst_data['hasAgentType']
-                        AgentInstanceDocument.from_agent_instance(
-                                agent_inst_data, exec_env_id)
-                        log.success(f'Update agent instance: {agent_inst_data_id} from {exec_env_id}')
+                    agent_inst_data_id = agent_inst_data['id']
+                    agent_inst_data['agent_catalog_id'] = agent_inst_data['hasAgentType']  # noqa E501
+                    AgentInstanceDocument.from_agent_instance(
+                            agent_inst_data, exec_env_id)
+                    log.success(f'Update agent instance: {agent_inst_data_id} from {exec_env_id}')  # noqa E501
                 # LCP Sons
                 for lcp_son in data.pop('lcpSons', []):
                     lcp_son_id = lcp_son.pop('id', None)
