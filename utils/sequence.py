@@ -6,10 +6,7 @@ def expand(elements, **kwrds):
 
 
 def extract(elements, **kwargs):
-    output = {}
-    for key, val in kwargs.items():
-        output.update({key: elements.get(val, None)})
-    return output
+    return {key: elements.get(val, None) for key, val in kwargs.items()}
 
 
 def format(elements, data):
@@ -50,10 +47,7 @@ def iterate(source, *keys):
 
 def subset(elements, *keys, negation=False):
     def match(element):
-        if negation:
-            return element[0] not in keys
-        else:
-            return element[0] in keys
+        return element[0] not in keys if negation else element[0] in keys
     return dict(filter(match, elements.items()))
 
 
@@ -62,10 +56,8 @@ def table_to_dict(data, sep=' '):
     output = []
     for dr in data:
         vals = dr.split(sep)
-        item = {}
-        for k, v in zip(keys, vals):
-            item[k] = v
-        if len(item) > 0:
+        item = dict(zip(keys, vals))
+        if item:
             output.append(item)
     return output
 

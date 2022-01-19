@@ -61,24 +61,41 @@ def heartbeat_exec_env(exec_env):
                        headers={'Authorization': create_token()})
             if resp.status_code == HTTP_Status.OK:
                 data = resp.json()
+                # ExecEnv
                 exec_env_data = data.get('exec_env', {})
-                exec_env_id = exec_env_data.pop('id')
-                for agent_cat_data in data.get('agentType', []):
-                    AgentCatalogDocument.from_agent_type(
-                        agent_cat_data)
-                for agent_inst_data in data.get('agentInstance', []):
-                    agent_inst_data['agent_catalog_id'] = agent_inst_data['hasAgentType']
-                    AgentInstanceDocument.from_agent_instance(
-                        agent_inst_data, exec_env_id)
-                exec_env.meta.id = exec_env_id
+                exec_env.meta.id = exec_env_data.pop('id')
+                # LCP data
                 for field, lcp_data in exec_env_data.pop('lcp', {}).items():
                     setattr(exec_env.lcp, field, lcp_data)
+                # ExecEnv data
                 for field, ee_data in exec_env_data.items():
                     setattr(exec_env, field, ee_data)
                 log.success(f'Polling established with exec-env {lbl}')
             else:
                 log.warning(f'Polling not possible with exec-env {lbl}')
             exec_env.save()
+            if resp.status_code == HTTP_Status.OK:
+                # Agent Type (Catalog)
+                for agent_cat_data in data.get('agentType', []):
+                    agent_cat_data_id = agent_cat_data.get('id', None)
+                    AgentCatalogDocument.from_agent_type(
+                        agent_cat_data)
+                    log.success(f'Update agent catalog: {agent_cat_data_id} from {exec_env_id}')
+                # Agent Instances
+                for agent_inst_data in data.get('agentInstance', []):
+                        agent_inst_data_id =  agent_inst_data['id']
+                        agent_inst_data['agent_catalog_id'] = agent_inst_data['hasAgentType']
+                        AgentInstanceDocument.from_agent_instance(
+                                agent_inst_data, exec_env_id)
+                        log.success(f'Update agent instance: {agent_inst_data_id} from {exec_env_id}')
+                # LCP Sons
+                for lcp_son in data.pop('lcpSons', []):
+                    lcp_son_id = lcp_son.pop('id', None)
+                    exec_env_son = ExecEnvDocument.get_or_new(lcp_son_id)
+                    for field, ee_data in lcp_son.items():
+                        setattr(exec_env_son, field, ee_data)
+                    exec_env_son.save()
+                    log.success(f'Update exec-env/lcp: {lcp_son_id}')
         else:
             log.notice(f'Exec-env {lbl} not enabled')
     except ConnectTimeout:
