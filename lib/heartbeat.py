@@ -94,6 +94,7 @@ def heartbeat_exec_env(exec_env):
                     exec_env_son = ExecEnvDocument.get_or_new(lcp_son_id)
                     for field, ee_data in lcp_son.items():
                         setattr(exec_env_son, field, ee_data)
+                        exec_env_son.discovered = True
                     exec_env_son.save()
                     log.success(f'Update exec-env/lcp: {lcp_son_id}')
         else:
