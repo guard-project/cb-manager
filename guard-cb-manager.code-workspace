@@ -8,10 +8,15 @@
     "settings": {
         "cSpell.words": [
             "autopep",
+            "codestyle",
             "conn",
             "Ital",
+            "italtel",
             "mccabe",
-            "pyflakes"
+            "pipenv",
+            "pycallgraph",
+            "pyflakes",
+            "pylint"
         ]
     }
 }

@@ -28,13 +28,35 @@ PyJWT = {version = "==2.0.1", extras = ["crypto"]}
 PyYAML = "==5.4"
 
 [dev-packages]
-autopep8 = "==1.5.7"
-flake8 = "==3.9.2"
-mccabe = "==0.6.1"
-pycodestyle = "==2.7.0"
-pyflakes = "==2.3.1"
-toml = "==0.10.2"
-vprof = "==0.38"
+autopep8 = "*" # https://github.com/hhatto/autopep8
+black = "*" # https://github.com/psf/black
+flake8 = "*" # https://flake8.pycqa.org
+mccabe = "*" # https://github.com/PyCQA/mccabe
+pycallgraph = "*" # https://pycallgraph.readthedocs.io/en/master/
+pycodestyle = "*" # https://github.com/PyCQA/pycodestyle
+pyflakes = "*" # https://github.com/PyCQA/pyflakes
+pylint = "*" # https://pylint.org/
+setuptools = "==57.5.0" # for pycallgraph
+vprof = "*" # https://github.com/nvdv/vprof
 
 [requires]
 python_version = "3.10"
+
+[scripts]
+# program
+start = "bash scripts/start.sh"
+start-italtel = "bash scripts/start.sh italtel"
+requirements = "bash scripts/requirements.sh"
+# dev
+requirements-dev = "bash scripts/requirements-dev.sh"
+codestyle = "find src -iname '*.py' -exec pycodestyle --first {} \\;"
+complexity = "find src -iname '*.py' -exec python -m mccabe {} \\;"
+error-check = "python3 -m pyflakes src"
+format-black = "black src/"
+format-pep8 = "find src -iname '*.py' -exec autopep8 --in-place --aggressive --aggressive {} \\;"
+graph = "pycallgraph src/ --output=dev/graph.svg"
+linter = "find src -iname '*.py' -exec pylint {} \\;"
+profiler-start = "vprof -c cmh src/deployment.py --output-file dev/profiler.json"
+profiler-view = "vprof --input-file dev/profiler.json"
+style-guide = "flake8 src/"
+security-scan = "docker scan cnit_ml"
