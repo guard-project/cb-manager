@@ -175,7 +175,7 @@ To get the list of the algorithms available in the catalog:
             "select": [ "parameters" ],
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<algorithm-id>"
                 }
             }
@@ -300,7 +300,7 @@ To delete algorithms from the catalog, use:
         {
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<algorithm-id>"
                 }
             }

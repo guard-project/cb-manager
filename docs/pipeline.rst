@@ -135,7 +135,7 @@ To get the list of pipelines:
             "select": [ "id" ],
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<pipeline-id>"
                 }
             }
@@ -246,7 +246,7 @@ To delete pipelines, use:
         {
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<pipeline-id>"
                 }
             }

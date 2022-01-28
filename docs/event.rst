@@ -120,7 +120,7 @@ To get the list of events:
             "select": [ "id" ],
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<event-id>"
                 }
             }
@@ -231,7 +231,7 @@ To delete events, use:
         {
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<event-id>"
                 }
             }

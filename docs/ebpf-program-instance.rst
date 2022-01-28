@@ -149,7 +149,7 @@ To get the list of the |eBPF| program instances:
             "select": [ "exec_env_id" ],
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<ebpf-program-instance-id>"
                 }
             }
@@ -251,7 +251,7 @@ To delete |eBPF| program instances, use:
         {
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<ebpf-program-instance-id>"
                 }
             }

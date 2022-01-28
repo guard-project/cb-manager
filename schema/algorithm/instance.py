@@ -36,6 +36,7 @@ class AlgorithmInstanceSchema(BaseSchema):
                                validate=In.apply(
                                    AlgorithmCatalogDocument.get_ids),
                                error_messages=In.error_messages)
+    endpoint = Str(required=True, readonlye=False, example='10.0.0.1:9999', description='URL where the RESTable instance is running including the TCP port.')  # noqa: E501
     operations = Nested(AlgorithmInstanceOperationSchema,
                         unknown='INCLUDE', many=True,
                         description='List of algorithm instance operations.')

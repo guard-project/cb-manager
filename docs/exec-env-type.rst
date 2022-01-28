@@ -147,7 +147,7 @@ To get the list of execution environment types:
             "select": [ "name" ],
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<exec-env-type-id>"
                 }
             }
@@ -187,7 +187,7 @@ To update an execution environment type, use:
 
         {
             "id": "<exec-env-type-id>",
-            "name":"<new-formal-name>",
+            "name"":<new-formal-name>",
         }
 
     :param id: optional execution environment type id.
@@ -261,7 +261,7 @@ To delete an execution environment type, use:
         {
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<exec-env-type-id>"
                 }
             }

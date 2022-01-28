@@ -51,7 +51,7 @@ To create a new network link use the following |REST| call:
         {
             "id": "<network-link-id>",
             "type_id": "<network-link-type-id>",
-            "description":"<human-readable-description>"
+            "description"":<human-readable-description>"
         }
 
     :param id: optional network link id.
@@ -148,7 +148,7 @@ To get the list of network links:
             "select": [ "type_id" ],
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<network-link-id>"
                 }
             }
@@ -189,7 +189,7 @@ To update a network link, use:
 
         {
             "id": "<network-link-id>",
-            "type_id":"<new-network-link-type-id>",
+            "type_id"":<new-network-link-type-id>",
         }
 
     :param id: optional network link id.
@@ -264,7 +264,7 @@ To delete network links, use:
         {
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<network-link-id>"
                 }
             }

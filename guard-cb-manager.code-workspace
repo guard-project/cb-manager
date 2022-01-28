@@ -7,8 +7,11 @@
     ],
     "settings": {
         "cSpell.words": [
+            "autopep",
             "conn",
-            "Ital"
+            "Ital",
+            "mccabe",
+            "pyflakes"
         ]
     }
 }

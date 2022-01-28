@@ -231,7 +231,7 @@ To get the list of the agent instances:
             "select": [ "parameters" ],
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<agent-instance-id>"
                 }
             }
@@ -347,7 +347,7 @@ To delete agent instances, use:
         {
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<agent-instance-id>"
                 }
             }

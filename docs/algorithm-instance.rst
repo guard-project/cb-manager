@@ -16,6 +16,8 @@ Schema
 +--------------------------+-----------------+----------+----------+--------------+------------------+
 | ``algorithm_catalog_id`` | String          | True     | True     | False        | ddos-predictor   |
 +--------------------------+-----------------+----------+----------+--------------+------------------+
+| ``endpoint``             | String          | True     | False    | False        | 10.1.1.2:9999    |
++--------------------------+-----------------+----------+----------+--------------+------------------+
 | ``operations``           | List(Operation) | False    | True     | False        |                  |
 +--------------------------+-----------------+----------+----------+--------------+------------------+
 | ``description``          | String          | False    | False    | False        | DDoS predictor.  |
@@ -179,7 +181,7 @@ To get the list of the algorithm instances:
             "select": [ "parameters" ],
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<algorithm-instance-id>"
                 }
             }
@@ -284,7 +286,7 @@ To delete algorithm instances, use:
         {
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<algorithm-instance-id>"
                 }
             }

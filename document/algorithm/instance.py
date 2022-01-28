@@ -16,6 +16,7 @@ class AlgorithmInstanceDocument(BaseDocument):
 
     # id already defined by Elasticsearch
     algorithm_catalog_id = Text(required=True)
+    endpoint = Text(required=True)
     parameters = Nested(AlgorithmInstanceParameterInnerDoc)
     description = Text()
 

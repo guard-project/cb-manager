@@ -277,7 +277,7 @@ To get the list of the agents available in the catalog:
             "select": [ "parameters" ],
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<agent-id>"
                 }
             }
@@ -410,7 +410,7 @@ To delete agents from the catalog, use:
         {
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<agent-id>"
                 }
             }

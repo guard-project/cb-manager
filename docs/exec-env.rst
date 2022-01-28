@@ -79,7 +79,7 @@ To create a new Execution Environment use the following |REST| call:
             "id": "<exec-env-id>",
             "description": "<description>",
             "type_id": "<exec-env-type-id>",
-            "hostname":"<ip-address>",
+            "hostname"":<ip-address>",
             "lcp": {
                 "port": "<lcp-port>",
                 "https": "<use-https>"
@@ -180,7 +180,7 @@ To get the list of execution environment:
             "select": [ "hostname" ],
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<exec-env-id>"
                 }
             }
@@ -220,7 +220,7 @@ To update an execution environment, use:
 
         {
             "id": "<exec-env-id>",
-            "hostname":"<new-ip-address>",
+            "hostname"":<new-ip-address>",
         }
 
     :param id: optional execution environment id.
@@ -295,7 +295,7 @@ To delete an execution environment, use:
         {
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<exec-env-id>"
                 }
             }

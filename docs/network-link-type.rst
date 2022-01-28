@@ -147,7 +147,7 @@ To get the list of network Link types:
             "select": [ "type_id" ],
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<network-link-type-id>"
                 }
             }
@@ -189,7 +189,7 @@ To update a network Link type, use:
 
         {
             "id": "<network-link-type-id>",
-            "name":"<new-formal-name>",
+            "name"":<new-formal-name>",
         }
 
     :param id: optional network link type id.
@@ -264,7 +264,7 @@ To delete network link types, use:
         {
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<network-link-type-id>"
                 }
             }

@@ -150,7 +150,7 @@ To get the list of connections:
             "select": [ "network_link_id" ],
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<connection-id>"
                 }
             }
@@ -190,7 +190,7 @@ To update a connection, use:
 
         {
             "id": "<connection-id>",
-            "description":"<new-description>"
+            "description"":<new-description>"
         }
 
     :param id: optional connection id.
@@ -265,7 +265,7 @@ To delete connections, use:
         {
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<connection-id>"
                 }
             }

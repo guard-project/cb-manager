@@ -134,7 +134,7 @@ To get the list of data:
             "select": [ "type_id" ],
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<data-id>"
                 }
             }
@@ -245,7 +245,7 @@ To delete data, use:
         {
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<data-id>"
                 }
             }

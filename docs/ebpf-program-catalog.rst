@@ -247,7 +247,7 @@ To get the list of the |eBPF| programs available in the catalog:
             "select": [ "parameters" ],
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<ebpf-program-id>"
                 }
             }
@@ -353,7 +353,7 @@ To delete |eBPF| programs from the catalog, use:
         {
             "where": {
                 "equals": {
-                    "target:" "id",
+                    "target": "id",
                     "expr": "<ebpf-program-id>"
                 }
             }
