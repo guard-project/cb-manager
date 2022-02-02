@@ -114,6 +114,4 @@ def heartbeat_exec_env(exec_env):
     except ConnectionError:
         log.error(f"Connection refused with exec-env {lbl}")
     except Exception as exception:
-        log.exception(
-            f"Exception during connection with exec-env {lbl}",
-            exception)
+        log.exception(f"Exception during connection with exec-env {lbl}", exception)

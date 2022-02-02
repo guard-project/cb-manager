@@ -34,14 +34,8 @@ class AgentInstanceParameterSchema(Schema):
 class AgentInstanceResourceSchema(Schema):
     """Resource of the agent instance installed in an execution environment."""
 
-    id = Str(
-        required=True,
-        example="filebeat-config",
-        description="Resource id.")
-    content = Str(
-        required=True,
-        example="period: 10s",
-        description="Resource content.")
+    id = Str(required=True, example="filebeat-config", description="Resource id.")
+    content = Str(required=True, example="period: 10s", description="Resource content.")
 
 
 class AgentInstanceOperationSchema(BaseSchema):

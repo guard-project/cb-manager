@@ -36,10 +36,7 @@ class _eBPFProgramCatalogConfigMetricOpenMetricsMetadataSchema(Schema):
 class _eBPFProgramCatalogConfigMetricSchema(Schema):
     """eBPF program metric."""
 
-    name = Str(
-        required=True,
-        example="packets_total",
-        description="Metric name.")
+    name = Str(required=True, example="packets_total", description="Metric name.")
     map_name = Str(
         required=True,
         example="PKT_COUNTER",
@@ -57,10 +54,7 @@ class _eBPFProgramCatalogConfigMetricSchema(Schema):
 class _eBPFProgramCatalogConfigSchema(Schema):
     """eBPF program configuration."""
 
-    code = ListOrOne(
-        Str,
-        required=True,
-        description="Code of the eBPF program.")
+    code = ListOrOne(Str, required=True, description="Code of the eBPF program.")
     metrics = Nested(
         _eBPFProgramCatalogConfigMetricSchema,
         many=True,
@@ -108,10 +102,7 @@ class _eBPFProgramCatalogSchema(BaseSchema):
         example="packet-capture",
         description="Id of the eBPF_Program_ in the catalog.",
     )
-    config = Nested(
-        _eBPFProgramCatalogConfigSchema,
-        required=True,
-        unknown="INCLUDE")
+    config = Nested(_eBPFProgramCatalogConfigSchema, required=True, unknown="INCLUDE")
     parameters = Nested(
         _eBPFProgramCatalogParameterSchema,
         many=True,

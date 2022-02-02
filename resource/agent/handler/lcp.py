@@ -82,10 +82,8 @@ class LCP(BaseLCP):
             endpoint_lcp = f"/{endpoint_lcp}" if endpoint_lcp else ""
             req_uri = f"{schema}://{_hostname}{_port}{endpoint_lcp}/config"
             resp_lcp = post_req(
-                req_uri,
-                headers={
-                    "Authorization": create_token()},
-                json=self.req_lcp)
+                req_uri, headers={"Authorization": create_token()}, json=self.req_lcp
+            )
             if resp_lcp.content:
                 try:
                     resp_lcp_data = resp_lcp.json()
@@ -128,9 +126,7 @@ class LCP(BaseLCP):
                         exec_env.meta.id, exec_env.hostname, exec_env.lcp.port
                     )
                     self.log.exception(_msg, exception)
-                    UnprocEntityResponse(
-                        _msg, exception=exception).add(
-                        self.resp)
+                    UnprocEntityResponse(_msg, exception=exception).add(self.resp)
                     return False
             else:
                 _msg = MSG_REQ_LCP_NOT_EXEC.format(
@@ -145,7 +141,8 @@ class LCP(BaseLCP):
         for data_item in wrap(data):
             data_id = data_item.get("id", None)
             is_lcp_from_catalog = LCP.from_catalog(
-                catalog=catalog, id=data_id, label=typology.title(), resp=self.resp)
+                catalog=catalog, id=data_id, label=typology.title(), resp=self.resp
+            )
             if (
                 catalog_doc := self.catalogs[typology].get(data_id, None)
                 or is_lcp_from_catalog

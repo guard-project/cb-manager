@@ -18,11 +18,7 @@ class BaseResponse(object):
         self.data.update(kwargs)
 
     def __data(self):
-        return expand(
-            self.data,
-            status=self.status(),
-            code=self.code,
-            error=self.error)
+        return expand(self.data, status=self.status(), code=self.code, error=self.error)
 
     def __str__(self):
         return self.status()

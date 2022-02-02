@@ -23,14 +23,12 @@ class AgentCatalogActionConfigSchema(Schema):
     """Agent action configuration."""
 
     cmd = Str(
-        required=True,
-        example="service filebeat start",
-        description="Action command.")
+        required=True, example="service filebeat start", description="Action command."
+    )
     args = ListOrOne(Str, example="-v", description="Action command argument")
     daemon = Bool(
-        default=False,
-        example=True,
-        description="Execute the command as daemon.")
+        default=False, example=True, description="Execute the command as daemon."
+    )
 
 
 class AgentCatalogActionSchema(Schema):
@@ -106,8 +104,9 @@ class AgentCatalogParameterSchema(Schema):
         example="mysql",
         description="Possible values if the parameter type is choice.",
     )  # noqa: E501
-    description = Str(example="Enable the agent.",
-                      description="Short description of the parameter.")
+    description = Str(
+        example="Enable the agent.", description="Short description of the parameter."
+    )
     example = Raw(example="10s", description="Example of parameter value.")
 
 
@@ -125,10 +124,7 @@ class AgentCatalogResourceConfigSchema(Schema):
 class AgentCatalogResourceSchema(Schema):
     """Agent resource."""
 
-    id = Str(
-        required=True,
-        example="filebeat-config",
-        description="Resource id.")
+    id = Str(required=True, example="filebeat-config", description="Resource id.")
     config = Nested(
         AgentCatalogResourceConfigSchema,
         unknown="INCLUDE",
@@ -145,8 +141,9 @@ class AgentCatalogSchema(BaseSchema):
     """Represents an agent in the catalog."""
 
     doc = AgentCatalogDocument
-    id = Str(required=True, example="filebeat",
-             description="Id of the agent in the catalog.")
+    id = Str(
+        required=True, example="filebeat", description="Id of the agent in the catalog."
+    )
     actions = Nested(
         AgentCatalogActionSchema,
         unknown="INCLUDE",

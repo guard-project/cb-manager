@@ -40,10 +40,7 @@ def api(title, version):
             user_loader, secret_key, auth_header_prefix=auth_header_prefix
         )
         exempt_routes = ["/api/doc", "/api/doc/swagger.json"]
-        middlewares.append(
-            FalconAuthMiddleware(
-                jwt_auth_backend,
-                exempt_routes))
+        middlewares.append(FalconAuthMiddleware(jwt_auth_backend, exempt_routes))
     else:
         log.notice("JWT authentication disabled")
 
@@ -65,11 +62,8 @@ def api(title, version):
 
     media_handlers = {
         falcon.MEDIA_JSON: JSONHandler(
-            loads=loads,
-            dumps=partial(
-                dumps,
-                ensure_ascii=False,
-                sort_keys=True)),
+            loads=loads, dumps=partial(dumps, ensure_ascii=False, sort_keys=True)
+        ),
         falcon.MEDIA_MSGPACK: MessagePackHandler(),
         falcon.MEDIA_XML: XMLHandler(),
         falcon.MEDIA_YAML: YAMLHandler(),

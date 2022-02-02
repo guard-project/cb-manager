@@ -8,22 +8,18 @@ class ConfigReader:
     path = Path(__file__).parent / "../config.ini"
 
     def __init__(self):
-        self.cfg_parser = Config_Parser(
-            interpolation=ConfigReader.EnvInterpolation())
+        self.cfg_parser = Config_Parser(interpolation=ConfigReader.EnvInterpolation())
 
     def read(self):
         self.cfg_parser.read(self.path.resolve())
 
-        self.cb_host = self.cfg_parser.get(
-            "context-broker", "host", fallback="0.0.0.0")
-        self.cb_port = self.cfg_parser.get(
-            "context-broker", "port", fallback=5000)
+        self.cb_host = self.cfg_parser.get("context-broker", "host", fallback="0.0.0.0")
+        self.cb_port = self.cfg_parser.get("context-broker", "port", fallback=5000)
         self.cb_https = self.cfg_parser.getboolean(
             "context-broker", "https", fallback=False
         )
 
-        self.auth = self.cfg_parser.getboolean(
-            "auth", "enabled", fallback=True)
+        self.auth = self.cfg_parser.getboolean("auth", "enabled", fallback=True)
         self.auth_header_prefix = self.cfg_parser.get(
             "auth", "header-prefix", fallback="GUARD"
         )
@@ -31,10 +27,8 @@ class ConfigReader:
             "auth", "secret-key", fallback="guard-secret-key"
         )
 
-        self.hb_timeout = self.cfg_parser.get(
-            "heartbeat", "timeout", fallback="10s")
-        self.hb_period = self.cfg_parser.get(
-            "heartbeat", "period", fallback="1min")
+        self.hb_timeout = self.cfg_parser.get("heartbeat", "timeout", fallback="10s")
+        self.hb_period = self.cfg_parser.get("heartbeat", "period", fallback="1min")
 
         self.es_endpoint = self.cfg_parser.get(
             "elasticsearch", "endpoint", fallback="localhost:9200"
@@ -53,8 +47,7 @@ class ConfigReader:
             "elastic-apm", "server", fallback="http://localhost:8200"
         )
 
-        self.log_config = self.cfg_parser.get(
-            "log", "config", fallback="log.yaml")
+        self.log_config = self.cfg_parser.get("log", "config", fallback="log.yaml")
 
     def write(self, data_base):
         # FIXME is it necessary?

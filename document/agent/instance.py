@@ -103,11 +103,7 @@ class AgentInstanceDocument(BaseDocument):
                     return status_op.UPDATED
                 return status_op.NOT_MODIFIED
         _res_doc = AgentInstanceResourceInnerDoc
-        self.resources.append(
-            _res_doc(
-                id=res_id,
-                timestamp=timestamp,
-                content=cnt))
+        self.resources.append(_res_doc(id=res_id, timestamp=timestamp, content=cnt))
         return status_op.UPDATED
 
     @staticmethod

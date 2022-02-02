@@ -11,10 +11,7 @@ ORDER_MODES = ["asc", "desc"]
 class QueryRequestOrderSchema(BaseSchema):
     """Order the filtered items."""
 
-    target = Str(
-        required=True,
-        example="name",
-        description="The field to compare.")
+    target = Str(required=True, example="name", description="The field to compare.")
     mode = Str(
         required=True,
         enum=ORDER_MODES,
@@ -29,22 +26,17 @@ class QueryRequestLimitSchema(BaseSchema):
     """Limit the items to return."""
 
     _from = Integer(
-        data_key="from",
-        example=1,
-        description="Started index of the items to return.")
+        data_key="from", example=1, description="Started index of the items to return."
+    )
     _to = Integer(
-        data_key="to",
-        example=5,
-        description="Ended index of the items to return.")
+        data_key="to", example=5, description="Ended index of the items to return."
+    )
 
 
 class QueryRequestFilterSchema(BaseSchema):
     """For numeric comparison in the clause."""
 
-    target = Str(
-        required=True,
-        example="id",
-        description="The field to compare.")
+    target = Str(required=True, example="id", description="The field to compare.")
     expr = Str(
         required=True,
         example="apache",
@@ -68,9 +60,8 @@ class QueryRequestClauseSchema(BaseSchema):
         description="At least the clause has to be satisfied.",
     )
     _not = Nested(
-        "self",
-        data_key="not",
-        description="The clause has to be not satisfied.")
+        "self", data_key="not", description="The clause has to be not satisfied."
+    )
     lte = Nested(
         QueryRequestFilterSchema,
         description="The target field must be lower or equal to the expr value..",
@@ -115,10 +106,12 @@ class QueryRequestSchema(BaseSchema):
         QueryRequestClauseSchema,
         description="Filter the items based on different conditions.",
     )  # noqa: E501
-    order = Nested(QueryRequestOrderSchema, many=True,
-                   description="Order the filtered items.")
-    limit = Nested(QueryRequestLimitSchema,
-                   description="Limit the number of items to return.")
+    order = Nested(
+        QueryRequestOrderSchema, many=True, description="Order the filtered items."
+    )
+    limit = Nested(
+        QueryRequestLimitSchema, description="Limit the number of items to return."
+    )
     force = Boolean(
         default=False,
         example=True,

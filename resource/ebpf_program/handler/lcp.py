@@ -58,11 +58,8 @@ class LCP(BaseLCP):
             return {"id": instance.meta.id}
 
         cls.__handler(
-            instance=instance,
-            req=req,
-            resp=resp,
-            caller=delete_req,
-            data=__data)
+            instance=instance, req=req, resp=resp, caller=delete_req, data=__data
+        )
 
     @classmethod
     def __handler(cls, instance, req, resp, caller, data):

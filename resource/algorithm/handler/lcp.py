@@ -39,10 +39,7 @@ class LCP(BaseLCP):
             label="Algorithm Catalog",
             resp=resp,
         ):
-            return LCP(
-                catalog=algorithm_catalog,
-                req=req,
-                resp=resp).__apply(instance)
+            return LCP(catalog=algorithm_catalog, req=req, resp=resp).__apply(instance)
         return False
 
     def __apply(self, instance):
@@ -59,10 +56,7 @@ class LCP(BaseLCP):
                 return True
             except Exception as exception:
                 self.log.exception(MSG_REQ_NOT_VALID, exception)
-                UnprocEntityResponse(
-                    MSG_REQ_NOT_VALID,
-                    exception).add(
-                    self.resp)
+                UnprocEntityResponse(MSG_REQ_NOT_VALID, exception).add(self.resp)
                 return False
         return False
 

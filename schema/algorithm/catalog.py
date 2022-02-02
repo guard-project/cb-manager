@@ -21,8 +21,9 @@ class AlgorithmCatalogActionSchema(Schema):
     """Algorithm parameter."""
 
     id = Str(required=True, example="frequency", description="Action id.")
-    description = Str(example="Start the algorithm.",
-                      description="Short description of the action.")
+    description = Str(
+        example="Start the algorithm.", description="Short description of the action."
+    )
 
 
 class AlgorithmCatalogParameterSchema(Schema):

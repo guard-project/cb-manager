@@ -53,18 +53,16 @@ RESPONSE_CODES = [
 
 class ExceptionResponseSchema(Schema):
     reason = Raw(
-        required=True,
-        example="Connection timeout",
-        description="Exception reason.")
+        required=True, example="Connection timeout", description="Exception reason."
+    )
     filename = Str(
         required=True,
         example="lib/connection.py",
         description="Filename where the exception is raised.",
     )
     line = Integer(
-        required=True,
-        example=80,
-        description="Line where the exception is raised.")
+        required=True, example=80, description="Line where the exception is raised."
+    )
 
 
 class BaseResponseSchema(Schema):
@@ -78,16 +76,16 @@ class BaseResponseSchema(Schema):
         validate=validate.OneOf(RESPONSE_STATUS),
     )
     error = Bool(
-        default=False,
-        example=False,
-        description="Indicate the presence of an error")
+        default=False, example=False, description="Indicate the presence of an error"
+    )
     message = Str(
         required=True,
         example="Request not valid: two ids provided.",
         description="Human readable message that describes the status of the operation.",
     )  # noqa:E501
-    exception = Nested(ExceptionResponseSchema,
-                       description="Message of the occurred exception.")
+    exception = Nested(
+        ExceptionResponseSchema, description="Message of the occurred exception."
+    )
     code = Integer(
         required=True,
         enum=RESPONSE_CODES,

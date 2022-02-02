@@ -44,8 +44,6 @@ class AlgorithmInstanceDocument(BaseDocument):
             parameter.pop("type", None)
             parameter.pop("data", None)
             parameter["value"] = value
-            self.parameters.append(
-                AlgorithmInstanceParameterInnerDoc(
-                    **parameter))
+            self.parameters.append(AlgorithmInstanceParameterInnerDoc(**parameter))
             return state_op.UPDATED
         return state_op.NOT_MODIFIED

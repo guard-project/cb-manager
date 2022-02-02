@@ -12,8 +12,7 @@ from yaml.parser import ParserError, ScannerError
 
 class XMLHandler(JSONHandler):
     def __init__(self, dumps=None, loads=None):
-        self.dumps = dumps or partial(
-            dict_to_xml, custom_root="guard", attr_type=False)
+        self.dumps = dumps or partial(dict_to_xml, custom_root="guard", attr_type=False)
         self.loads = loads or partial(xml_to_dict.parse, force_list="item")
 
     def deserialize(self, stream, content_type, content_length):

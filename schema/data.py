@@ -14,9 +14,8 @@ class DataSchema(BaseSchema):
 
     doc = DataDocument
     id = Str(
-        required=True,
-        example="BXrHRn5RPU55Qh9JwMZn",
-        description="Id of the data.")
+        required=True, example="BXrHRn5RPU55Qh9JwMZn", description="Id of the data."
+    )
     agent_instance_id = Str(
         readonly=True,
         example="filebeat@apache",
