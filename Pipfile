@@ -59,4 +59,4 @@ profiler-start = "vprof -c cmh src/deployment.py --output-file dev/profiler.json
 profiler-view = "vprof --input-file dev/profiler.json"
 requirements-dev = "bash scripts/requirements-dev.sh"
 security-scan = "docker scan cnit_ml"
-style-guide = "flake8 src/"
+style-guide = "flake8 . --exclude=.venv"

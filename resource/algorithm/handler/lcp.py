@@ -44,7 +44,7 @@ class LCP(BaseLCP):
         if self.num > 0:
             try:
                 _cat = self.catalogs['parameters']
-                if save_parameters := self.__save(
+                if self.__save(
                     instance,
                     typology='parameter',
                     catalogs=_cat,
@@ -54,7 +54,8 @@ class LCP(BaseLCP):
                 return True
             except Exception as exception:
                 self.log.exception(MSG_REQ_NOT_VALID, exception)
-                UnprocEntityResponse(MSG_REQ_NOT_VALID, exception).add(self.resp)
+                UnprocEntityResponse(
+                    MSG_REQ_NOT_VALID, exception).add(self.resp)
                 return False
         return False
 

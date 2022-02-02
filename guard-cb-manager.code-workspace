@@ -16,7 +16,8 @@
             "pipenv",
             "pycallgraph",
             "pyflakes",
-            "pylint"
+            "pylint",
+            "venv"
         ]
     }
 }
