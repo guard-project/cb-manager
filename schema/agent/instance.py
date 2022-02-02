@@ -19,7 +19,8 @@ class AgentInstanceActionSchema(Schema):
         enum=OUTPUT_FORMATS,
         example=OUTPUT_FORMATS[1],
         default=OUTPUT_FORMATS[0],
-        description="Output format for stdout and stderr result of action execution.",
+        description="Output format for stdout and stderr "
+        "result of action execution.",
     )  # noqa:E501
 
 
@@ -79,7 +80,8 @@ class AgentInstanceSchema(BaseSchema):
     id = Str(
         required=True,
         example="filebeat@apache",
-        description="Id of the agent instance installed in an execution environment.",
+        description="Id of the agent instance installed in an "
+        "execution environment.",
     )  # noqa: E501
     agent_catalog_id = Str(
         required=True,
@@ -93,7 +95,8 @@ class AgentInstanceSchema(BaseSchema):
         required=True,
         readonly=True,
         example="apache",
-        description="Id of the execution environment where the agent instance is installed.",  # noqa:E501
+        description="Id of the execution environment where the agent "
+        "instance is installed.",
         validate=In.apply(ExecEnvDocument.get_ids),
         error_messages=In.error_messages,
     )
@@ -111,6 +114,7 @@ class AgentInstanceSchema(BaseSchema):
         description="List of agent instance operations.",
     )
     description = Str(
-        example="Collect system metrics from execution environments.",  # noqa: E501
-        description="Short description of the agent installed in the execution environment.",
+        example="Collect system metrics from execution environments.",
+        description="Short description of the agent installed in "
+        "the execution environment.",
     )  # noqa:E501

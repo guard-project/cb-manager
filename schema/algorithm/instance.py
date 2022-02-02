@@ -42,7 +42,7 @@ class AlgorithmInstanceSchema(BaseSchema):
         required=True,
         readonly=True,
         example="ddos-predictor",
-        description="Id of the algorithm in the catalog.",  # noqa: E501
+        description="Id of the algorithm in the catalog.",
         validate=In.apply(AlgorithmCatalogDocument.get_ids),
         error_messages=In.error_messages,
     )
@@ -50,7 +50,8 @@ class AlgorithmInstanceSchema(BaseSchema):
         required=True,
         readonlye=False,
         example="10.0.0.1:9999",
-        description="URL where the RESTable instance is running including the TCP port.",
+        description="URL where the RESTable instance is running "
+        "including the TCP port.",
     )  # noqa: E501
     operations = Nested(
         AlgorithmInstanceOperationSchema,
@@ -59,6 +60,7 @@ class AlgorithmInstanceSchema(BaseSchema):
         description="List of algorithm instance operations.",
     )
     description = Str(
-        example="Collect system metrics from execution environments.",  # noqa: E501
-        description="Short description of the algorithm installed in the execution environment.",
+        example="Collect system metrics from execution environments.",
+        description="Short description of the algorithm installed "
+        "in the execution environment.",
     )  # noqa:E501

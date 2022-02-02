@@ -31,7 +31,8 @@ class LCPSchema(Schema):
     last_heartbeat = DateTime(
         reaonly=True,
         example="2019/02/14 15:23:33",
-        description="Timestamp of the expiration of the API access configuration.",
+        description="Timestamp of the expiration of the "
+        "API access configuration.",
     )  # noqa: E501
 
 

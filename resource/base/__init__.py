@@ -330,7 +330,8 @@ class BaseResource(BaseMinimalResource):
         for ign_f in self.ignore_fields:
             if data.pop(ign_f, None) is not None:
                 self.log.info(
-                    f"Field {ign_f} in the request ignored when update {self.names}"
+                    f"Field {ign_f} in the request ignored "
+                    f"when update {self.names}"
                 )  # noqa: E501
 
     @classmethod

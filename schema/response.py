@@ -87,7 +87,8 @@ class BaseResponseSchema(Schema):
     message = Str(
         required=True,
         example="Request not valid: two ids provided.",
-        description="Human readable message that describes the status of the operation.",
+        description="Human readable message that describes "
+        "the status of the operation.",
     )  # noqa:E501
     exception = Nested(
         ExceptionResponseSchema,

@@ -15,7 +15,8 @@ class PipelineSchema(BaseSchema):
         description="Id of the pipeline.",
     )
     updated_at = DateTime(
-        description="Date of last update of the pipeline in Unix timestamp format.",  # noqa: E501
+        description="Date of last update of the pipeline in "
+        "Unix timestamp format.",
         format="timestamp",
         example=1617278285,
     )
@@ -24,7 +25,8 @@ class PipelineSchema(BaseSchema):
         readonly=True,
         example=1617278285,
         format="timestamp",
-        description="Date of creation of the pipeline in Unix timestamp format.",
+        description="Date of creation of the pipeline in "
+        "Unix timestamp format.",
     )  # noqa: E501
     name = Str(
         description="Used by the UI to create a new pipeline.",
@@ -34,6 +36,7 @@ class PipelineSchema(BaseSchema):
         required=True, description="Pipeline status.", example="started"
     )
     user = Str(
-        description="User/Entity owner/manager/responsible of the pipeline.",  # noqa: E501
+        description="User/Entity owner/manager/responsible "
+        "of the pipeline.",
         example="Minds & Sparks",
     )

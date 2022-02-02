@@ -83,7 +83,8 @@ class Log:
 
         for level in levels:
             cls.get("log").info(
-                f"Found additional log level customization: {level['icon']:<3} {level['name']}"
+                "Found additional log level customization: "
+                f"{level['icon']:<3} {level['name']}"
             )  # noqa: E501
 
     @classmethod

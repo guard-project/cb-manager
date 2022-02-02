@@ -74,31 +74,35 @@ class QueryRequestClauseSchema(BaseSchema):
     )
     lte = Nested(
         QueryRequestFilterSchema,
-        description="The target field must be lower or equal to the expr value..",
+        description="The target field must be lower or "
+        "equal to the expr value..",
     )  # noqa:E501
     gte = Nested(
         QueryRequestFilterSchema,
-        description="The target field must be greater or equal to the expr value.",
+        description="The target field must be greater or "
+        "equal to the expr value.",
     )  # noqa:E501
     lt = Nested(
         QueryRequestFilterSchema,
-        description="The target field must be lower than the expr value.",
+        description="The target field must be lower " "than the expr value.",
     )  # noqa:E501
     gt = Nested(
         QueryRequestFilterSchema,
-        description="The target field must be greater to the expr value.",
+        description="The target field must be greater " "to the expr value.",
     )  # noqa:E501
     equals = Nested(
         QueryRequestFilterSchema,
-        description="The target field must be equal to the expr value.",
+        description="The target field must be equal " "to the expr value.",
     )  # noqa:E501
     reg_exp = Nested(
         QueryRequestFilterSchema,
-        description="The target field must be satisfy the regular expression in expr.",
+        description="The target field must be satisfy "
+        "the regular expression in expr.",
     )  # noqa:E501
     wildcard = Nested(
         QueryRequestFilterSchema,
-        description="The target field must be satisfy the wildcard in expr.",
+        description="The target field must be satisfy "
+        "the wildcard in expr.",
     )  # noqa:E501
 
 
@@ -128,5 +132,7 @@ class QueryRequestSchema(BaseSchema):
     force = Boolean(
         default=False,
         example=True,
-        description="Force the execution of the request even there are some errors (example: delete a inconsistent entries).",
+        description="Force the execution of the request even "
+        "there are some errors (example: delete a "
+        "inconsistent entries).",
     )  # noqa: E501

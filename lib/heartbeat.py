@@ -84,8 +84,9 @@ def heartbeat_exec_env(exec_env):
                     agent_cat_data_id = agent_cat_data.get("id", None)
                     AgentCatalogDocument.from_agent_type(agent_cat_data)
                     log.success(
-                        f"Update agent catalog: {agent_cat_data_id} from {exec_env_id}"
-                    )  # noqa E501
+                        f"Update agent catalog: {agent_cat_data_id} "
+                        f"from {exec_env_id}"
+                    )
                 # Agent Instances
                 for agent_inst_data in data.get("agentInstance", []):
                     agent_inst_data_id = agent_inst_data["id"]
@@ -96,7 +97,8 @@ def heartbeat_exec_env(exec_env):
                         agent_inst_data, exec_env_id
                     )
                     log.success(
-                        f"Update agent instance: {agent_inst_data_id} from {exec_env_id}"
+                        f"Update agent instance: {agent_inst_data_id} "
+                        f"from {exec_env_id}"
                     )  # noqa E501
                 # LCP Sons
                 for lcp_son in data.pop("lcpSons", []):

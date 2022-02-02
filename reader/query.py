@@ -134,7 +134,7 @@ class QueryReader:
         limit = query.get("limit", {})
         start = limit.get("from", 0)
         end = limit.get("to", self.search.count() - 1)
-        self.search = self.search[start : (end + 1)]
+        self.search = self.search[start : (end + 1)]  # noqa: E203
 
     @staticmethod
     def __fix_target(prop):
