@@ -3,6 +3,13 @@ from elasticsearch_dsl import Boolean, Nested, Text
 from document.base import BaseDocument, BaseInnerDoc
 
 
+class AlgorithmCatalogActionInnerDoc(BaseInnerDoc):
+    """Algorithm action."""
+
+    id = Text(required=True)
+    description = Text()
+
+
 class AlgorithmCatalogParameterInnerDoc(BaseInnerDoc):
     """Algorithm parameter."""
 
@@ -21,6 +28,7 @@ class AlgorithmCatalogDocument(BaseDocument):
     """Represents an algorithm in the catalog."""
 
     # id already defined by Elasticsearch
+    actions = Nested(AlgorithmCatalogActionInnerDoc)
     parameters = Nested(AlgorithmCatalogParameterInnerDoc)
     description = Text()
 

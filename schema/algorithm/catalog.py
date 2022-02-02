@@ -10,6 +10,14 @@ PARAMETER_TYPES = ['binary', 'boolean', 'choice', 'integer', 'number',
                    'time-duration', 'string']
 
 
+class AlgorithmCatalogActionSchema(Schema):
+    """Algorithm parameter."""
+
+    id = Str(required=True, example='frequency', description='Action id.')
+    description = Str(example='Start the algorithm.',
+                      description='Short description of the action.')
+
+
 class AlgorithmCatalogParameterSchema(Schema):
     """Algorithm parameter."""
 
@@ -32,6 +40,10 @@ class AlgorithmCatalogSchema(BaseSchema):
     doc = AlgorithmCatalogDocument
     id = Str(required=True, example='ddos-prediction',
              description='Id of the algorithm in the catalog.')
+    actions = Nested(AlgorithmCatalogActionSchema, unknown='INCLUDE',
+                     many=True, description='Action properties.',
+                     validate=UniqueList.apply('id'),
+                     error_messages=UniqueList.error_messages)
     parameters = Nested(AlgorithmCatalogParameterSchema, unknown='INCLUDE',
                         many=True, description='Parameter properties.',
                         validate=UniqueList.apply('id'),
