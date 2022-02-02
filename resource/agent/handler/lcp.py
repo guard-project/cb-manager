@@ -47,7 +47,7 @@ class LCP(BaseLCP):
     @classmethod
     def handler(cls, instance, req, resp):
         agent_catalog = cls.from_doc(document=AgentCatalogDocument,
-                                     id=instance.agent_catalog_id,
+                                     doc_id=instance.agent_catalog_id,
                                      label='Agent Catalog', resp=resp)
         exec_env = cls.from_doc(document=ExecEnvDocument,
                                 id=instance.exec_env_id,
@@ -117,33 +117,31 @@ class LCP(BaseLCP):
         return False
 
     def __prepare(self, req_op, typology, catalog, data, transform_handler):
-        catalog_docs = []
         req_op[typology] = []
         for data_item in wrap(data):
             data_id = data_item.get('id', None)
             is_lcp_from_catalog = LCP.from_catalog(catalog=catalog, id=data_id,
                                                    label=typology.title(),
                                                    resp=self.resp)
-            catalog_doc = self.catalogs[typology].get(
-                data_id, None) or is_lcp_from_catalog
-            if catalog_doc:
+            if (
+                catalog_doc := self.catalogs[typology].get(data_id, None)
+                or is_lcp_from_catalog
+            ):
                 self.catalogs[typology][data_id] = catalog_doc
                 cfg_dict = catalog_doc.config.to_dict()
                 config = transform_handler(cfg_dict, data_item)
                 config.update(**data_item)
                 self.log.info(f'Prepare {typology}: {config}')
                 req_op[typology].append(config)
-        return catalog_docs
 
     def __frmt(self, prop, data):
         if isinstance(prop, (list, tuple)):
             return [self.__frmt(i, data) for i in prop]
-        else:
-            try:
-                return prop.format(**data)
-            except Exception:
-                self.log.warn(f'Not possible to format {prop}')
-                return prop
+        try:
+            return prop.format(**data)
+        except Exception:
+            self.log.warn(f'Not possible to format {prop}')
+            return prop
 
     def __transform_action(self, action, data):
         return valmap(lambda x: self.__frmt(x, data), action)

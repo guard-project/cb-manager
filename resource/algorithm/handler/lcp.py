@@ -30,10 +30,12 @@ class LCP(BaseLCP):
 
     @classmethod
     def handler(cls, instance, req, resp):
-        algorithm_catalog = cls.from_doc(document=AlgorithmCatalogDocument,
-                                         id=instance.algorithm_catalog_id,
-                                         label='Algorithm Catalog', resp=resp)
-        if algorithm_catalog:
+        if algorithm_catalog := cls.from_doc(
+            document=AlgorithmCatalogDocument,
+            doc_id=instance.algorithm_catalog_id,
+            label='Algorithm Catalog',
+            resp=resp,
+        ):
             return LCP(catalog=algorithm_catalog,
                        req=req, resp=resp).__apply(instance)
         return False
@@ -42,37 +44,37 @@ class LCP(BaseLCP):
         if self.num > 0:
             try:
                 _cat = self.catalogs['parameters']
-                save_parameters = self.__save(instance, typology='parameter',
-                                              catalogs=_cat,
-                                              handler=self.__save_parameter)
-                if save_parameters:
+                if save_parameters := self.__save(
+                    instance,
+                    typology='parameter',
+                    catalogs=_cat,
+                    handler=self.__save_parameter,
+                ):
                     instance.save()
                 return True
             except Exception as exception:
                 self.log.exception(MSG_REQ_NOT_VALID, exception)
-                UnprocEntityResponse(MSG_REQ_NOT_VALID,
-                                     exception).add(self.resp)
+                UnprocEntityResponse(MSG_REQ_NOT_VALID, exception).add(self.resp)
                 return False
         return False
 
     def __prepare(self, req_op, typology, catalog, data, transform_handler):
-        catalog_docs = []
         req_op[typology] = []
         for data_item in wrap(data):
             data_id = data_item.get('id', None)
             is_lcp_from_catalog = LCP.from_catalog(catalog, id=data_id,
                                                    label=typology.title(),
                                                    resp=self.resp)
-            catalog_doc = self.catalogs[typology].get(
-                data_id, None) or is_lcp_from_catalog
-            if catalog_doc:
+            if (
+                catalog_doc := self.catalogs[typology].get(data_id, None)
+                or is_lcp_from_catalog
+            ):
                 self.catalogs[typology][data_id] = catalog_doc
                 doc_dict = catalog_doc.config.to_dict()
                 config = transform_handler(doc_dict, data_item)
                 config.update(**data_item)
                 self.log.info(f'Prepare {typology}: {config}')
                 req_op[typology].append(config)
-        return catalog_docs
 
     def __frmt(self, var, data):
         if isinstance(var, (list, tuple)):

@@ -361,6 +361,11 @@ definitions:
           environment.
         example: Collect system metrics from execution environments.
         type: string
+      endpoint:
+        description: URL where the RESTable instance is running including the TCP
+          port.
+        example: 10.0.0.1:9999
+        type: string
       id:
         description: Id of the algorithm instance.
         example: ddos-predictor-1
@@ -372,6 +377,7 @@ definitions:
         type: array
     required:
     - algorithm_catalog_id
+    - endpoint
     - id
     type: object
   ConnectionSchema:

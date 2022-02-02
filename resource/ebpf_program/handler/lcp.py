@@ -58,7 +58,7 @@ class LCP(BaseLCP):
         label = 'eBPF Program Catalog'
         ebpf_program_catalog = cls.from_doc(document, _id, label, resp)
         exec_env = cls.from_doc(document=ExecEnvDocument,
-                                id=instance.exec_env_id,
+                                doc_id=instance.exec_env_id,
                                 label='Execution Environment', resp=resp)
         if all([ebpf_program_catalog, exec_env]):
             LCP(catalog=ebpf_program_catalog,

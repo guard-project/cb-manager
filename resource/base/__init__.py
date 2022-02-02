@@ -76,9 +76,9 @@ class BaseResource(BaseMinimalResource):
             try:
                 query_reader = QueryReader(index=self.doc.Index.name)
                 search = query_reader.parse(query=req_data, item_id=_id)
-                resp_data = [dict(hit.to_dict(), id=hit.meta.id)
-                             for hit in search.execute()]
-                if resp_data:
+                if resp_data := [
+                    dict(hit.to_dict(), id=hit.meta.id) for hit in search.execute()
+                ]:
                     ContentResponse(resp_data).apply(resp)
                 else:
                     NotFoundResponse(MSG_NOT_FOUND.format(
