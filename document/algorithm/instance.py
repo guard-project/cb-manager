@@ -23,17 +23,17 @@ class AlgorithmInstanceDocument(BaseDocument):
     class Index:
         """Elasticsearch configuration."""
 
-        name = 'algorithm-instance'
+        name = "algorithm-instance"
 
     def edit_parameter(self, parameter):
         state_op = self.StatusOperation
-        param_id = parameter.get('id', None)
-        timestamp = parameter.get('timestamp', None)
-        value = parameter.get('value', {})
-        new_value = value.get('new', None)
+        param_id = parameter.get("id", None)
+        timestamp = parameter.get("timestamp", None)
+        value = parameter.get("value", {})
+        new_value = value.get("new", None)
         if new_value is not None:
-            value['new'] = new_value = str(value['new'])  # FIXME improve
-            value['old'] = str(value.get('old', None))
+            value["new"] = new_value = str(value["new"])  # FIXME improve
+            value["old"] = str(value.get("old", None))
             for param in self.parameters:
                 if param.id == param_id:
                     if param.value.new != new_value:
@@ -41,10 +41,11 @@ class AlgorithmInstanceDocument(BaseDocument):
                         param.timestamp = timestamp
                         return state_op.UPDATED
                     return state_op.NOT_MODIFIED
-            parameter.pop('type', None)
-            parameter.pop('data', None)
-            parameter['value'] = value
+            parameter.pop("type", None)
+            parameter.pop("data", None)
+            parameter["value"] = value
             self.parameters.append(
-                AlgorithmInstanceParameterInnerDoc(**parameter))
+                AlgorithmInstanceParameterInnerDoc(
+                    **parameter))
             return state_op.UPDATED
         return state_op.NOT_MODIFIED

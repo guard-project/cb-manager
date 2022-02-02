@@ -12,29 +12,33 @@ from utils.string import is_str
 class Spec:
     def __init__(self, api, title, version):
         schema_name_resolver = self.__schema_name_resolver
-        self.obj = API_Spec(title=title, version=version,
-                            openapi_version='2.0',
-                            produces=['application/json'],
-                            consumes=['application/json'],
-                            tags=rc_tags,
-                            plugins=[Falcon_Plugin(api),
-                                     Marshmallow_Plugin(schema_name_resolver)])
+        self.obj = API_Spec(
+            title=title,
+            version=version,
+            openapi_version="2.0",
+            produces=["application/json"],
+            consumes=["application/json"],
+            tags=rc_tags,
+            plugins=[
+                Falcon_Plugin(api),
+                Marshmallow_Plugin(schema_name_resolver)],
+        )
 
     def get(self):
         return self.obj
 
     def write(self):
-        path = Path(__file__).parent / '../swagger/schema.yaml'
-        with path.open('w') as file:
+        path = Path(__file__).parent / "../swagger/schema.yaml"
+        with path.open("w") as file:
             file.write(self.obj.to_yaml())
-        path = Path(__file__).parent / '../swagger/schema.json'
-        with path.open('w') as file:
+        path = Path(__file__).parent / "../swagger/schema.json"
+        with path.open("w") as file:
             file.write(dumps(self.obj.to_dict(), indent=2))
 
-    @ staticmethod
+    @staticmethod
     def __schema_name_resolver(schema):
         if is_str(schema):
             ref = schema
         else:
             ref = schema.__class__.__name__
-        return ref.replace('_Schema', '')
+        return ref.replace("_Schema", "")

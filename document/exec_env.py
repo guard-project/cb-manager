@@ -26,7 +26,7 @@ class ExecEnvDocument(BaseDocument):
     class Index:
         """Elasticsearch configuration."""
 
-        name = 'exec-env'
+        name = "exec-env"
 
 
 class ExecEnvTypeDocument(BaseDocument):
@@ -39,4 +39,4 @@ class ExecEnvTypeDocument(BaseDocument):
     class Index:
         """Elasticseach configuration."""
 
-        name = 'exec-env-type'
+        name = "exec-env-type"

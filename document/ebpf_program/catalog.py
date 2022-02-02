@@ -25,7 +25,9 @@ class _eBPFProgramCatalogConfigMetricInnerDoc(BaseInnerDoc):
 
     name = Text(required=True)
     map_name = Text()  # FIXME required=True (map-name the correct name)
-    open_metrics_metadata = Nested(_eBPFProgramCatalogConfigMetricOpenMetricsMetadataInnerDoc)  # noqa: E501
+    open_metrics_metadata = Nested(
+        _eBPFProgramCatalogConfigMetricOpenMetricsMetadataInnerDoc
+    )  # noqa: E501
 
 
 class _eBPFProgramCatalogConfigInnerDoc(BaseInnerDoc):
@@ -58,4 +60,4 @@ class _eBPFProgramCatalogDocument(BaseDocument):
     class Index:
         """Elasticsearch configuration."""
 
-        name = 'ebpf-program-catalog'
+        name = "ebpf-program-catalog"

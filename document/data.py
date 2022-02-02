@@ -15,4 +15,4 @@ class DataDocument(BaseDocument):
     class Index:
         """Elasticsearch configuration."""
 
-        name = 'data'
+        name = "data"

@@ -5,7 +5,7 @@ from document.base import BaseDocument, BaseInnerDoc
 
 class _eBPFProgramInstanceParameterInnerDoc(BaseInnerDoc):
     """Parameter of the eBPF Program instance installed
-       in an execution environment."""
+    in an execution environment."""
 
     id = Text(required=True)
     # FIXME Raw?
@@ -25,14 +25,14 @@ class _eBPFProgramInstanceDocument(BaseDocument):
     class Index:
         """Elasticsearch configuration."""
 
-        name = 'ebpf-program-instance'
+        name = "ebpf-program-instance"
 
     def edit_parameter(self, parameter):
         status_op = self.StatusOperation
-        param_id = parameter.get('id', None)
+        param_id = parameter.get("id", None)
         for param in self.parameters:
-            val = parameter.get('value', None)
-            timestamp = parameter.get('timestamp', None)
+            val = parameter.get("value", None)
+            timestamp = parameter.get("timestamp", None)
             if param.id == param_id:
                 if param.value != val:
                     param.value = val
@@ -40,5 +40,6 @@ class _eBPFProgramInstanceDocument(BaseDocument):
                     return status_op.UPDATED
                 return status_op.NOT_MODIFIED
         self.parameters.append(
-            _eBPFProgramInstanceParameterInnerDoc(**parameter))
+            _eBPFProgramInstanceParameterInnerDoc(
+                **parameter))
         return status_op.UPDATED

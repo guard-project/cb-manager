@@ -35,4 +35,4 @@ class AlgorithmCatalogDocument(BaseDocument):
     class Index:
         """Elasticsearch configuration."""
 
-        name = 'algorithm-catalog'
+        name = "algorithm-catalog"

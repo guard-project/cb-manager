@@ -7,19 +7,22 @@ from utils.stack import info
 
 class BaseResponse(object):
     error = False
-    log_level = 'info'
+    log_level = "info"
     code = None
 
     def __init__(self, message, error=False, exception=None, **kwargs):
         self.log = Log.get(self.__class__.__name__)
-        self.data = {'message': message}
+        self.data = {"message": message}
         if exception is not None:
             self.data.update(exception=extract_info(exception))
         self.data.update(kwargs)
 
     def __data(self):
-        return expand(self.data, status=self.status(), code=self.code,
-                      error=self.error)
+        return expand(
+            self.data,
+            status=self.status(),
+            code=self.code,
+            error=self.error)
 
     def __str__(self):
         return self.status()
@@ -32,9 +35,9 @@ class BaseResponse(object):
 
     def __log(self):
         if self.log_level is not None:
-            _exception = self.data.get('exception', None)
+            _exception = self.data.get("exception", None)
             _info = info(level=3)
-            self.log.notice(f'@{_info.filename}:{_info.lineno}')
+            self.log.notice(f"@{_info.filename}:{_info.lineno}")
             _msg = self.data.get("message", "No message")
             if _exception is not None:
                 self.log.exception(_msg, _exception)
@@ -48,7 +51,7 @@ class BaseResponse(object):
     def apply(self, resp):
         self.__log()
         resp.media = self.__data()
-        resp.status = f'{self.code} {self}'
+        resp.status = f"{self.code} {self}"
 
     def add(self, resp):
         self.__log()
@@ -60,7 +63,7 @@ class BaseResponse(object):
             resp.media.append(self.__data())
             resp_code = int(resp.status.split()[0])
             if self.code is not None and HTTP_Status.gt(resp_code, self.code):
-                resp.status = f'{self.code} {self.status()}'
+                resp.status = f"{self.code} {self.status()}"
 
     def update(self, **kwargs):
         self.data.update(kwargs)
@@ -69,17 +72,19 @@ class BaseResponse(object):
 class BadRequestResponse(BaseResponse):
     code = HTTP_Status.BAD_REQUEST
     error = True
-    log_level = 'error'
+    log_level = "error"
 
     def __init__(self, exception=None, **kwargs):
-        title = exception.title if exception is not None else 'Request not valid'  # noqa: E501
+        title = (
+            exception.title if exception is not None else "Request not valid"
+        )  # noqa: E501
         super().__init__(title, exception, **kwargs)
 
 
 class ConflictResponse(BaseResponse):
     code = HTTP_Status.CONFLICT
     error = True
-    log_level = 'error'
+    log_level = "error"
 
     def __init__(self, message, exception=None, **kwargs):
         super().__init__(message, exception=exception, **kwargs)
@@ -87,7 +92,7 @@ class ConflictResponse(BaseResponse):
 
 class CreatedResponse(BaseResponse):
     code = HTTP_Status.CREATED
-    log_level = 'success'
+    log_level = "success"
 
     def __init__(self, message, **kwargs):
         super().__init__(message, **kwargs)
@@ -96,7 +101,7 @@ class CreatedResponse(BaseResponse):
 class InternalServerErrorResponse(BaseResponse):
     code = HTTP_Status.INTERNAL_SERVER_ERROR
     error = True
-    log_level = 'error'
+    log_level = "error"
 
     def __init__(self, message, **kwargs):
         super().__init__(message, **kwargs)
@@ -105,7 +110,7 @@ class InternalServerErrorResponse(BaseResponse):
 class NotAcceptableResponse(BaseResponse):
     code = HTTP_Status.NOT_ACCEPTABLE
     error = True
-    log_level = 'error'
+    log_level = "error"
 
     def __init__(self, message, exception=None, **kwargs):
         super().__init__(message, exception=exception, **kwargs)
@@ -113,7 +118,7 @@ class NotAcceptableResponse(BaseResponse):
 
 class NoContentResponse(BaseResponse):
     code = HTTP_Status.NO_CONTENT
-    log_level = 'warning'
+    log_level = "warning"
 
     def __init__(self, message, exception=None, **kwargs):
         super().__init__(message, exception=exception, **kwargs)
@@ -122,7 +127,7 @@ class NoContentResponse(BaseResponse):
 class NotFoundResponse(BaseResponse):
     code = HTTP_Status.NOT_FOUND
     error = True
-    log_level = 'error'
+    log_level = "error"
 
     def __init__(self, message, exception=None, **kwargs):
         super().__init__(message, exception=exception, **kwargs)
@@ -130,7 +135,7 @@ class NotFoundResponse(BaseResponse):
 
 class NotModifiedResponse(BaseResponse):
     code = HTTP_Status.NOT_MODIFIED
-    log_level = 'warning'
+    log_level = "warning"
 
     def __init__(self, message, **kwargs):
         super().__init__(message, **kwargs)
@@ -138,7 +143,7 @@ class NotModifiedResponse(BaseResponse):
 
 class OkResponse(BaseResponse):
     code = HTTP_Status.OK
-    log_level = 'success'
+    log_level = "success"
 
     def __init__(self, message, **kwargs):
         super().__init__(message, **kwargs)
@@ -152,12 +157,12 @@ class ContentResponse(OkResponse):
 
     def apply(self, resp):
         resp.media = self.data
-        resp.status = f'{self.code} {self}'
+        resp.status = f"{self.code} {self}"
 
 
 class ResetContentResponse(BaseResponse):
     code = HTTP_Status.RESET_CONTENT
-    log_level = 'warn'
+    log_level = "warn"
 
     def __init__(self, message, **kwargs):
         super().__init__(message, **kwargs)
@@ -166,10 +171,10 @@ class ResetContentResponse(BaseResponse):
 class UnauthorizedResponse(BaseResponse):
     code = HTTP_Status.UNAUTHORIZED
     error = True
-    log_level = 'error'
+    log_level = "error"
 
     def __init__(self):
-        super().__init__(message='Authentication failed')
+        super().__init__(message="Authentication failed")
 
     def apply(self, resp):
         super().apply(resp)
@@ -179,7 +184,7 @@ class UnauthorizedResponse(BaseResponse):
 class UnprocEntityResponse(BaseResponse):
     code = HTTP_Status.UNPROCESSABLE_ENTITY
     error = True
-    log_level = 'error'
+    log_level = "error"
 
     def __init__(self, message, exception=None, **kwargs):
         super().__init__(message, exception=exception, **kwargs)
@@ -188,8 +193,10 @@ class UnprocEntityResponse(BaseResponse):
 class UnsuppMediaTypeResponse(BaseResponse):
     code = HTTP_Status.UNSUPPORTED_MEDIA_TYPE
     error = True
-    log_level = 'error'
+    log_level = "error"
 
     def __init__(self, exception=None, **kwargs):
-        title = exception.title if exception is not None else 'Unsupported media type'  # noqa: E501
+        title = (
+            exception.title if exception is not None else "Unsupported media type"
+        )  # noqa: E501
         super().__init__(title, exception=exception, **kwargs)

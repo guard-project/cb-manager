@@ -5,15 +5,15 @@ from document.connection import ConnectionDocument
 from schema.connection import ConnectionSchema
 
 
-@docstring(ext='yaml')
+@docstring(ext="yaml")
 class ConnectionResource(BaseResource):
     doc = ConnectionDocument
-    name = 'connection'
-    names = 'connections'
-    routes = '/connection/'
+    name = "connection"
+    names = "connections"
+    routes = "/connection/"
     schema = ConnectionSchema
 
 
-@docstring(ext='yaml')
+@docstring(ext="yaml")
 class ConnectionSelectedResource(ConnectionResource):
-    routes = '/connection/{_id}'
+    routes = "/connection/{_id}"

@@ -5,15 +5,15 @@ from document.event import EventDocument
 from schema.event import EventSchema
 
 
-@docstring(ext='yaml')
+@docstring(ext="yaml")
 class EventResource(BaseResource):
     doc = EventDocument
-    name = 'event'
+    name = "event"
     names = name
-    routes = '/event/'
+    routes = "/event/"
     schema = EventSchema
 
 
-@docstring(ext='yaml')
+@docstring(ext="yaml")
 class EventSelectedResource(EventResource):
-    routes = '/event/{_id}'
+    routes = "/event/{_id}"

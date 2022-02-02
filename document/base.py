@@ -2,22 +2,22 @@ from elasticsearch_dsl import Document, InnerDoc
 
 
 class BaseDocument(Document):
-    class StatusOperation():
-        NOT_MODIFIED = 'noop'
-        CREATED = 'created'
-        UPDATED = 'updated'
-        DELETED = 'deleted'
+    class StatusOperation:
+        NOT_MODIFIED = "noop"
+        CREATED = "created"
+        UPDATED = "updated"
+        DELETED = "deleted"
 
     @classmethod
     def get_ids(cls):
         search = cls.search()
-        return [doc.meta.id for doc in search[:search.count()].execute()]
+        return [doc.meta.id for doc in search[: search.count()].execute()]
 
     @classmethod
     def get_or_new(cls, id):
         obj = cls.get(id=id, ignore=404)
         if obj is None:
-            obj = cls(meta={'id': id})
+            obj = cls(meta={"id": id})
         return obj
 
 

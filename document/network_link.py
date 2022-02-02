@@ -13,7 +13,7 @@ class NetworkLinkDocument(BaseDocument):
     class Index:
         """Elasticsearch configuration."""
 
-        name = 'network-link'
+        name = "network-link"
 
 
 class NetworkLinkTypeDocument(BaseDocument):
@@ -26,4 +26,4 @@ class NetworkLinkTypeDocument(BaseDocument):
     class Index:
         """Elasticsearch configuration."""
 
-        name = 'network-link-type'
+        name = "network-link-type"

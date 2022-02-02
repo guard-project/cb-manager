@@ -16,42 +16,42 @@ from shutil import copyfile
 #
 import sphinx_rtd_theme  # noqa: F401
 
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath(".."))
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'CB-Manager'
-copyright = '2020-2022 - GUARD Project <http://guard-project.eu>'
-author = 'Alex Carrega <alessandro.carrega@cnit.it>'
+project = "CB-Manager"
+copyright = "2020-2022 - GUARD Project <http://guard-project.eu>"
+author = "Alex Carrega <alessandro.carrega@cnit.it>"
 
 
 # -- General configuration ---------------------------------------------------
 
-master_doc = 'index'
+master_doc = "index"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'recommonmark',
-    'sphinx_copybutton',
-    'sphinx_issues',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.todo',
-    'sphinx.ext.viewcode',
-    'sphinxcontrib.autoprogram',
-    'sphinxcontrib.httpdomain',
-    'sphinxcontrib.spelling',
-    "sphinx.ext.mathjax"
+    "recommonmark",
+    "sphinx_copybutton",
+    "sphinx_issues",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.todo",
+    "sphinx.ext.viewcode",
+    "sphinxcontrib.autoprogram",
+    "sphinxcontrib.httpdomain",
+    "sphinxcontrib.spelling",
+    "sphinx.ext.mathjax",
 ]
 
 # Copy needed files from parent directory.
-for filename in ['LICENSE', 'CONTRIBUTING.md', 'CHANGELOG.md']:
-    copyfile(f'../{filename}', f'./{filename}')
+for filename in ["LICENSE", "CONTRIBUTING.md", "CHANGELOG.md"]:
+    copyfile(f"../{filename}", f"./{filename}")
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -59,29 +59,26 @@ templates_path = ['_templates']
 exclude_patterns = []
 
 source_suffix = {
-    '.rst': 'restructuredtext',
-    '.md': 'markdown',
+    ".rst": "restructuredtext",
+    ".md": "markdown",
 }
 
 # These folders are copied to the documentation's HTML output
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
 # These paths are either relative to html_static_path
 # or fully qualified paths (eg. https://...)
 html_css_files = [
-    'css/custom.css',
+    "css/custom.css",
 ]
 
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_favicon = '../logo.ico'
-html_theme = 'sphinx_rtd_theme'
+html_favicon = "../logo.ico"
+html_theme = "sphinx_rtd_theme"
 
 issues_github_path = "guard-project/cb-manager"
 
-nitpick_ignore = [
-    ('any', 'falcon.Request'),
-    ('any', 'falcon.Response')
-]
+nitpick_ignore = [("any", "falcon.Request"), ("any", "falcon.Response")]

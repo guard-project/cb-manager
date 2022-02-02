@@ -17,6 +17,6 @@ def client():
 
 
 def test_exec_env_get(client):
-    result = client.simulate_get('/exec-env',
-                                 headers={'Authorization': create_token()})
-    assert(result.status_code == 200)
+    result = client.simulate_get("/exec-env",
+                                 headers={"Authorization": create_token()})
+    assert result.status_code == 200

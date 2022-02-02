@@ -9,4 +9,4 @@ class EventDocument(BaseDocument):
     class Index:
         """Elasticsearch configuration."""
 
-        name = 'event'
+        name = "event"

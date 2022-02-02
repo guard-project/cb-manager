@@ -1,10 +1,11 @@
 class In(object):
-    error_messages = {'validator_failed': 'Id not found.'}
+    error_messages = {"validator_failed": "Id not found."}
 
     @staticmethod
     def apply(src, negation=False):
         def data():
             return src() if callable(src) else src
+
         if negation:
             return lambda field: field not in data()
         else:
@@ -12,7 +13,7 @@ class In(object):
 
 
 class UniqueList(object):
-    error_messages = {'validator_failed': 'Repeated values.'}
+    error_messages = {"validator_failed": "Repeated values."}
 
     @staticmethod
     def apply(field=None):
@@ -22,4 +23,5 @@ class UniqueList(object):
             else:
                 fields = values
             return len(fields) == len(set(fields))
+
         return __get

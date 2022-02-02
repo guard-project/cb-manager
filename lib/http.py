@@ -6,10 +6,10 @@ from utils.log import Log
 class HTTPMethod(object):
     """Constants representing various HTTP request methods."""
 
-    GET = 'get'
-    PUT = 'put'
-    POST = 'post'
-    DELETE = 'delete'
+    GET = "get"
+    PUT = "put"
+    POST = "post"
+    DELETE = "delete"
 
 
 code_priority_order = cpo = {
@@ -21,7 +21,7 @@ code_priority_order = cpo = {
     HTTP_Status.NO_CONTENT: 4,
     HTTP_Status.CONFLICT: 4,
     HTTP_Status.NOT_ACCEPTABLE: 4,
-    HTTP_Status.UNPROCESSABLE_ENTITY: 4
+    HTTP_Status.UNPROCESSABLE_ENTITY: 4,
 }
 
 
@@ -58,7 +58,7 @@ def __eq(code_a, code_b):
 def __get(code):
     prior_order = cpo.get(code, None)
     if prior_order is None:
-        Log.get('http-lib').warn(f'{code} without priority order.')
+        Log.get("http-lib").warn(f"{code} without priority order.")
     return prior_order
 
 

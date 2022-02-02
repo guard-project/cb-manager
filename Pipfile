@@ -14,7 +14,7 @@ falcon-apispec = "==0.3.0"
 falcon-auth = "==1.1.0"
 falcon-elastic-apm = "==0.1.1"
 falcon-require-https = "==0.1.0"
-loguru = "==0.5.3"
+loguru = ">=0.6.0"
 marshmallow = "==3.4.0"
 msgpack = "==1.0.0"
 requests = "==2.24.0"
@@ -32,7 +32,7 @@ autopep8 = "*" # https://github.com/hhatto/autopep8
 black = "*" # https://github.com/psf/black
 flake8 = "*" # https://flake8.pycqa.org
 mccabe = "*" # https://github.com/PyCQA/mccabe
-pycallgraph = "*" # https://pycallgraph.readthedocs.io/en/master/
+# pycallgraph = "*" # https://pycallgraph.readthedocs.io/en/master/
 pycodestyle = "*" # https://github.com/PyCQA/pycodestyle
 pyflakes = "*" # https://github.com/PyCQA/pyflakes
 pylint = "*" # https://pylint.org/
@@ -40,7 +40,7 @@ setuptools = "==57.5.0" # for pycallgraph
 vprof = "*" # https://github.com/nvdv/vprof
 
 [requires]
-python_version = "3.10"
+python_version = "3.8"
 
 [scripts]
 # program
@@ -48,14 +48,14 @@ requirements = "bash scripts/requirements.sh"
 start = "bash scripts/start.sh"
 # dev
 changelog = "bat CHANGELOG.md"
-codestyle = "find src -iname '*.py' -exec pycodestyle --first {} \\;"
-complexity = "find src -iname '*.py' -exec python -m mccabe {} \\;"
-error-check = "python3 -m pyflakes src"
-format-black = "black src/"
-format-pep8 = "find src -iname '*.py' -exec autopep8 --in-place --aggressive --aggressive {} \\;"
-graph = "pycallgraph src/ --output=dev/graph.svg"
-linter = "find src -iname '*.py' -exec pylint {} \\;"
-profiler-start = "vprof -c cmh src/deployment.py --output-file dev/profiler.json"
+codestyle = "find . -iname '*.py' -exec pycodestyle --exclude='./.venv/*'  --first {} \\;"
+complexity = "find . -iname '*.py' -exec python -m mccabe --min=10 {} \\;"
+error-check = "python3 -m pyflakes ."
+format-black = "black ./"
+format-pep8 = "find . -iname '*.py' -exec autopep8 --exclude='./.venv/*' --in-place --aggressive --aggressive {} \\;"
+graph = "pycallgraph ./ --output=dev/graph.svg"
+linter = "find . -iname '*.py' -exec pylint --exclude='./.venv/*'  {} \\;"
+profiler-start = "vprof -c cmh ./main.py --output-file dev/profiler.json"
 profiler-view = "vprof --input-file dev/profiler.json"
 requirements-dev = "bash scripts/requirements-dev.sh"
 security-scan = "docker scan cnit_ml"

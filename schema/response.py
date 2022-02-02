@@ -1,13 +1,22 @@
 from marshmallow import Schema, validate
 from marshmallow.fields import Bool, Constant, Integer, Nested, Raw, Str
 
-from lib.response import (BadRequestResponse, ConflictResponse,
-                          ContentResponse, CreatedResponse,
-                          InternalServerErrorResponse, NoContentResponse,
-                          NotAcceptableResponse, NotFoundResponse,
-                          NotModifiedResponse, OkResponse,
-                          ResetContentResponse, UnauthorizedResponse,
-                          UnprocEntityResponse, UnsuppMediaTypeResponse)
+from lib.response import (
+    BadRequestResponse,
+    ConflictResponse,
+    ContentResponse,
+    CreatedResponse,
+    InternalServerErrorResponse,
+    NoContentResponse,
+    NotAcceptableResponse,
+    NotFoundResponse,
+    NotModifiedResponse,
+    OkResponse,
+    ResetContentResponse,
+    UnauthorizedResponse,
+    UnprocEntityResponse,
+    UnsuppMediaTypeResponse,
+)
 
 RESPONSE_STATUS = [
     BadRequestResponse.status(),
@@ -22,7 +31,7 @@ RESPONSE_STATUS = [
     ResetContentResponse.status(),
     UnauthorizedResponse.status(),
     UnprocEntityResponse.status(),
-    UnsuppMediaTypeResponse.status()
+    UnsuppMediaTypeResponse.status(),
 ]
 
 RESPONSE_CODES = [
@@ -38,37 +47,54 @@ RESPONSE_CODES = [
     ResetContentResponse.code,
     UnauthorizedResponse.code,
     UnprocEntityResponse.code,
-    UnsuppMediaTypeResponse.code
+    UnsuppMediaTypeResponse.code,
 ]
 
 
 class ExceptionResponseSchema(Schema):
-    reason = Raw(required=True, example='Connection timeout',
-                 description='Exception reason.')
-    filename = Str(required=True, example='lib/connection.py',
-                   description='Filename where the exception is raised.')
-    line = Integer(required=True, example=80,
-                   description='Line where the exception is raised.')
+    reason = Raw(
+        required=True,
+        example="Connection timeout",
+        description="Exception reason.")
+    filename = Str(
+        required=True,
+        example="lib/connection.py",
+        description="Filename where the exception is raised.",
+    )
+    line = Integer(
+        required=True,
+        example=80,
+        description="Line where the exception is raised.")
 
 
 class BaseResponseSchema(Schema):
     """Response for the item creation."""
 
-    status = Str(required=True, enum=RESPONSE_STATUS,
-                 example=RESPONSE_STATUS[0],
-                 description='HTTP Status Code phrase.',
-                 validate=validate.OneOf(RESPONSE_STATUS))
-    error = Bool(default=False, example=False,
-                 description='Indicate the presence of an error')
-    message = Str(required=True,
-                  example='Request not valid: two ids provided.',
-                  description='Human readable message that describes the status of the operation.')  # noqa:E501
+    status = Str(
+        required=True,
+        enum=RESPONSE_STATUS,
+        example=RESPONSE_STATUS[0],
+        description="HTTP Status Code phrase.",
+        validate=validate.OneOf(RESPONSE_STATUS),
+    )
+    error = Bool(
+        default=False,
+        example=False,
+        description="Indicate the presence of an error")
+    message = Str(
+        required=True,
+        example="Request not valid: two ids provided.",
+        description="Human readable message that describes the status of the operation.",
+    )  # noqa:E501
     exception = Nested(ExceptionResponseSchema,
-                       description='Message of the occurred exception.')
-    code = Integer(required=True, enum=RESPONSE_CODES,
-                   example=RESPONSE_CODES[0],
-                   description='HTTP Status Code.',
-                   validate=validate.OneOf(RESPONSE_CODES))
+                       description="Message of the occurred exception.")
+    code = Integer(
+        required=True,
+        enum=RESPONSE_CODES,
+        example=RESPONSE_CODES[0],
+        description="HTTP Status Code.",
+        validate=validate.OneOf(RESPONSE_CODES),
+    )
 
 
 class BadRequestResponseSchema(BaseResponseSchema):

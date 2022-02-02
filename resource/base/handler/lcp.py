@@ -1,7 +1,7 @@
 from lib.response import NotFoundResponse
 from utils.log import Log
 
-MSG_ID_NOT_FOUND = '{label} with id={doc_id} not found.'
+MSG_ID_NOT_FOUND = "{label} with id={doc_id} not found."
 
 
 class LCP(object):
@@ -19,6 +19,7 @@ class LCP(object):
     def from_catalog(catalog, doc_id, label, resp):
         def __filter_id(data):
             return data.id == doc_id
+
         ret = list(filter(__filter_id, catalog))
         if len(ret) == 1:
             return ret[0]
@@ -28,4 +29,4 @@ class LCP(object):
 
     @staticmethod
     def __log():
-        return Log.get('lcp')
+        return Log.get("lcp")

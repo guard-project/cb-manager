@@ -5,15 +5,15 @@ from document.pipeline import PipelineDocument
 from schema.pipeline import PipelineSchema
 
 
-@docstring(ext='yaml')
+@docstring(ext="yaml")
 class PipelineResource(BaseResource):
     doc = PipelineDocument
-    name = 'pipeline'
+    name = "pipeline"
     names = name
-    routes = '/pipeline/'
+    routes = "/pipeline/"
     schema = PipelineSchema
 
 
-@docstring(ext='yaml')
+@docstring(ext="yaml")
 class PipelineSelectedResource(PipelineResource):
-    routes = '/pipeline/{_id}'
+    routes = "/pipeline/{_id}"

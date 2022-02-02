@@ -6,17 +6,17 @@ from document.agent.instance import AgentInstanceDocument
 from schema.agent.instance import AgentInstanceSchema
 
 
-@docstring(ext='yaml')
+@docstring(ext="yaml")
 class AgentInstanceResource(BaseResource):
     doc = AgentInstanceDocument
-    name = 'agent instance'
-    names = 'agent instances'
-    routes = '/instance/agent/'
+    name = "agent instance"
+    names = "agent instances"
+    routes = "/instance/agent/"
     schema = AgentInstanceSchema
-    lcp_handler = {'post': LCP.handler, 'put': LCP.handler}
-    ignore_fields = ['operations']
+    lcp_handler = {"post": LCP.handler, "put": LCP.handler}
+    ignore_fields = ["operations"]
 
 
-@docstring(ext='yaml')
+@docstring(ext="yaml")
 class AgentInstanceSelectedResource(AgentInstanceResource):
-    routes = '/instance/agent/{_id}'
+    routes = "/instance/agent/{_id}"

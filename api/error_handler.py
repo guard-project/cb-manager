@@ -1,10 +1,16 @@
 from typing import Callable
 
-from falcon.errors import (HTTPBadRequest, HTTPInternalServerError,
-                           HTTPUnsupportedMediaType)
+from falcon.errors import (
+    HTTPBadRequest,
+    HTTPInternalServerError,
+    HTTPUnsupportedMediaType,
+)
 
-from lib.response import (BadRequestResponse, InternalServerErrorResponse,
-                          UnsuppMediaTypeResponse)
+from lib.response import (
+    BadRequestResponse,
+    InternalServerErrorResponse,
+    UnsuppMediaTypeResponse,
+)
 
 
 class BaseHandler(object):

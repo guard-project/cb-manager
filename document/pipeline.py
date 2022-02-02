@@ -17,4 +17,4 @@ class PipelineDocument(BaseDocument):
     class Index:
         """Elasticsearch configuration."""
 
-        name = 'pipeline'
+        name = "pipeline"

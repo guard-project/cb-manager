@@ -2,7 +2,7 @@ from datetime import datetime
 
 from marshmallow import fields
 
-FORMAT = '%Y-%m-%dT%H:%M:%S'
+FORMAT = "%Y-%m-%dT%H:%M:%S"
 
 
 def datetime_from_str(date_time_str, format=FORMAT):
@@ -33,5 +33,5 @@ class DateTime(fields.DateTime):
     SERIALIZATION_FUNCS = fields.DateTime.SERIALIZATION_FUNCS.copy()
     DESERIALIZATION_FUNCS = fields.DateTime.DESERIALIZATION_FUNCS.copy()
 
-    SERIALIZATION_FUNCS['timestamp'] = lambda x: x.timestamp()
-    DESERIALIZATION_FUNCS['timestamp'] = datetime.fromtimestamp
+    SERIALIZATION_FUNCS["timestamp"] = lambda x: x.timestamp()
+    DESERIALIZATION_FUNCS["timestamp"] = datetime.fromtimestamp

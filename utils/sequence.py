@@ -48,10 +48,11 @@ def iterate(source, *keys):
 def subset(elements, *keys, negation=False):
     def match(element):
         return element[0] not in keys if negation else element[0] in keys
+
     return dict(filter(match, elements.items()))
 
 
-def table_to_dict(data, sep=' '):
+def table_to_dict(data, sep=" "):
     keys = data.pop(0).split(sep)
     output = []
     for dr in data:

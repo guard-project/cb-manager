@@ -5,7 +5,7 @@ from document.base import BaseDocument
 
 class ConnectionDocument(BaseDocument):
     """Represents an connection between execution
-       environments and network links."""
+    environments and network links."""
 
     # id already defined by Elasticsearch
     exec_env_id = Text(required=True)
@@ -15,4 +15,4 @@ class ConnectionDocument(BaseDocument):
     class Index:
         """Elasticsearch configuration."""
 
-        name = 'connection'
+        name = "connection"

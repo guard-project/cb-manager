@@ -272,6 +272,19 @@ definitions:
     - id
     - status
     type: object
+  AlgorithmCatalogActionSchema:
+    properties:
+      description:
+        description: Short description of the action.
+        example: Start the algorithm.
+        type: string
+      id:
+        description: Action id.
+        example: frequency
+        type: string
+    required:
+    - id
+    type: object
   AlgorithmCatalogParameterSchema:
     properties:
       description:
@@ -313,6 +326,11 @@ definitions:
     type: object
   AlgorithmCatalogSchema:
     properties:
+      actions:
+        description: Action properties.
+        items:
+          $ref: '#/definitions/AlgorithmCatalogActionSchema'
+        type: array
       description:
         description: Short description of the algorithm.
         example: Predict DDoS attacks.

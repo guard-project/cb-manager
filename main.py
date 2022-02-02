@@ -23,14 +23,22 @@ data_base = ArgReader.read()
 if data_base.version is not None:
     print(data_base.version)
 else:
-    ident = f'{project} - {title} v:{version}'
+    ident = f"{project} - {title} v:{version}"
     console = Console()
     console.print(Panel.fit(ident))
     Log.init(config=data_base.log_config)
-    es_conn(endpoint=data_base.es_endpoint, timeout=data_base.es_timeout,
-            retry_period=data_base.es_retry_period)
+    es_conn(
+        endpoint=data_base.es_endpoint,
+        timeout=data_base.es_timeout,
+        retry_period=data_base.es_retry_period,
+    )
     api_instance = api(title=title, version=version)
-    Log.get('api').success(
-        f'Accept requests at {data_base.host}:{data_base.port}')
-    waitress.serve(api_instance, host=data_base.host, port=data_base.port,
-                   expose_tracebacks=False, ident=ident, _quiet=True)
+    Log.get("api").success(f"Accept requests at {data_base.host}:{data_base.port}")
+    waitress.serve(
+        api_instance,
+        host=data_base.host,
+        port=data_base.port,
+        expose_tracebacks=False,
+        ident=ident,
+        _quiet=True,
+    )

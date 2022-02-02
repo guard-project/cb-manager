@@ -5,29 +5,29 @@ from document.exec_env import ExecEnvDocument, ExecEnvTypeDocument
 from schema.exec_env import ExecEnvSchema, ExecEnvTypeSchema
 
 
-@docstring(ext='yaml')
+@docstring(ext="yaml")
 class ExecEnvResource(BaseResource):
     doc = ExecEnvDocument
-    name = 'execution environment'
-    names = 'execution environments'
-    routes = '/exec-env/'
+    name = "execution environment"
+    names = "execution environments"
+    routes = "/exec-env/"
     schema = ExecEnvSchema
 
 
-@docstring(ext='yaml')
+@docstring(ext="yaml")
 class ExecEnvSelectedResource(ExecEnvResource):
-    routes = '/exec-env/{_id}'
+    routes = "/exec-env/{_id}"
 
 
-@docstring(ext='yaml')
+@docstring(ext="yaml")
 class ExecEnvTypeResource(BaseResource):
     doc = ExecEnvTypeDocument
-    name = 'execution environment type'
-    names = 'execution environment types'
-    routes = '/type/exec-env/'
+    name = "execution environment type"
+    names = "execution environment types"
+    routes = "/type/exec-env/"
     schema = ExecEnvTypeSchema
 
 
-@docstring(ext='yaml')
+@docstring(ext="yaml")
 class ExecEnvTypeSelectedResource(ExecEnvTypeResource):
-    routes = '/exec-env-type/{_id}'
+    routes = "/exec-env-type/{_id}"

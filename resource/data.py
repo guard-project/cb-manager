@@ -5,15 +5,15 @@ from document.data import DataDocument
 from schema.data import DataSchema
 
 
-@docstring(ext='yaml')
+@docstring(ext="yaml")
 class DataResource(BaseResource):
     doc = DataDocument
-    name = 'data'
+    name = "data"
     names = name
-    routes = '/data/'
+    routes = "/data/"
     schema = DataSchema
 
 
-@docstring(ext='yaml')
+@docstring(ext="yaml")
 class DataSelectedResource(DataResource):
-    routes = '/data/{_id}'
+    routes = "/data/{_id}"
