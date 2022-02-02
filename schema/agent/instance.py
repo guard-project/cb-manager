@@ -28,14 +28,20 @@ class AgentInstanceParameterSchema(Schema):
     in an execution environment."""
 
     id = Str(required=True, example="period", description="Parameter id.")
-    value = (Raw(required=True, example="10s", description="Paremeter value."),)
+    value = (
+        Raw(required=True, example="10s", description="Paremeter value."),
+    )
 
 
 class AgentInstanceResourceSchema(Schema):
     """Resource of the agent instance installed in an execution environment."""
 
-    id = Str(required=True, example="filebeat-config", description="Resource id.")
-    content = Str(required=True, example="period: 10s", description="Resource content.")
+    id = Str(
+        required=True, example="filebeat-config", description="Resource id."
+    )
+    content = Str(
+        required=True, example="period: 10s", description="Resource content."
+    )
 
 
 class AgentInstanceOperationSchema(BaseSchema):

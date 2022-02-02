@@ -20,7 +20,9 @@ class LCPSchema(Schema):
         example=True,
         description="Communication with the LCP using HTTPS.",
     )
-    endpoint = Str(example="lcp", description="URL Endpoint to connect with the LCP.")
+    endpoint = Str(
+        example="lcp", description="URL Endpoint to connect with the LCP."
+    )
     started = DateTime(
         readonly=True,
         example="2019/02/14 15:23:30",
@@ -38,7 +40,9 @@ class ExecEnvSchema(BaseSchema):
 
     doc = ExecEnvDocument
     id = Str(
-        required=True, example="apache", description="Id of the execution environment."
+        required=True,
+        example="apache",
+        description="Id of the execution environment.",
     )
     hostname = Str(
         required=True,
@@ -75,7 +79,9 @@ class ExecEnvTypeSchema(BaseSchema):
 
     doc = ExecEnvTypeDocument
     id = Str(
-        required=True, example="vm", description="Id of the execution environment type."
+        required=True,
+        example="vm",
+        description="Id of the execution environment type.",
     )
     name = Str(
         required=True,
@@ -83,5 +89,6 @@ class ExecEnvTypeSchema(BaseSchema):
         description="Name of the execution environment.",
     )
     description = Str(
-        example="Linux container.", description="Short description of the type."
+        example="Linux container.",
+        description="Short description of the type.",
     )

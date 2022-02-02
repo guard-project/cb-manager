@@ -60,16 +60,24 @@ class BaseResource(BaseMinimalResource):
             err_es_init = True
             while err_es_init:
                 try:
-                    self.log.info(f"Start initialization index {self.doc.Index.name}")
+                    self.log.info(
+                        f"Start initialization index {self.doc.Index.name}"
+                    )
                     self.doc.init()
-                    self.log.success(f"Index {self.doc.Index.name} initialized")
+                    self.log.success(
+                        f"Index {self.doc.Index.name} initialized"
+                    )
                     err_es_init = False
                 except Exception as exception:
                     self.log.exception(
-                        MSG_INIT_INDEX_NOT_POSSIBLE.format(self.doc.Index.name),
+                        MSG_INIT_INDEX_NOT_POSSIBLE.format(
+                            self.doc.Index.name
+                        ),
                         exception,
                     )
-                    self.log.info(MSG_WAITING_CONN.format(ArgReader.db.es_retry_period))
+                    self.log.info(
+                        MSG_WAITING_CONN.format(ArgReader.db.es_retry_period)
+                    )
                     sleep(ArgReader.db.es_retry_period)
         else:
             Log.get(self.__class__.__name__).warning("doc not set")
@@ -83,12 +91,14 @@ class BaseResource(BaseMinimalResource):
                 query_reader = QueryReader(index=self.doc.Index.name)
                 search = query_reader.parse(query=req_data, item_id=_id)
                 if resp_data := [
-                    dict(hit.to_dict(), id=hit.meta.id) for hit in search.execute()
+                    dict(hit.to_dict(), id=hit.meta.id)
+                    for hit in search.execute()
                 ]:
                     ContentResponse(resp_data).apply(resp)
                 else:
                     NotFoundResponse(
-                        MSG_NOT_FOUND.format(self.name.capitalize()), query=req_data
+                        MSG_NOT_FOUND.format(self.name.capitalize()),
+                        query=req_data,
                     ).apply(resp)
             except Exception as exception:
                 UnprocEntityResponse(
@@ -121,7 +131,9 @@ class BaseResource(BaseMinimalResource):
                             )
                         )
                         hndl = self.get_lcp_handler(HTTPMethod.POST)
-                        hndl(instance=obj, req=req_data_lcp, resp=resp_data_lcp)
+                        hndl(
+                            instance=obj, req=req_data_lcp, resp=resp_data_lcp
+                        )
                         if resp_data_lcp:
                             for rdl in resp_data_lcp:
                                 if rdl["error"]:
@@ -137,7 +149,9 @@ class BaseResource(BaseMinimalResource):
                             obj.save()
                         if force:
                             resp_data = UnprocEntityResponse(
-                                MSG_ERROR.format(self.name, req_data_id, "created")
+                                MSG_ERROR.format(
+                                    self.name, req_data_id, "created"
+                                )
                             )
                         resp_data.add(resp)
                     except Exception as exception:
@@ -151,7 +165,8 @@ class BaseResource(BaseMinimalResource):
                         ).add(resp)
             else:
                 NoContentResponse(
-                    MSG_NO_CONTENT.format("create", self.names), request=req_data
+                    MSG_NO_CONTENT.format("create", self.names),
+                    request=req_data,
                 ).apply(resp)
         else:
             resp_data.apply(resp)
@@ -175,7 +190,9 @@ class BaseResource(BaseMinimalResource):
                     try:
                         if len(req_data) == 0:
                             NotModifiedResponse(
-                                MSG_UPDATE_NOT_NEEDED.format(self.name, req_data_id)
+                                MSG_UPDATE_NOT_NEEDED.format(
+                                    self.name, req_data_id
+                                )
                             ).add(resp)
                         else:
                             self.rm_ignore_fields(req_data)
@@ -183,7 +200,9 @@ class BaseResource(BaseMinimalResource):
                             resp_data_lcp = []
                             hndl = self.get_lcp_handler(HTTPMethod.PUT)
                             modified = hndl(
-                                instance=obj, req=req_data_lcp, resp=resp_data_lcp
+                                instance=obj,
+                                req=req_data_lcp,
+                                resp=resp_data_lcp,
                             )
                             rsp_dt = OkResponse(
                                 MSG_OK.format(
@@ -205,29 +224,38 @@ class BaseResource(BaseMinimalResource):
                                         break
                                 rsp_dt.update(lcp_response=resp_data_lcp)
                             force = req_data.get("force", False)
-                            if (not rsp_dt.error or force) and len(req_data) > 0:
+                            if (not rsp_dt.error or force) and len(
+                                req_data
+                            ) > 0:
                                 res = obj.update(**req_data)
                                 if res == status_op.UPDATED:
                                     modified = True
                                     if force:
                                         rsp_dt = UnprocEntityResponse(
                                             MSG_ERROR.format(
-                                                self.name, req_data_id, "updated"
+                                                self.name,
+                                                req_data_id,
+                                                "updated",
                                             )
                                         )
                             if not rsp_dt.error and not modified:
                                 rsp_dt = NotModifiedResponse(
-                                    MSG_UPDATE_NOT_NEEDED.format(self.name, req_data_id)
+                                    MSG_UPDATE_NOT_NEEDED.format(
+                                        self.name, req_data_id
+                                    )
                                 )
                             rsp_dt.add(resp)
                     except Exception as exception:
                         UnprocEntityResponse(
-                            MSG_UPDATE_NOT_NEEDED.format(self.name, req_data_id),
+                            MSG_UPDATE_NOT_NEEDED.format(
+                                self.name, req_data_id
+                            ),
                             exception,
                         ).add(resp)
             else:
                 NoContentResponse(
-                    MSG_NO_CONTENT.format("update", self.name), request=req_data
+                    MSG_NO_CONTENT.format("update", self.name),
+                    request=req_data,
                 ).apply(resp)
         else:
             rsp_dt.apply(resp)
@@ -248,7 +276,9 @@ class BaseResource(BaseMinimalResource):
                             resp_data_lcp = []
                             resp_data = ResetContentResponse(
                                 MSG_OK.format(
-                                    self.name.capitalize(), hit.meta.id, "deleted"
+                                    self.name.capitalize(),
+                                    hit.meta.id,
+                                    "deleted",
                                 )
                             )
                             hndl = self.get_lcp_handler(HTTPMethod.DELETE)
@@ -270,7 +300,9 @@ class BaseResource(BaseMinimalResource):
                                 obj.delete()
                             if force:
                                 resp_data = UnprocEntityResponse(
-                                    MSG_ERROR.format(self.name, hit.meta.id, "deleted")
+                                    MSG_ERROR.format(
+                                        self.name, hit.meta.id, "deleted"
+                                    )
                                 )
                             resp_data.add(resp)
                         except Exception as exception:
@@ -282,7 +314,8 @@ class BaseResource(BaseMinimalResource):
                             ).add(resp)
                 else:
                     NotFoundResponse(
-                        MSG_NOT_FOUND.format(self.names.capitalize()), query=req_data
+                        MSG_NOT_FOUND.format(self.names.capitalize()),
+                        query=req_data,
                     ).apply(resp)
             except Exception as exception:
                 UnprocEntityResponse(

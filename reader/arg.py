@@ -40,7 +40,12 @@ class ArgReader:
             action="store_true",
         )
 
-        add("--auth", "-t", help="Enable JWT authentication", action="store_true")
+        add(
+            "--auth",
+            "-t",
+            help="Enable JWT authentication",
+            action="store_true",
+        )
         add(
             "--auth-header-prefix",
             "-x",
@@ -120,7 +125,13 @@ class ArgReader:
             help="Write options to config.ini",
             action="store_true",
         )
-        add("--version", "-v", help="Show version", action="store_const", const=version)
+        add(
+            "--version",
+            "-v",
+            help="Show version",
+            action="store_const",
+            const=version,
+        )
 
         return cls.ap
 
@@ -130,7 +141,12 @@ class ArgReader:
 
         cls.db = cls.ap.parse_args()
         cls.db.config = cls.cr
-        for field in ("hb_timeout", "hb_period", "es_timeout", "es_retry_period"):
+        for field in (
+            "hb_timeout",
+            "hb_period",
+            "es_timeout",
+            "es_retry_period",
+        ):
             setattr(cls.db, field, get_seconds(getattr(cls.db, field)))
 
         cls.db.https = cls.db.https or cls.cr.cb_https

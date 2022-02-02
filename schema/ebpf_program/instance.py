@@ -15,7 +15,9 @@ class _eBPFProgramInstanceParameterSchema(Schema):
     installed in an execution environment."""
 
     id = Str(required=True, example="interface", description="Parameter id.")
-    value = (Raw(required=True, example="en0", description="Paremeter value."),)
+    value = (
+        Raw(required=True, example="en0", description="Paremeter value."),
+    )
     timestamp = Date_Time(
         format=FORMAT,
         readonly=True,

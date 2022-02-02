@@ -24,7 +24,9 @@ class AgentCatalogActionInnerDoc(BaseInnerDoc):
     def from_agent_type(agent_type, container):
         _id = agent_type.pop("id", None)
         cmd = agent_type.pop("cmd", None)
-        obj = AgentCatalogActionInnerDoc.get_or_new(id=_id, container=container)
+        obj = AgentCatalogActionInnerDoc.get_or_new(
+            id=_id, container=container
+        )
         for field, data in agent_type.items():
             setattr(obj, field, data)
         if cmd:
@@ -56,7 +58,9 @@ class AgentCatalogParameterInnerDoc(BaseInnerDoc):
     @staticmethod
     def from_agent_type(agent_type, container, schema, source):
         path = agent_type.pop("path", None)
-        obj = AgentCatalogParameterInnerDoc.get_or_new(id=path, container=container)
+        obj = AgentCatalogParameterInnerDoc.get_or_new(
+            id=path, container=container
+        )
         for field, data in agent_type.items():
             setattr(obj, field, data)
         obj.config = AgentCatalogParameterConfigInnerDoc(
@@ -102,7 +106,9 @@ class AgentCatalogDocument(BaseDocument):
         schema = agent_type.pop("schema")
         obj = AgentCatalogDocument.get_or_new(id=_id)
         for action in agent_type.pop("actions", []):
-            AgentCatalogActionInnerDoc.from_agent_type(action, container=obj.actions)
+            AgentCatalogActionInnerDoc.from_agent_type(
+                action, container=obj.actions
+            )
         for param in agent_type.pop("parameters", []):
             AgentCatalogParameterInnerDoc.from_agent_type(
                 param, container=obj.parameters, schema=schema, source=source

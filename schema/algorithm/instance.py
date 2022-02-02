@@ -11,7 +11,9 @@ class AlgorithmInstanceParameterSchema(Schema):
     """Parameter of the algorithm instance."""
 
     id = Str(required=True, example="period", description="Parameter id.")
-    value = (Raw(required=True, example="10s", description="Paremeter value."),)
+    value = (
+        Raw(required=True, example="10s", description="Paremeter value."),
+    )
 
 
 class AlgorithmInstanceOperationSchema(BaseSchema):

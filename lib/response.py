@@ -18,7 +18,9 @@ class BaseResponse(object):
         self.data.update(kwargs)
 
     def __data(self):
-        return expand(self.data, status=self.status(), code=self.code, error=self.error)
+        return expand(
+            self.data, status=self.status(), code=self.code, error=self.error
+        )
 
     def __str__(self):
         return self.status()
@@ -193,6 +195,8 @@ class UnsuppMediaTypeResponse(BaseResponse):
 
     def __init__(self, exception=None, **kwargs):
         title = (
-            exception.title if exception is not None else "Unsupported media type"
+            exception.title
+            if exception is not None
+            else "Unsupported media type"
         )  # noqa: E501
         super().__init__(title, exception=exception, **kwargs)

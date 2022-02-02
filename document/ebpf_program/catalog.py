@@ -3,7 +3,9 @@ from elasticsearch_dsl import Boolean, Nested, Text
 from document.base import BaseDocument, BaseInnerDoc
 
 
-class _eBPFProgramCatalogConfigMetricOpenMetricsMetadataLabelInnerDoc(BaseInnerDoc):
+class _eBPFProgramCatalogConfigMetricOpenMetricsMetadataLabelInnerDoc(
+    BaseInnerDoc
+):
     """eBPF program open metrics label."""
 
     name = Text(required=True)
@@ -15,7 +17,9 @@ class _eBPFProgramCatalogConfigMetricOpenMetricsMetadataInnerDoc(BaseInnerDoc):
 
     type = Text(required=True)
     help = Text()
-    labels = Nested(_eBPFProgramCatalogConfigMetricOpenMetricsMetadataLabelInnerDoc)
+    labels = Nested(
+        _eBPFProgramCatalogConfigMetricOpenMetricsMetadataLabelInnerDoc
+    )
 
 
 class _eBPFProgramCatalogConfigMetricInnerDoc(BaseInnerDoc):

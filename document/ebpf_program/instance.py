@@ -39,5 +39,7 @@ class _eBPFProgramInstanceDocument(BaseDocument):
                     param.timestamp = timestamp
                     return status_op.UPDATED
                 return status_op.NOT_MODIFIED
-        self.parameters.append(_eBPFProgramInstanceParameterInnerDoc(**parameter))
+        self.parameters.append(
+            _eBPFProgramInstanceParameterInnerDoc(**parameter)
+        )
         return status_op.UPDATED

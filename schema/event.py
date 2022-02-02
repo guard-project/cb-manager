@@ -9,5 +9,7 @@ class EventSchema(BaseSchema):
 
     doc = EventDocument
     id = Str(
-        required=True, example="BXrHRn5RPU55Qh9JwMZn", description="Id of the event."
+        required=True,
+        example="BXrHRn5RPU55Qh9JwMZn",
+        description="Id of the event.",
     )

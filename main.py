@@ -33,7 +33,9 @@ else:
         retry_period=data_base.es_retry_period,
     )
     api_instance = api(title=title, version=version)
-    Log.get("api").success(f"Accept requests at {data_base.host}:{data_base.port}")
+    Log.get("api").success(
+        f"Accept requests at {data_base.host}:{data_base.port}"
+    )
     waitress.serve(
         api_instance,
         host=data_base.host,

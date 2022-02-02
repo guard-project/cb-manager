@@ -22,7 +22,8 @@ class AlgorithmCatalogActionSchema(Schema):
 
     id = Str(required=True, example="frequency", description="Action id.")
     description = Str(
-        example="Start the algorithm.", description="Short description of the action."
+        example="Start the algorithm.",
+        description="Short description of the action.",
     )
 
 

@@ -9,7 +9,11 @@ class NetworkLinkSchema(BaseSchema):
     """Represents a network link."""
 
     doc = NetworkLinkDocument
-    id = Str(required=True, example="net-link-1", description="Id of the network link.")
+    id = Str(
+        required=True,
+        example="net-link-1",
+        description="Id of the network link.",
+    )
     type_id = Str(
         required=True,
         example="pnt2pnt",
@@ -28,7 +32,9 @@ class NetworkLinkTypeSchema(BaseSchema):
 
     doc = NetworkLinkTypeDocument
     id = Str(
-        required=True, example="pnt2pnt", description="Id of the network link type."
+        required=True,
+        example="pnt2pnt",
+        description="Id of the network link type.",
     )
     name = Str(
         required=True,

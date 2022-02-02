@@ -1,5 +1,11 @@
-from resource.agent.catalog import AgentCatalogResource, AgentCatalogSelectedResource
-from resource.agent.instance import AgentInstanceResource, AgentInstanceSelectedResource
+from resource.agent.catalog import (
+    AgentCatalogResource,
+    AgentCatalogSelectedResource,
+)
+from resource.agent.instance import (
+    AgentInstanceResource,
+    AgentInstanceSelectedResource,
+)
 from resource.algorithm.catalog import (
     AlgorithmCatalogResource,
     AlgorithmCatalogSelectedResource,

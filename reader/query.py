@@ -19,7 +19,8 @@ MSG_REQ_NOT_VALID = {
     "description": "Order with not valid/missing data",
 }
 MSG_CLAUSE_NOT_VALID = Bunch(
-    title="Request not valid", description="{} clause with not valid/missing data"
+    title="Request not valid",
+    description="{} clause with not valid/missing data",
 )
 
 
@@ -52,7 +53,9 @@ class QueryReader:
                 if is_dict(clause):
                     for sub_op, sub_clause in clause.items():
                         if query_obj is None:
-                            query_obj = self.__where({"where": {sub_op: sub_clause}})
+                            query_obj = self.__where(
+                                {"where": {sub_op: sub_clause}}
+                            )
                         else:
                             query_obj = query_obj & self.__where(
                                 {"where": {sub_op: sub_clause}}
@@ -62,12 +65,16 @@ class QueryReader:
                         if query_obj is None:
                             query_obj = self.__where({"where": sub_clause})
                         else:
-                            query_obj = query_obj & self.__where({"where": sub_clause})
+                            query_obj = query_obj & self.__where(
+                                {"where": sub_clause}
+                            )
             elif operator == "or":
                 if is_dict(clause):
                     for sub_op, sub_clause in clause.items():
                         if query_obj is None:
-                            query_obj = self.__where({"where": {sub_op: sub_clause}})
+                            query_obj = self.__where(
+                                {"where": {sub_op: sub_clause}}
+                            )
                         else:
                             query_obj = query_obj | self.__where(
                                 {"where": {sub_op: sub_clause}}
@@ -77,7 +84,9 @@ class QueryReader:
                         if query_obj is None:
                             query_obj = self.__where({"where": sub_clause})
                         else:
-                            query_obj = query_obj | self.__where({"where": sub_clause})
+                            query_obj = query_obj | self.__where(
+                                {"where": sub_clause}
+                            )
             elif operator == "not":
                 query_obj = ~self.__where(clause)
             else:
@@ -86,7 +95,9 @@ class QueryReader:
                 if prop is None or expr is None:
                     raise HTTPBadRequest(
                         title=MSG_CLAUSE_NOT_VALID.title,
-                        description=MSG_CLAUSE_NOT_VALID.description.format(operator),
+                        description=MSG_CLAUSE_NOT_VALID.description.format(
+                            operator
+                        ),
                     )
                 if operator == "equals":
                     query_obj = Q("match_phrase", **{prop: expr})

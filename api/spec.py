@@ -19,7 +19,10 @@ class Spec:
             produces=["application/json"],
             consumes=["application/json"],
             tags=rc_tags,
-            plugins=[Falcon_Plugin(api), Marshmallow_Plugin(schema_name_resolver)],
+            plugins=[
+                Falcon_Plugin(api),
+                Marshmallow_Plugin(schema_name_resolver),
+            ],
         )
 
     def get(self):

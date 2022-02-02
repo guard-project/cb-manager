@@ -33,7 +33,9 @@ class Formatter:
             lineno=record["line"],
             icon=emoji(":computer:"),
         )
-        record["elapsed"] = Bunch(time=record["elapsed"], icon=emoji(":alarm_clock:"))
+        record["elapsed"] = Bunch(
+            time=record["elapsed"], icon=emoji(":alarm_clock:")
+        )
         record["message"] = emoji(record["message"])
 
 
@@ -68,11 +70,15 @@ class Log:
                         sink = sys.stderr
                     else:
                         sink = klass.format(name=name)
-                        if sink_data.get("clear", True) and os.path.exists(sink):
+                        if sink_data.get("clear", True) and os.path.exists(
+                            sink
+                        ):
                             os.remove(sink)
                     hdls.append(dict(sink=sink, **sink_data.get("args", {})))
         logger.configure(
-            handlers=hdls, levels=cfg.get("levels", {}), patcher=Formatter.apply
+            handlers=hdls,
+            levels=cfg.get("levels", {}),
+            patcher=Formatter.apply,
         )
 
         for level in levels:
