@@ -48,6 +48,7 @@ requirements = "bash scripts/requirements.sh"
 start = "bash scripts/start.sh"
 # dev
 changelog = "bat CHANGELOG.md"
+clean-gt-action="bash scripts/clean-gh-action.sh"
 codestyle = "find . -iname '*.py' -exec pycodestyle --exclude='./.venv/*'  --first {} \\;"
 complexity = "find . -iname '*.py' -exec python -m mccabe --min=10 {} \\;"
 error-check = "python3 -m pyflakes ."
