@@ -37,3 +37,4 @@
 - Added deployment_source in catalog/agent.
 - Added endpoint for LCP communication.
 - Added endpoint for algorithm instance communication.
+- Autorestart script.

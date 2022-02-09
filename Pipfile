@@ -38,6 +38,7 @@ pyflakes = "*" # https://github.com/PyCQA/pyflakes
 pylint = "*" # https://pylint.org/
 setuptools = "==57.5.0" # for pycallgraph
 vprof = "*" # https://github.com/nvdv/vprof
+watchdog = {extras = ["watchmedo"], version = "*"}
 
 [requires]
 python_version = "3.8"

@@ -8,6 +8,7 @@
     "settings": {
         "cSpell.words": [
             "autopep",
+            "Autorestart",
             "codestyle",
             "conn",
             "Ital",
@@ -17,7 +18,8 @@
             "pycallgraph",
             "pyflakes",
             "pylint",
-            "venv"
+            "venv",
+            "watchmedo"
         ]
     }
 }
