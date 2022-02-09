@@ -80,7 +80,7 @@ class LCP(BaseLCP):
             _hostname, _port = exec_env.hostname, exec_env.lcp.port
             endpoint_lcp = exec_env.lcp.endpoint
             endpoint_lcp = f"/{endpoint_lcp}" if endpoint_lcp else ""
-            req_uri = f"{schema}://{_hostname}{_port}{endpoint_lcp}/config"
+            req_uri = f"{schema}://{_hostname}:{_port}{endpoint_lcp}/config"
             resp_lcp = post_req(
                 req_uri,
                 headers={"Authorization": create_token()},
