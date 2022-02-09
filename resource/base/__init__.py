@@ -6,16 +6,9 @@ from time import sleep
 from typing import Callable, Optional
 
 from lib.http import HTTPMethod
-from lib.response import (
-    ContentResponse,
-    CreatedResponse,
-    NoContentResponse,
-    NotFoundResponse,
-    NotModifiedResponse,
-    OkResponse,
-    ResetContentResponse,
-    UnprocEntityResponse,
-)
+from lib.response import (ContentResponse, CreatedResponse, NoContentResponse,
+                          NotFoundResponse, NotModifiedResponse, OkResponse,
+                          ResetContentResponse, UnprocEntityResponse)
 from reader.arg import ArgReader
 from reader.query import QueryReader
 from schema.query_request import QueryRequestSchema
@@ -172,7 +165,7 @@ class BaseResource(BaseMinimalResource):
             resp_data.apply(resp)
 
     def on_base_put(self, req, resp, _id=None):
-        status_op = self.doc.Status_Operation
+        status_op = self.doc.StatusOperation
         req_data = req.media or {}
         sch_obj = self.schema(
             many=is_list(req_data),

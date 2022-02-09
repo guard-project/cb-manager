@@ -69,7 +69,7 @@ class LCP(BaseLCP):
         for data_item in wrap(data):
             data_id = data_item.get("id", None)
             is_lcp_from_catalog = LCP.from_catalog(
-                catalog, id=data_id, label=typology.title(), resp=self.resp
+                catalog, doc_id=data_id, label=typology.title(), resp=self.resp
             )
             if (
                 catalog_doc := self.catalogs[typology].get(data_id, None)

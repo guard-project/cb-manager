@@ -65,7 +65,7 @@ class LCP(BaseLCP):
         )
         exec_env = cls.from_doc(
             document=ExecEnvDocument,
-            id=instance.exec_env_id,
+            doc_id=instance.exec_env_id,
             label="Execution Environment",
             resp=resp,
         )
@@ -146,7 +146,7 @@ class LCP(BaseLCP):
             data_id = data_item.get("id", None)
             is_lcp_from_catalog = LCP.from_catalog(
                 catalog=catalog,
-                id=data_id,
+                doc_id=data_id,
                 label=typology.title(),
                 resp=self.resp,
             )
