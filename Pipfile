@@ -47,6 +47,7 @@ python_version = "3.8"
 # program
 requirements = "bash scripts/requirements.sh"
 start = "bash scripts/start.sh"
+autorestart = "bash scripts/autorestart.sh"
 # dev
 changelog = "bat CHANGELOG.md"
 clean-gt-action="bash scripts/clean-gh-action.sh"
