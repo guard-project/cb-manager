@@ -1,4 +1,3 @@
-from resource.algorithm.handler.lcp import LCP
 from resource.base import BaseResource
 
 from docstring import docstring
