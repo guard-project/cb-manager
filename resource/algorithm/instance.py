@@ -1,4 +1,3 @@
-from resource.algorithm.handler.lcp import LCP
 from resource.base import BaseResource
 
 from docstring import docstring
@@ -13,7 +12,6 @@ class AlgorithmInstanceResource(BaseResource):
     names = "algorithm instances"
     routes = "/instance/algorithm/"
     schema = AlgorithmInstanceSchema
-    lcp_handler = {"post": LCP.handler, "put": LCP.handler}
     ignore_fields = ["operations"]
 
 
