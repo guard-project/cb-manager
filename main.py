@@ -12,7 +12,7 @@ from rich.panel import Panel  # noqa: E402
 pretty.install()
 traceback.install(show_locals=False)
 
-from about import project, title, version  # noqa: E402
+from about import last_dev, project, title, version  # noqa: E402
 from api import api  # noqa: E402
 from lib.elasticsearch import connection as es_conn  # noqa: E402
 from reader.arg import ArgReader  # noqa: E402
@@ -23,7 +23,7 @@ data_base = ArgReader.read()
 if data_base.version is not None:
     print(data_base.version)
 else:
-    ident = f"{project} - {title} v:{version}"
+    ident = f"{project} - {title} v:{version} ({last_dev})"
     console = Console()
     console.print(Panel.fit(ident))
     Log.init(config=data_base.log_config)
