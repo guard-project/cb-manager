@@ -20,6 +20,9 @@
             "pylint",
             "venv",
             "watchmedo"
-        ]
+        ],
+        "esbonio.server.enabled": false,
+        "esbonio.sphinx.buildDir": "docs/.build",
+        "esbonio.sphinx.confDir": "docs/conf.py"
     }
 }
