@@ -19,119 +19,67 @@ class ArgReader:
         )
         add = cls.ap.add_argument
 
-        add(
-            "--host",
-            "-o",
-            type=str,
-            help="Hostname/IP of the REST Server",
-            default=cls.cr.cb_host,
-        )
-        add(
-            "--port",
-            "-p",
-            type=int,
-            help="TCP Port of the REST Server",
-            default=cls.cr.cb_port,
-        )
-        add(
-            "--https",
-            "-q",
-            help="Force to use HTTPS instead of HTTP",
-            action="store_true",
-        )
+        add("--host", "-o", type=str,
+            help="Hostname/Ip of the REST Server", default=cls.cr.cb_host)
+        add("--port", "-p", type=int,
+            help="TCP Port of the REST Server", default=cls.cr.cb_port)
+        add("--https", "-q", help="Force to use HTTPS instead of HTTP",
+            action="store_true")
 
-        add(
-            "--auth",
-            "-t",
-            help="Enable JWT authentication",
-            action="store_true",
-        )
-        add(
-            "--auth-header-prefix",
-            "-x",
-            type=str,
+        add("--auth", "-t", help="Enable JWT authentication",
+            action="store_true")
+        add("--auth-header-prefix", "-x", type=str,
             help="Prefix in the JWT authentication header",
-            default=cls.cr.auth_header_prefix,
-        )
-        add(
-            "--auth-secret-key",
-            "-k",
-            type=str,
+            default=cls.cr.auth_header_prefix)
+        add("--auth-secret-key", "-k", type=str,
             help="Secret key for JWT authentication",
-            default=cls.cr.auth_secret_key,
-        )
+            default=cls.cr.auth_secret_key)
 
-        add(
-            "--hb-timeout",
-            "-b",
-            type=str,
+        add("--oauth2", "-j", help="Enable OAuth2 authentication",
+            action="store_true")
+        add("--oauth2-token-uri", "-u", type=str,
+            help="Token URI for OAuth2 authentication",
+            default=cls.cr.oauth2_token_uri)
+        add("--oauth2-client-id", "-c", type=str,
+            help="Client ID for OAuth2 authentication",
+            default=cls.cr.oauth2_client_id)
+        add("--oauth2-client-secret", "-g", type=str,
+            help="OAuth2 secret", default=cls.cr.oauth2_client_secret)
+        add("--oauth2-verify", "-i", type=str,
+            help="Path to the TLS certificate for OAuth2 authentication",
+            default=cls.cr.oauth2_verify)
+
+        add("--hb-timeout", "-b", type=str,
             help="Timeout (with unit, e.g.: 10s) for heartbeat with LCP",
-            default=cls.cr.hb_timeout,
-        )
-        add(
-            "--hb-period",
-            "-r",
-            type=str,
+            default=cls.cr.hb_timeout)
+        add("--hb-period", "-r", type=str,
             help="Period (with unit, e.g.: 1min) for the heartbeat with the LCP",  # noqa: E501
-            default=cls.cr.hb_period,
-        )
+            default=cls.cr.hb_period)
 
-        add(
-            "--apm-enabled",
-            "-n",
-            help="Enable Elastic APM integration",
-            action="store_true",
-        )
-        add(
-            "--apm-server",
-            "-m",
-            type=str,
+        add("--apm-enabled", "-n", help="Enable Elastic APM integration",
+            action="store_true")
+        add("--apm-server", "-m", type=str,
             help="Elastic APM hostname/IP:port",
-            default=cls.cr.elastic_apm_server,
-        )
+            default=cls.cr.elastic_apm_server)
 
-        add(
-            "--es-endpoint",
-            "-e",
-            type=str,
+        add("--es-endpoint", "-e", type=str,
             help="Elasticsearch server hostname/IP:port",
-            default=cls.cr.es_endpoint,
-        )
-        add(
-            "--es-timeout",
-            "-s",
-            type=str,
+            default=cls.cr.es_endpoint)
+        add("--es-timeout", "-s", type=str,
             help="Timeout (with unit, e.g.: 10s) for the connection to Elasticsearch",  # noqa: E501
-            default=cls.cr.es_timeout,
-        )
-        add(
-            "--es-retry_period",
-            "-y",
-            type=str,
+            default=cls.cr.es_timeout,)
+        add("--es-retry_period", "-y", type=str,
             help="Period (with unit, e.g.: 1min) to retry the connection to Elasticsearch",  # noqa: E501
-            default=cls.cr.es_retry_period,
-        )
+            default=cls.cr.es_retry_period)
 
-        add(
-            "--log-config",
-            "-l",
+        add("--log-config", "-l",
             help="Path of the log configuration file (e.g. log.yaml)",
-            default=cls.cr.log_config,
-        )
+            default=cls.cr.log_config)
 
-        add(
-            "--write-config",
-            "-w",
-            help="Write options to config.ini",
-            action="store_true",
-        )
-        add(
-            "--version",
-            "-v",
-            help="Show version",
-            action="store_const",
-            const=version,
-        )
+        add("--write-config", "-w", help="Write options to config.ini",
+            action="store_true")
+        add("--version", "-v", help="Show version", action="store_const",
+            const=version)
 
         return cls.ap
 

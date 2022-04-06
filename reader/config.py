@@ -26,7 +26,7 @@ class ConfigReader:
         )
 
         self.auth = self.cfg_parser.getboolean(
-            "auth", "enabled", fallback=True
+            "auth", "enabled", fallback=False
         )
         self.auth_header_prefix = self.cfg_parser.get(
             "auth", "header-prefix", fallback="GUARD"
@@ -34,6 +34,14 @@ class ConfigReader:
         self.auth_secret_key = self.cfg_parser.get(
             "auth", "secret-key", fallback="guard-secret-key"
         )
+
+        self.oauth2 = self.cfg_parser.getboolean(
+            "oauth2", "enabled", fallback=True)
+        self.oauth2_token_uri = self.cfg_parser.get("oauth2", "token-uri",)
+        self.oauth2_client_id = self.cfg_parser.get("oauth2", "client-id")
+        self.oauth2_client_secret = self.cfg_parser.get(
+            "oauth2", "client-secret")
+        self.oauth2_verify = self.cfg_parser.get("oauth2", "verify")
 
         self.hb_timeout = self.cfg_parser.get(
             "heartbeat", "timeout", fallback="10s"

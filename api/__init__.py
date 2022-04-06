@@ -9,13 +9,11 @@ from falcon_elastic_apm import ElasticApmMiddleware
 from falcon_require_https import RequireHTTPS
 from swagger_ui import falcon_api_doc
 
-from api.error_handler import (
-    BadRequestHandler,
-    InternalServerErrorHandler,
-    UnsupportedMediaTypeHandler,
-)
+from api.error_handler import (BadRequestHandler, InternalServerErrorHandler,
+                               UnsupportedMediaTypeHandler)
 from api.media_handler import XMLHandler, YAMLHandler
 from api.middleware import NegotiationMiddleware
+from api.oauth2_token_provider import Oauth2TokenProvider
 from api.spec import Spec
 from lib.heartbeat import heartbeat
 from reader.arg import ArgReader
@@ -28,11 +26,11 @@ def api(title, version):
 
     middlewares = [NegotiationMiddleware()]
 
+    def user_loader(token):
+        return {"user": token}
+
     if ArgReader.db.auth:
         log.notice("JWT authentication enabled")
-
-        def user_loader(token):
-            return {"user": token}
 
         secret_key = ArgReader.db.auth_secret_key
         auth_header_prefix = ArgReader.db.auth_header_prefix
@@ -45,6 +43,21 @@ def api(title, version):
         )
     else:
         log.notice("JWT authentication disabled")
+
+    if ArgReader.db.oauth2:
+        token_provider = Oauth2TokenProvider()
+        log.notice("OAuth2 authentication enabled")
+
+        key = ArgReader.db.oauth2_key
+        jwt_auth_backend = JWTAuthBackend(
+            user_loader, token_provider.token(), auth_header_prefix=key
+        )
+        exempt_routes = ["/api/doc", "/api/doc/swagger.json"]
+        middlewares.append(
+            FalconAuthMiddleware(jwt_auth_backend, exempt_routes)
+        )
+    else:
+        log.notice("OAuth2 authentication disabled")
 
     if ArgReader.db.https:
         log.notice("Force to use HTTPS instead of HTTP")

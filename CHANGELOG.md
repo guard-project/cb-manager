@@ -38,3 +38,7 @@
 - Added endpoint for LCP communication.
 - Added endpoint for algorithm instance communication.
 - Autorestart script.
+
+## 1.0.5
+
+- Support Oauth2 authentication enabled. 
