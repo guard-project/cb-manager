@@ -32,7 +32,7 @@ class Oauth2TokenProvider(Thread):
                               auto_refresh_url=ArgReader.db.oauth2_token_uri)
         return oauth.fetch_token(token_url=ArgReader.db.oauth2_token_uri,
                                  client_id=ArgReader.db.oauth2_client_id,
-                                 client_secret=ArgReader.db.oauth2_client_secret,
+                                 client_secret=ArgReader.db.oauth2_client_secret,  # noqa: E501
                                  verify=ArgReader.db.oauth2_verify)
 
     def token(self):
