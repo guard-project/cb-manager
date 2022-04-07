@@ -10,14 +10,14 @@ apispec==4.0.0
 bunch==1.0.1
 certifi==2021.10.8
 cffi==1.15.0
-charset-normalizer==2.0.11; python_version >= '3'
+charset-normalizer==2.0.12; python_version >= '3'
 colorama==0.4.4; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
 commonmark==0.9.1
 cryptography==3.4.8
 dicttoxml==1.7.4
-elastic-apm==6.7.2; python_version >= '3.6' and python_version < '4'
+elastic-apm==6.9.1; python_version >= '3.6' and python_version < '4'
 elasticsearch-dsl==7.1.0
-elasticsearch==7.17.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3' and python_version < '4'
+elasticsearch==7.17.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3' and python_version < '4'
 emoji==0.6.0
 falcon-apispec==0.3.0
 falcon-auth==1.1.0
@@ -25,24 +25,26 @@ falcon-elastic-apm==0.1.1
 falcon-require-https==0.1.0
 falcon==2.0.0
 idna==3.3; python_version >= '3'
-jinja2==3.0.3; python_version >= '3.6'
+jinja2==3.1.1; python_version >= '3.7'
 loguru==0.6.0
-markupsafe==2.0.1; python_version >= '3.6'
+markupsafe==2.1.1; python_version >= '3.7'
 marshmallow==3.4.0
 msgpack==1.0.0
+oauthlib==3.2.0
 pint==0.11
 pycparser==2.21
 pygments==2.11.2; python_version >= '3.5'
 pyjwt[crypto]==2.0.1
 python-dateutil==2.8.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 pyyaml==5.4
+requests-oauthlib==1.3.1
 requests==2.27.1
 rich==9.2.0
-setuptools==60.7.0; python_version >= '3.7'
+setuptools==62.0.0; python_version >= '3.7'
 six==1.16.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 swagger-ui-py==0.2.0
 toolz==0.10.0
 typing-extensions==3.10.0.2
-urllib3==1.26.8; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
+urllib3==1.26.9; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4' and python_version < '4'
 waitress==1.4.3
 xmltodict==0.12.0
