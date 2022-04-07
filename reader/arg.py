@@ -27,7 +27,7 @@ class ArgReader:
             action="store_true")
 
         add("--auth", "-t", help="Enable JWT authentication",
-            action="store_true")
+            action="store_true", default=cls.cr.auth)
         add("--auth-header-prefix", "-x", type=str,
             help="Prefix in the JWT authentication header",
             default=cls.cr.auth_header_prefix)
@@ -35,18 +35,22 @@ class ArgReader:
             help="Secret key for JWT authentication",
             default=cls.cr.auth_secret_key)
 
-        add("--oauth2", "-j", help="Enable OAuth2 authentication",
-            action="store_true")
-        add("--oauth2-token-uri", "-u", type=str,
-            help="Token URI for OAuth2 authentication",
-            default=cls.cr.oauth2_token_uri)
+        add("--oauth2", "-j", help="Enable OAuth2/JWT authentication",
+            action="store_true", default=cls.cr.oauth2)
         add("--oauth2-client-id", "-c", type=str,
-            help="Client ID for OAuth2 authentication",
+            help="Client ID for OAuth2/JWT authentication",
             default=cls.cr.oauth2_client_id)
         add("--oauth2-client-secret", "-g", type=str,
-            help="OAuth2 secret", default=cls.cr.oauth2_client_secret)
+            help="OAuth2 secret for OAuth2/JWT authentication",
+            default=cls.cr.oauth2_client_secret)
+        add("--oauth2-token-check-uri", "-u", type=str,
+            help="URI for check OAuth2/JWT authentication",
+            default=cls.cr.oauth2_token_check_uri)
+        add("--oauth2-token-get-uri", "-a", type=str,
+            help="URI for get OAuth2/JWT authentication",
+            default=cls.cr.oauth2_token_get_uri)
         add("--oauth2-verify", "-i", type=str,
-            help="Path to the TLS certificate for OAuth2 authentication",
+            help="Path to the TLS certificate for OAuth2/JWT authentication",
             default=cls.cr.oauth2_verify)
 
         add("--hb-timeout", "-b", type=str,

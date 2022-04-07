@@ -5,13 +5,17 @@ from oauthlib.oauth2 import BackendApplicationClient
 from requests_oauthlib import OAuth2Session
 
 from reader.arg import ArgReader
+from utils.log import Log
 
 
 class Oauth2TokenProvider(Thread):
+    log = Log.get("api")
+
     def __init__(self):
         super().__init__()
         self.daemon = True
         self.__token = self.retrieve_token(first_time=True)
+        self.log.info(self.__token)
         self.start()
 
     def retrieve_token(self, first_time=False):
@@ -22,14 +26,14 @@ class Oauth2TokenProvider(Thread):
         """
         token = None if first_time else self.__token
         client = BackendApplicationClient(
-            client_id=ArgReader.db.auth.client_id)
+            client_id=ArgReader.db.oauth2_client_id)
         oauth = OAuth2Session(client=client,
                               token=token,
-                              auto_refresh_url=ArgReader.db.auth.token_uri)
-        return oauth.fetch_token(token_url=ArgReader.db.auth.token_uri,
-                                 client_id=ArgReader.auth.client_id,
-                                 client_secret=ArgReader.auth.client_secret,
-                                 verify=ArgReader.auth.verify)
+                              auto_refresh_url=ArgReader.db.oauth2_token_uri)
+        return oauth.fetch_token(token_url=ArgReader.db.oauth2_token_uri,
+                                 client_id=ArgReader.db.oauth2_client_id,
+                                 client_secret=ArgReader.db.oauth2_client_secret,
+                                 verify=ArgReader.db.oauth2_verify)
 
     def token(self):
         """
@@ -41,7 +45,8 @@ class Oauth2TokenProvider(Thread):
 
     def run(self):
         while True:
-            print(
+            self.log.notice(
                 f'Token will expire in {self.__token["expires_in"]} seconds.')
             time.sleep(self.__token['expires_in'] - 55)  # one minute early
             self.__token = self.retrieve_token()
+            self.log.info(self.__token)

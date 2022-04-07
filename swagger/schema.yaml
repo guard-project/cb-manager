@@ -883,7 +883,7 @@ definitions:
     type: object
 info:
   title: Context Broker Manager
-  version: 1.0.4
+  version: 1.0.5
 paths:
   /catalog/agent/:
     delete:
