@@ -15,7 +15,6 @@ class Oauth2TokenProvider(Thread):
         super().__init__()
         self.daemon = True
         self.__token = self.retrieve_token(first_time=True)
-        self.log.info(self.__token)
         self.start()
 
     def retrieve_token(self, first_time=False):
@@ -29,8 +28,8 @@ class Oauth2TokenProvider(Thread):
             client_id=ArgReader.db.oauth2_client_id)
         oauth = OAuth2Session(client=client,
                               token=token,
-                              auto_refresh_url=ArgReader.db.oauth2_token_uri)
-        return oauth.fetch_token(token_url=ArgReader.db.oauth2_token_uri,
+                              auto_refresh_url=ArgReader.db.oauth2_token_get_uri)  # noqa: E501
+        return oauth.fetch_token(token_url=ArgReader.db.oauth2_token_get_uri,
                                  client_id=ArgReader.db.oauth2_client_id,
                                  client_secret=ArgReader.db.oauth2_client_secret,  # noqa: E501
                                  verify=ArgReader.db.oauth2_verify)
@@ -49,4 +48,3 @@ class Oauth2TokenProvider(Thread):
                 f'Token will expire in {self.__token["expires_in"]} seconds.')
             time.sleep(self.__token['expires_in'] - 55)  # one minute early
             self.__token = self.retrieve_token()
-            self.log.info(self.__token)

@@ -52,6 +52,7 @@ def api(title, version):
             client_secret=ArgReader.db.oauth2_client_secret,
             user_loader=user_loader,
             token_check_uri=ArgReader.db.oauth2_token_check_uri,
+            verify=ArgReader.db.oauth2_verify,
             auth_header_prefix=ArgReader.db.auth_header_prefix
         )
         exempt_routes = ["/api/doc", "/api/doc/swagger.json"]
