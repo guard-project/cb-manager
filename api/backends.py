@@ -1,9 +1,6 @@
-import sys
-
 from falcon import HTTPUnauthorized
 from falcon_auth.backends import AuthBackend
 from requests import post
-from requests.auth import HTTPBasicAuth
 
 from api.oauth2_token_provider import Oauth2TokenProvider
 
