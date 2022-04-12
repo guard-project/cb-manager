@@ -1,4 +1,3 @@
-from pathlib import Path
 from resource.base import BaseMinimalResource
 
 from falcon import HTTP_200, HTTP_404
