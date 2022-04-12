@@ -37,7 +37,7 @@ def api(title, version):
         jwt_auth_backend = JWTAuthBackend(
             user_loader, secret_key, auth_header_prefix=auth_header_prefix
         )
-        exempt_routes = ["/api/doc", "/api/doc/swagger.json"]
+        exempt_routes = ["/api/doc", "/api/doc/swagger.json", "/dev/token"]
         middlewares.append(
             FalconAuthMiddleware(jwt_auth_backend, exempt_routes)
         )
@@ -55,7 +55,7 @@ def api(title, version):
             verify=ArgReader.db.oauth2_verify,
             auth_header_prefix=ArgReader.db.auth_header_prefix
         )
-        exempt_routes = ["/api/doc", "/api/doc/swagger.json"]
+        exempt_routes = ["/api/doc", "/api/doc/swagger.json", "/dev/token"]
         middlewares.append(
             FalconAuthMiddleware(guard_jwt_auth_backend, exempt_routes)
         )

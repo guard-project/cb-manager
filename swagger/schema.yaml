@@ -3037,9 +3037,7 @@ paths:
       summary: Connection Update (Multiple).
       tags:
       - connection
-  /dashboard:
-    get: {}
-  /dashboard/{part}/{resource}:
+  /dev/{resource}:
     get: {}
   /data/:
     delete:

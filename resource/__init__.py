@@ -1,43 +1,26 @@
-from resource.agent.catalog import (
-    AgentCatalogResource,
-    AgentCatalogSelectedResource,
-)
-from resource.agent.instance import (
-    AgentInstanceResource,
-    AgentInstanceSelectedResource,
-)
-from resource.algorithm.catalog import (
-    AlgorithmCatalogResource,
-    AlgorithmCatalogSelectedResource,
-)
-from resource.algorithm.instance import (
-    AlgorithmInstanceResource,
-    AlgorithmInstanceSelectedResource,
-)
+from resource.agent.catalog import (AgentCatalogResource,
+                                    AgentCatalogSelectedResource)
+from resource.agent.instance import (AgentInstanceResource,
+                                     AgentInstanceSelectedResource)
+from resource.algorithm.catalog import (AlgorithmCatalogResource,
+                                        AlgorithmCatalogSelectedResource)
+from resource.algorithm.instance import (AlgorithmInstanceResource,
+                                         AlgorithmInstanceSelectedResource)
 from resource.connection import ConnectionResource, ConnectionSelectedResource
-from resource.dashboard import DashboardResource
 from resource.data import DataResource, DataSelectedResource
-from resource.ebpf_program.catalog import (
-    _eBPFProgramCatalogResource,
-    _eBPFProgramCatalogSelectedResource,
-)
+from resource.dev import DevResource
+from resource.ebpf_program.catalog import (_eBPFProgramCatalogResource,
+                                           _eBPFProgramCatalogSelectedResource)
 from resource.ebpf_program.instance import (
-    _eBPFProgramInstanceResource,
-    _eBPFProgramInstanceSelectedResource,
-)
+    _eBPFProgramInstanceResource, _eBPFProgramInstanceSelectedResource)
 from resource.event import EventResource, EventSelectedResource
-from resource.exec_env import (
-    ExecEnvResource,
-    ExecEnvSelectedResource,
-    ExecEnvTypeResource,
-    ExecEnvTypeSelectedResource,
-)
-from resource.network_link import (
-    NetworkLinkResource,
-    NetworkLinkSelectedResource,
-    NetworkLinkTypeResource,
-    NetworkLinkTypeSelectedResource,
-)
+from resource.exec_env import (ExecEnvResource, ExecEnvSelectedResource,
+                               ExecEnvTypeResource,
+                               ExecEnvTypeSelectedResource)
+from resource.network_link import (NetworkLinkResource,
+                                   NetworkLinkSelectedResource,
+                                   NetworkLinkTypeResource,
+                                   NetworkLinkTypeSelectedResource)
 from resource.pipeline import PipelineResource, PipelineSelectedResource
 
 from utils.log import Log
@@ -54,7 +37,7 @@ db = [
     AlgorithmInstanceSelectedResource,
     ConnectionResource,
     ConnectionSelectedResource,
-    DashboardResource,
+    DevResource,
     DataResource,
     DataSelectedResource,
     _eBPFProgramCatalogResource,
