@@ -2609,6 +2609,8 @@ paths:
       summary: Algorithm instance Update (Multiple).
       tags:
       - algorithm-instance
+  /chain/{_id}:
+    delete: {}
   /connection/:
     delete:
       description: Delete connections filtered by the query in the request body.
@@ -6927,13 +6929,14 @@ tags:
   name: algorithm-instance
 - description: Represents an algorithm instance.
   name: algorithm-instance
+- &id003 []
 - description: "Represents an connection between execution\n    environments and network\
     \ links."
   name: connection
 - description: "Represents an connection between execution\n    environments and network\
     \ links."
   name: connection
-- []
+- *id003
 - description: Represents the stored data.
   name: data
 - description: Represents the stored data.

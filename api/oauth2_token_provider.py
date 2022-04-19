@@ -15,6 +15,7 @@ class Oauth2TokenProvider(Thread):
         super().__init__()
         self.daemon = True
         self.__token = self.retrieve_token(first_time=True)
+        self.log.info(f"Token {self.token()}")
         self.start()
 
     def retrieve_token(self, first_time=False):

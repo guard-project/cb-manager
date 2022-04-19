@@ -6,6 +6,7 @@ from resource.algorithm.catalog import (AlgorithmCatalogResource,
                                         AlgorithmCatalogSelectedResource)
 from resource.algorithm.instance import (AlgorithmInstanceResource,
                                          AlgorithmInstanceSelectedResource)
+from resource.chain import ChainResource
 from resource.connection import ConnectionResource, ConnectionSelectedResource
 from resource.data import DataResource, DataSelectedResource
 from resource.dev import DevResource
@@ -35,6 +36,7 @@ db = [
     AlgorithmCatalogSelectedResource,
     AlgorithmInstanceResource,
     AlgorithmInstanceSelectedResource,
+    ChainResource,
     ConnectionResource,
     ConnectionSelectedResource,
     DevResource,

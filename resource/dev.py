@@ -6,9 +6,7 @@ from api.oauth2_token_provider import Oauth2TokenProvider
 
 
 class DevResource(BaseMinimalResource):
-    routes = [
-        "/dev/{resource}",
-    ]
+    routes = "/dev/{resource}"
 
     def on_get(self, _, resp, resource="token"):
         resp.status = HTTP_404
