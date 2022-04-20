@@ -21,7 +21,6 @@ To delete chain, use:
     :param id: required id for the root execution environment of the chain.
 
     :reqheader Authorization: |JWT| Authentication.
-    :reqheader Content-Type: application/json
 
     :resheader Content-Type: application/json
 
