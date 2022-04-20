@@ -39,6 +39,7 @@ This part of the documentation will show you how to get started in using |CB|-Ma
    algorithm-catalog
    algorithm-instance
    pipeline
+   chain
    glossary
 
 
