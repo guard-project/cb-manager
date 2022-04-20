@@ -21,7 +21,7 @@ requests = ">=2.24.0"
 rich = "==9.2.0"
 swagger-ui-py = "==0.2.0"
 toolz = "==0.10.0"
-waitress = "==1.4.3"
+waitress = "==2.1.1"
 xmltodict = "==0.12.0"
 Pint = "==0.11"
 PyJWT = {version = "==2.0.1", extras = ["crypto"]}
@@ -43,7 +43,7 @@ vprof = "*" # https://github.com/nvdv/vprof
 watchdog = {extras = ["watchmedo"], version = "*"}
 
 [requires]
-python_version = "3.8"
+python_version = "3.10"
 
 [scripts]
 # program
