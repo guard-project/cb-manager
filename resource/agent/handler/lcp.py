@@ -178,7 +178,8 @@ class LCP(BaseLCP):
         return valmap(lambda x: self.__frmt(x, data), param)
 
     def __transform_resource(self, resource, data):
-        res = expand(resource, content=data.get("content", None))
+        res = expand(resource, content='\n'.join(data.get("content", [])))
+        data.pop('content')
         return valmap(lambda x: self.__frmt(x, data), res)
 
     def __save(self, instance, data, typology, catalogs, handler):

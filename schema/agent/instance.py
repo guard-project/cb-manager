@@ -7,6 +7,7 @@ from document.exec_env import ExecEnvDocument
 from schema.agent.catalog import AGENT_STATUS
 from schema.base import BaseSchema
 from schema.validate import In, UniqueList
+from utils.schema import ListOrOne
 
 OUTPUT_FORMATS = ["plain", "lines", "json"]
 
@@ -40,9 +41,8 @@ class AgentInstanceResourceSchema(Schema):
     id = Str(
         required=True, example="filebeat-config", description="Resource id."
     )
-    content = Str(
-        required=True, example="period: 10s", description="Resource content."
-    )
+    content = ListOrOne(Str, required=True,
+                        example="period: 10s", description="Resource content.")
 
 
 class AgentInstanceOperationSchema(BaseSchema):
