@@ -89,7 +89,7 @@ class Log:
 
     @classmethod
     def get(cls, name=about_name):
-        out = logger.bind(context=name).opt(colors=True)
+        out = logger.bind(context=name).opt(colors=False)
 
         def __exception(msg, exception):
             out.error(msg)

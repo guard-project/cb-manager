@@ -8,7 +8,7 @@ from document.exec_env import ExecEnvDocument
 from lib.response import UnprocEntityResponse
 from lib.token import create_token
 from utils.log import Log
-from utils.sequence import expand, is_dict, wrap
+from utils.sequence import expand, is_dict, is_list, wrap
 
 # TODO add resource to instance
 # TODO check if work everything
@@ -178,7 +178,11 @@ class LCP(BaseLCP):
         return valmap(lambda x: self.__frmt(x, data), param)
 
     def __transform_resource(self, resource, data):
-        res = expand(resource, content='\n'.join(data.get("content", [])))
+        content = data.get("content", [])
+        print(content, is_list(content))
+        if is_list(content):
+            content = '\n'.join(content)
+        res = expand(resource, content=content)
         data.pop('content')
         return valmap(lambda x: self.__frmt(x, data), res)
 
