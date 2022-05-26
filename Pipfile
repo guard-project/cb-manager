@@ -24,7 +24,7 @@ toolz = "==0.10.0"
 waitress = "==2.1.1"
 xmltodict = "==0.12.0"
 Pint = "==0.11"
-PyJWT = {version = "==2.0.1", extras = ["crypto"]}
+PyJWT = {version = "==2.4.0", extras = ["crypto"]}
 PyYAML = "==5.4"
 oauthlib = "*"
 requests-oauthlib = "*"
