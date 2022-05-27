@@ -19,6 +19,7 @@ class AlgorithmInstanceDocument(BaseDocument):
     endpoint = Text(required=True)
     parameters = Nested(AlgorithmInstanceParameterInnerDoc)
     description = Text()
+    container = Text()
 
     class Index:
         """Elasticsearch configuration."""

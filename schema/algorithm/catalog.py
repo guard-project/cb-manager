@@ -89,3 +89,7 @@ class AlgorithmCatalogSchema(BaseSchema):
         example="Predict DDoS attacks.",
         description="Short description of the algorithm.",
     )
+    service = Str(
+        example="ddos-prediction",
+        description="Service name to invoke for the algorithm.",
+    )

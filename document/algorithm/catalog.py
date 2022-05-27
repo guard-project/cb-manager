@@ -8,6 +8,7 @@ class AlgorithmCatalogActionInnerDoc(BaseInnerDoc):
 
     id = Text(required=True)
     description = Text()
+    service = Text()
 
 
 class AlgorithmCatalogParameterInnerDoc(BaseInnerDoc):

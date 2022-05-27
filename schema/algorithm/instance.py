@@ -48,7 +48,7 @@ class AlgorithmInstanceSchema(BaseSchema):
     )
     endpoint = Str(
         required=True,
-        readonlye=False,
+        readonly=False,
         example="10.0.0.1:9999",
         description="URL where the RESTable instance is running "
         "including the TCP port.",
@@ -64,3 +64,7 @@ class AlgorithmInstanceSchema(BaseSchema):
         description="Short description of the algorithm installed "
         "in the execution environment.",
     )  # noqa:E501
+    container = Str(
+        example="algo-1-1-2",
+        description="Container name where the algorithm is running.",
+    )
