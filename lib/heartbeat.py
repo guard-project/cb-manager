@@ -5,7 +5,9 @@ from requests.exceptions import ConnectionError, ConnectTimeout
 
 from document.agent.catalog import AgentCatalogDocument
 from document.agent.instance import AgentInstanceDocument
+from document.connection import ConnectionDocument
 from document.exec_env import ExecEnvDocument
+from document.network_link import NetworkLinkDocument
 from lib.http import HTTP_Status
 from lib.token import create_token
 from reader.arg import ArgReader
@@ -38,7 +40,7 @@ def heartbeat_exec_env(exec_env):
         if exec_env.enabled:
             schema = "https" if lcp.https else "http"
             endpoint_lcp = exec_env.lcp.endpoint
-            endpoint_lcp = "/" + endpoint_lcp if endpoint_lcp else ""
+            endpoint_lcp = f"/{endpoint_lcp}" if endpoint_lcp else ""
             req_uri = f"{schema}://{exec_env.hostname}:{lcp.port}{endpoint_lcp}/status"  # noqa F401
             resp = post(
                 req_uri,
@@ -79,6 +81,23 @@ def heartbeat_exec_env(exec_env):
                 log.warning(f"Polling not possible with exec-env {lbl}")
             exec_env.save()
             if resp.status_code == HTTP_Status.OK:
+                # Network Link and Connections:
+                for net_link in data.get('network_links', []):
+                    net_link_id = net_link.pop('id')
+                    net_link_doc = NetworkLinkDocument.get_or_new(net_link_id)
+                    for field, value in net_link.items():
+                        setattr(net_link_doc, field, value)
+                    net_link_doc.save()
+                    conn_id = f'{exec_env_id}@{net_link_id}'
+                    conn_doc = ConnectionDocument.get_or_new(conn_id)
+                    conn_doc.exec_env_id = exec_env_id
+                    conn_doc.network_link_id = net_link_id
+                    conn_doc.save()
+                    log.success(
+                        f"Update network {net_link_id} and "
+                        f"connection with {exec_env_id}"
+                        f"from {net_link_id}"
+                    )
                 # Agent Type (Catalog)
                 for agent_cat_data in data.get("agentType", []):
                     agent_cat_data_id = agent_cat_data.get("id", None)
