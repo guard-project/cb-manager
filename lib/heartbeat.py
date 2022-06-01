@@ -82,7 +82,8 @@ def heartbeat_exec_env(exec_env):
             exec_env.save()
             if resp.status_code == HTTP_Status.OK:
                 # Network Link and Connections:
-                for net_link in data.get('network_links', []):
+                exec_env_data = data.get("exec_env", {})
+                for net_link in exec_env_data.get('network_links', []):
                     net_link_id = net_link.pop('id')
                     net_link_doc = NetworkLinkDocument.get_or_new(net_link_id)
                     for field, value in net_link.items():
