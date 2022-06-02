@@ -1,4 +1,3 @@
-from glob import has_magic
 from resource.base import BaseMinimalResource
 
 from document.agent.instance import AgentInstanceDocument
@@ -33,7 +32,8 @@ class ChainResource(BaseMinimalResource):
                 except Exception as e:
                     print(e)
                     UnprocEntityResponse(
-                        f"Failed to delete {doc.__name__} with id={item.meta.id}") \
+                        f"Failed to delete {doc.__name__} "
+                        f"with id={item.meta.id}") \
                         .add(resp)
 
     def __delete_network_link(self, conn, resp):
@@ -46,7 +46,8 @@ class ChainResource(BaseMinimalResource):
             NotFoundResponse(
                 f"Exec env with id={_id} not found").apply(resp)
         else:
-            if hasattr(exec_env, 'root') and exec_env.root and _id != exec_env.root:
+            if hasattr(exec_env, 'root') and exec_env.root \
+                    and _id != exec_env.root:
                 self.__delete_exec_env(exec_env.root, resp)
             try:
                 sons = exec_env.lcp.sons
