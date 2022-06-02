@@ -69,8 +69,13 @@ def heartbeat_exec_env(exec_env):
                 data = resp.json()
                 # ExecEnv
                 exec_env_data = data.get("exec_env", {})
-                exec_env_id = exec_env_data.pop("id")
-                exec_env.meta.id = exec_env_id
+                if exec_env_id != exec_env_data.get("id", None):
+                    exec_env_id = exec_env_data.get("id", None)
+                    exec_env.root = exec_env_id
+                    exec_env.save()
+                    data = exec_env.to_dict()
+                    data.pop("root", None)
+                    exec_env = ExecEnvDocument(meta={'id': exec_env_id}, **data)  # noqa F401
                 # LCP data
                 for field, lcp_data in exec_env_data.pop("lcp", {}).items():
                     setattr(exec_env.lcp, field, lcp_data)

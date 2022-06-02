@@ -1,3 +1,4 @@
+from glob import has_magic
 from resource.base import BaseMinimalResource
 
 from document.agent.instance import AgentInstanceDocument
@@ -23,19 +24,21 @@ class ChainResource(BaseMinimalResource):
         search = doc.search()
         items = search[:search.count()].execute()
         for item in items:
-            if getattr(item, target) == target_val:
-                print(item)
-                if item.delete():
+            val = item.meta.id if target == "_id" else getattr(item, target)
+            if val == target_val:
+                try:
+                    item.delete()
                     if trigger_fn is not None:
                         trigger_fn(item, resp)
-                else:
+                except Exception as e:
+                    print(e)
                     UnprocEntityResponse(
-                        f"Failed to delete {doc.__name__} with id={item.id}") \
+                        f"Failed to delete {doc.__name__} with id={item.meta.id}") \
                         .add(resp)
 
     def __delete_network_link(self, conn, resp):
         self.__delete_doc(NetworkLinkDocument,
-                          conn.network_link_id, resp, target='network_link_id')
+                          conn.network_link_id, resp, target='_id')
 
     def __delete_exec_env(self, _id, resp):
         exec_env = ExecEnvDocument.get(id=_id, ignore=404)
@@ -43,6 +46,8 @@ class ChainResource(BaseMinimalResource):
             NotFoundResponse(
                 f"Exec env with id={_id} not found").apply(resp)
         else:
+            if hasattr(exec_env, 'root') and exec_env.root and _id != exec_env.root:
+                self.__delete_exec_env(exec_env.root, resp)
             try:
                 sons = exec_env.lcp.sons
             except Exception:
