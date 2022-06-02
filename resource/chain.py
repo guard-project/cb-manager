@@ -32,7 +32,8 @@ class ChainResource(BaseMinimalResource):
                 except Exception as e:
                     UnprocEntityResponse(
                         f"Failed to delete {doc.__name__} "
-                        f"with id={item.meta.id}") \
+                        f"with id={item.meta.id}"
+                        f"(exception: {e})")\
                         .add(resp)
 
     def __delete_network_link(self, conn, resp):
