@@ -30,7 +30,6 @@ class ChainResource(BaseMinimalResource):
                     if trigger_fn is not None:
                         trigger_fn(item, resp)
                 except Exception as e:
-                    print(e)
                     UnprocEntityResponse(
                         f"Failed to delete {doc.__name__} "
                         f"with id={item.meta.id}") \
@@ -46,17 +45,15 @@ class ChainResource(BaseMinimalResource):
             NotFoundResponse(
                 f"Exec env with id={_id} not found").apply(resp)
         else:
-            if hasattr(exec_env, 'root') and exec_env.root \
-                    and _id != exec_env.root:
-                self.__delete_exec_env(exec_env.root, resp)
-            try:
-                sons = exec_env.lcp.sons
-            except Exception:
-                sons = []
-            for id_son in sons:
-                self.__delete_exec_env(id_son, resp)
-            self.__delete_agent_instance(_id, resp)
-            self.__delete_connection(_id, resp)
+            root = getattr(exec_env, 'root', None)
+            if _id != root:
+                self.__delete_exec_env(root, resp)
+            if root is None:
+                lcp = getattr(exec_env, 'lcp', {})
+                for id_son in getattr(lcp, 'sons', []):
+                    self.__delete_exec_env(id_son, resp)
+                self.__delete_agent_instance(_id, resp)
+                self.__delete_connection(_id, resp)
             exec_env.delete()
 
     def on_delete(self, _, resp, _id=None):
