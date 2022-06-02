@@ -229,7 +229,9 @@ definitions:
       content:
         description: Resource content.
         example: 'period: 10s'
-        type: string
+        items:
+          type: string
+        type: array
       id:
         description: Resource id.
         example: filebeat-config
@@ -348,6 +350,10 @@ definitions:
         items:
           $ref: '#/definitions/AlgorithmCatalogParameterSchema'
         type: array
+      service:
+        description: Service name to invoke for the algorithm.
+        example: ddos-prediction
+        type: string
     required:
     - id
     type: object
@@ -373,6 +379,10 @@ definitions:
       algorithm_catalog_id:
         description: Id of the algorithm in the catalog.
         example: ddos-predictor
+        type: string
+      container:
+        description: Container name where the algorithm is running.
+        example: algo-1-1-2
         type: string
       description:
         description: Short description of the algorithm installed in the execution
