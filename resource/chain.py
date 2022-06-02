@@ -46,14 +46,14 @@ class ChainResource(BaseMinimalResource):
                 f"Exec env with id={_id} not found").apply(resp)
         else:
             root = getattr(exec_env, 'root', None)
-            if _id != root:
-                self.__delete_exec_env(root, resp)
             if root is None:
                 lcp = getattr(exec_env, 'lcp', {})
                 for id_son in getattr(lcp, 'sons', []):
                     self.__delete_exec_env(id_son, resp)
                 self.__delete_agent_instance(_id, resp)
                 self.__delete_connection(_id, resp)
+            elif _id != root:
+                self.__delete_exec_env(root, resp)
             exec_env.delete()
 
     def on_delete(self, _, resp, _id=None):
