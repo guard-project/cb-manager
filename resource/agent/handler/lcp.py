@@ -1,3 +1,4 @@
+import ast
 from resource.base.handler.lcp import LCP as BaseLCP
 
 from requests import post as post_req
@@ -174,7 +175,13 @@ class LCP(BaseLCP):
         return valmap(lambda x: self.__frmt(x, data), action)
 
     def __transform_parameter(self, parameter, data):
-        param = expand(parameter, value=data.get("value", None))
+        try:
+            value = ast.literal_eval(data.get('value', None))
+        except Exception:
+            value = data.get('value', None)
+        data['value'] = value
+        param = expand(parameter, value=value)
+        print(param, parameter, data)
         return valmap(lambda x: self.__frmt(x, data), param)
 
     def __transform_resource(self, resource, data):

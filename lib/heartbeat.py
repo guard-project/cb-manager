@@ -135,6 +135,9 @@ def heartbeat_exec_env(exec_env):
                         exec_env_son.discovered = True
                     exec_env_son.save()
                     log.success(f"Update exec-env/lcp: {lcp_son_id}")
+                    thread = Thread(target=heartbeat_exec_env,
+                                    args=(exec_env_son,))
+                    thread.start()
         else:
             log.notice(f"Exec-env {lbl} not enabled")
     except ConnectTimeout:
