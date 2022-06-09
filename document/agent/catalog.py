@@ -58,6 +58,13 @@ class AgentCatalogParameterInnerDoc(BaseInnerDoc):
     @staticmethod
     def from_agent_type(agent_type, container, schema, source):
         path = agent_type.pop("path", None)
+        schema = agent_type.pop("schema", schema)
+        source = agent_type.pop("source", source)
+        config = agent_type.pop("config", None)
+        if config is not None:
+            schema = config.pop("schema", schema)
+            source = config.pop("source", source)
+            path = config.pop("path", path)
         obj = AgentCatalogParameterInnerDoc.get_or_new(
             id=path, container=container
         )
@@ -102,8 +109,8 @@ class AgentCatalogDocument(BaseDocument):
     @staticmethod
     def from_agent_type(agent_type):
         _id = agent_type.pop("id", None)
-        source = agent_type.pop("source")
-        schema = agent_type.pop("schema")
+        source = agent_type.pop("source", None)
+        schema = agent_type.pop("schema", None)
         obj = AgentCatalogDocument.get_or_new(id=_id)
         for action in agent_type.pop("actions", []):
             AgentCatalogActionInnerDoc.from_agent_type(
