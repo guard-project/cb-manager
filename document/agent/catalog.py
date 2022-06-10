@@ -66,17 +66,15 @@ class AgentCatalogParameterInnerDoc(BaseInnerDoc):
             schema = config.pop("schema", schema)
             source = config.pop("source", source)
             path = config.pop("path", path)
-        if len(container) == 0:
-            obj = AgentCatalogParameterInnerDoc.get_or_new(
-                id=_id, container=container
-            )
-            print(obj, len(container))
-            for field, data in agent_type.items():
-                setattr(obj, field, data)
-            obj.config = AgentCatalogParameterConfigInnerDoc(
-                path=path, schema=schema, source=source
-            )
-            return obj
+        obj = AgentCatalogParameterInnerDoc.get_or_new(
+            id=_id, container=container
+        )
+        for field, data in agent_type.items():
+            setattr(obj, field, data)
+        obj.config = AgentCatalogParameterConfigInnerDoc(
+            path=path, schema=schema, source=source
+        )
+        return obj
 
 
 class AgentCatalogResourceConfigInnerDoc(BaseInnerDoc):
@@ -119,6 +117,7 @@ class AgentCatalogDocument(BaseDocument):
             AgentCatalogActionInnerDoc.from_agent_type(
                 action, container=obj.actions
             )
+        obj.parameters = []
         for param in agent_type.pop("parameters", []):
             AgentCatalogParameterInnerDoc.from_agent_type(
                 param, container=obj.parameters, schema=schema, source=source
