@@ -1,7 +1,7 @@
 from lib.response import NotFoundResponse
 from utils.log import Log
 
-MSG_ID_NOT_FOUND = "{label} with id={doc_id} not found."
+MSG_ID_NOT_FOUND = "{} with id={} not found."
 
 
 class LCP(object):

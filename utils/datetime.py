@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from marshmallow import fields
 
@@ -12,7 +12,7 @@ def datetime_from_str(date_time_str, format=FORMAT):
     :params format: datetime format
     :returns: datetime object
     """
-    return datetime.strptime(date_time_str, format)
+    return datetime.strptime(date_time_str, format).replace(tzinfo=timezone.utc)
 
 
 def datetime_to_str(date_time=None, format=FORMAT):
@@ -28,7 +28,7 @@ def datetime_to_str(date_time=None, format=FORMAT):
 
 
 class DateTime(fields.DateTime):
-    """Class extends marshmallow standart DateTime with "timestamp" format."""
+    """Class extends marshmallow standard DateTime with "timestamp" format."""
 
     SERIALIZATION_FUNCS = fields.DateTime.SERIALIZATION_FUNCS.copy()
     DESERIALIZATION_FUNCS = fields.DateTime.DESERIALIZATION_FUNCS.copy()

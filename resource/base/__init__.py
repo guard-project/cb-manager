@@ -240,8 +240,8 @@ class BaseResource(BaseMinimalResource):
                             rsp_dt.add(resp)
                     except Exception as exception:
                         UnprocEntityResponse(
-                            MSG_UPDATE_NOT_NEEDED.format(
-                                self.name, req_data_id
+                            MSG_NOT_POSSIBLE_ID.format(
+                                "update", self.name, req_data_id
                             ),
                             exception,
                         ).add(resp)

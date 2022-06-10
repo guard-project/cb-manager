@@ -15,8 +15,8 @@ from utils.sequence import expand, is_dict, is_list, wrap
 # TODO check if work everything
 
 
-MSG_RESP_NOT_VALID = "Response from LCP({id}@{hostname}:{port}) not valid"
-MSG_REQ_LCP_NOT_EXEC = "Request to LCP({id}@{hostname}:{port}) not executed"
+MSG_RESP_NOT_VALID = "Response from LCP({}@{}:{}) not valid"
+MSG_REQ_LCP_NOT_EXEC = "Request to LCP({}@{}:{}) not executed"
 
 
 class LCP(BaseLCP):
@@ -181,12 +181,10 @@ class LCP(BaseLCP):
             value = data.get('value', None)
         data['value'] = value
         param = expand(parameter, value=value)
-        print(param, parameter, data)
         return valmap(lambda x: self.__frmt(x, data), param)
 
     def __transform_resource(self, resource, data):
         content = data.get("content", [])
-        print(content, is_list(content))
         if is_list(content):
             content = '\n'.join(content)
         res = expand(resource, content=content)

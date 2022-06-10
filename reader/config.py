@@ -53,6 +53,10 @@ class ConfigReader:
             "heartbeat", "period", fallback="1min"
         )
 
+        self.discovery_period = self.cfg_parser.get(
+            "discovery", "period", fallback="1h"
+        )
+
         self.es_endpoint = self.cfg_parser.get(
             "elasticsearch", "endpoint", fallback="localhost:9200"
         )

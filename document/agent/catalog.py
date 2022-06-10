@@ -57,6 +57,7 @@ class AgentCatalogParameterInnerDoc(BaseInnerDoc):
 
     @staticmethod
     def from_agent_type(agent_type, container, schema, source):
+        _id = agent_type['id']
         path = agent_type.pop("path", None)
         schema = agent_type.pop("schema", schema)
         source = agent_type.pop("source", source)
@@ -66,7 +67,7 @@ class AgentCatalogParameterInnerDoc(BaseInnerDoc):
             source = config.pop("source", source)
             path = config.pop("path", path)
         obj = AgentCatalogParameterInnerDoc.get_or_new(
-            id=path, container=container
+            id=_id, container=container
         )
         for field, data in agent_type.items():
             setattr(obj, field, data)

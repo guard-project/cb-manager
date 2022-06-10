@@ -60,6 +60,10 @@ class ArgReader:
             help="Period (with unit, e.g.: 1min) for the heartbeat with the LCP",  # noqa: E501
             default=cls.cr.hb_period)
 
+        add("--discovery-period", "-d", type=str,
+            help="Period (with unit, e.g.: 1min) for the discovery with the LCP",  # noqa: E501
+            default=cls.cr.discovery_period)
+
         add("--apm-enabled", "-n", help="Enable Elastic APM integration",
             action="store_true")
         add("--apm-server", "-m", type=str,
@@ -98,6 +102,7 @@ class ArgReader:
             "hb_period",
             "es_timeout",
             "es_retry_period",
+            "discovery_period"
         ):
             setattr(cls.db, field, get_seconds(getattr(cls.db, field)))
 
