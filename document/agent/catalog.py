@@ -30,7 +30,6 @@ class AgentCatalogActionInnerDoc(BaseInnerDoc):
         obj = AgentCatalogActionInnerDoc.get_or_new(
             id=_id, container=container
         )
-        print(_id, cmd, daemon, args)
         for field, data in agent_type.items():
             setattr(obj, field, data)
         if cmd:

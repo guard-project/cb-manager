@@ -7,7 +7,7 @@ class AgentInstanceActionInnerDoc(BaseInnerDoc):
     """Action of the agent instance installed in an execution environment."""
 
     id = Text(required=True)
-    timestamp = Date(required=True)
+    timestamp = Date(required=False)
 
 
 class AgentInstanceParameterValueInnerDoc(BaseInnerDoc):

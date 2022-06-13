@@ -1,4 +1,5 @@
 import ast
+import re
 from resource.base.handler.lcp import LCP as BaseLCP
 
 from requests import post as post_req
@@ -97,6 +98,7 @@ class LCP(BaseLCP):
                         return False
                     else:
                         _cat = self.catalogs["actions"]
+                        print(resp_lcp_data)
                         save_act = self.__save(
                             instance,
                             data=resp_lcp_data,
