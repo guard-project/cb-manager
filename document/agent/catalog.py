@@ -22,15 +22,20 @@ class AgentCatalogActionInnerDoc(BaseInnerDoc):
 
     @staticmethod
     def from_agent_type(agent_type, container):
+        cfg = agent_type.pop("config", {})
         _id = agent_type.pop("id", None)
-        cmd = agent_type.pop("cmd", None)
+        cmd = cfg.pop("cmd", None)
+        daemon = agent_type.pop("daemon", None)
+        args = agent_type.pop("args", None)
         obj = AgentCatalogActionInnerDoc.get_or_new(
             id=_id, container=container
         )
+        print(_id, cmd, daemon, args)
         for field, data in agent_type.items():
             setattr(obj, field, data)
         if cmd:
-            obj.config = AgentCatalogActionConfigInnerDoc(cmd=cmd)
+            obj.config = AgentCatalogActionConfigInnerDoc(
+                cmd=cmd, daemon=daemon, args=args)
         return obj
 
 
