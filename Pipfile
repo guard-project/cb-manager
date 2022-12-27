@@ -38,7 +38,7 @@ mccabe = "*" # https://github.com/PyCQA/mccabe
 pycodestyle = "*" # https://github.com/PyCQA/pycodestyle
 pyflakes = "*" # https://github.com/PyCQA/pyflakes
 pylint = "*" # https://pylint.org/
-setuptools = "==57.5.0" # for pycallgraph
+setuptools = "==65.5.1" # for pycallgraph
 vprof = "*" # https://github.com/nvdv/vprof
 watchdog = {extras = ["watchmedo"], version = "*"}
 
