@@ -1,5 +1,4 @@
 import ast
-import re
 from resource.base.handler.lcp import LCP as BaseLCP
 
 from requests import post as post_req
