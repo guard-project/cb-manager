@@ -12,8 +12,8 @@ def datetime_from_str(date_time_str, format=FORMAT):
     :params format: datetime format
     :returns: datetime object
     """
-    return datetime.strptime
-             (date_time_str, format).replace(tzinfo=timezone.utc)
+    return datetime.strptime(date_time_str,
+                             format).replace(tzinfo=timezone.utc)
 
 
 def datetime_to_str(date_time=None, format=FORMAT):
